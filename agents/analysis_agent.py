@@ -15,56 +15,37 @@ def analysis_agent(state: AgentState):
 
     parsed = state["parsed_query"]
 
-    # ==========================================
-    # Extract raw values
-    # ==========================================
-    intent = parsed.get(
-        "intent",
-        ""
+    intent = (
+        parsed.get("intent")
+        or ""
     ).lower()
 
-    operation = parsed.get(
-        "operation",
-        ""
+    operation = (
+        parsed.get("operation")
+        or ""
     ).lower()
 
-    metric = parsed.get(
-        "metric"
-    )
+    metric = parsed.get("metric")
 
     if metric:
         metric = metric.title()
 
     # ==========================================
-    # Normalize intent
+    # Unsupported
     # ==========================================
-    intent_mapping = {
+    if intent == "unknown":
 
-        "aggregation": "aggregation",
-        "profit": "aggregation",
-        "get profit": "aggregation",
-        "retrieve profit": "aggregation",
+        state["analysis_result"] = {
+            "type": "unsupported"
+        }
 
-        "ranking": "ranking",
-
-        "comparison": "comparison",
-
-        "count": "count",
-
-        "filter": "filter"
-    }
-
-    intent = intent_mapping.get(
-        intent,
-        intent
-    )
+        return state
 
     # ==========================================
-    # Normalize operation
+    # Normalize operations
     # ==========================================
     operation_mapping = {
 
-        # Aggregation
         "get": "sum",
         "value": "sum",
         "retrieve": "sum",
@@ -72,7 +53,6 @@ def analysis_agent(state: AgentState):
         "show": "sum",
         "sum": "sum",
 
-        # Ranking
         "highest": "max",
         "maximum": "max",
         "max": "max",
@@ -81,11 +61,9 @@ def analysis_agent(state: AgentState):
         "minimum": "min",
         "min": "min",
 
-        # Count
         "count": "count",
         "number": "count",
 
-        # Comparison
         "compare": "compare",
         "comparison": "compare"
     }
@@ -111,11 +89,9 @@ def analysis_agent(state: AgentState):
         if retrieval is None:
 
             state["analysis_result"] = {
-
                 "type": "error",
-
                 "message":
-                    "No retrieval result found."
+                    "I couldn't confidently identify the entity."
             }
 
             return state
@@ -124,46 +100,31 @@ def analysis_agent(state: AgentState):
 
         entity_column = retrieval["column"]
 
-        entity_value = retrieval[
-            "resolved_entity"
-        ]
-
-        print("Dataset:", dataset_name)
-        print("Entity:", entity_value)
+        entity_value = retrieval["resolved_entity"]
 
         df = datasets[dataset_name]
-
-        filtered_df = df[
-            df[entity_column]
-            ==
-            entity_value
-        ]
 
         if metric not in df.columns:
 
             state["analysis_result"] = {
-
                 "type": "error",
-
                 "message":
                     f"{metric} column not found."
             }
 
             return state
 
+        filtered_df = df[
+            df[entity_column] == entity_value
+        ]
+
         value = filtered_df[
             metric
         ].sum()
 
-        print("Computed Value:")
-        print(value)
-
         state["analysis_result"] = {
-
             "type": "aggregation",
-
             "metric": metric,
-
             "value": float(value)
         }
 
@@ -179,9 +140,7 @@ def analysis_agent(state: AgentState):
         if metric not in df.columns:
 
             state["analysis_result"] = {
-
                 "type": "error",
-
                 "message":
                     f"{metric} column not found."
             }
@@ -190,31 +149,20 @@ def analysis_agent(state: AgentState):
 
         if operation == "max":
 
-            idx = df[
-                metric
-            ].idxmax()
+            idx = df[metric].idxmax()
 
         else:
 
-            idx = df[
-                metric
-            ].idxmin()
+            idx = df[metric].idxmin()
 
         row = df.loc[idx]
 
         state["analysis_result"] = {
-
             "type": "ranking",
-
             "operation": operation,
-
             "metric": metric,
-
-            "entity":
-                row["Stock Name"],
-
-            "value":
-                float(row[metric])
+            "entity": row["Stock Name"],
+            "value": float(row[metric])
         }
 
         return state
@@ -227,9 +175,7 @@ def analysis_agent(state: AgentState):
         df = datasets["employees"]
 
         state["analysis_result"] = {
-
             "type": "count",
-
             "value": len(df)
         }
 
@@ -249,10 +195,7 @@ def analysis_agent(state: AgentState):
 
         for entity in entities:
 
-            if isinstance(
-                entity,
-                dict
-            ):
+            if isinstance(entity, dict):
 
                 entity_value = entity.get(
                     "value",
@@ -296,13 +239,9 @@ def analysis_agent(state: AgentState):
             })
 
         state["analysis_result"] = {
-
             "type": "comparison",
-
             "metric": metric,
-
-            "comparisons":
-                comparisons
+            "comparisons": comparisons
         }
 
         return state
@@ -329,23 +268,15 @@ def analysis_agent(state: AgentState):
                 "value"
             )
 
-            if (
-                column
-                not in df.columns
-            ):
-
+            if column not in df.columns:
                 continue
 
             df = df[
-                df[column]
-                ==
-                value
+                df[column] == value
             ]
 
         state["analysis_result"] = {
-
             "type": "filter",
-
             "rows":
                 df.to_dict(
                     orient="records"
@@ -358,12 +289,9 @@ def analysis_agent(state: AgentState):
     # Fallback
     # ==========================================
     state["analysis_result"] = {
-
         "type": "error",
-
         "message":
-            f"Unsupported operation: "
-            f"{operation}"
+            f"Unsupported operation: {operation}"
     }
 
     return state

@@ -2,6 +2,14 @@ from state.agent_state import AgentState
 from services.embedding_service import EmbeddingService
 embedding_service = EmbeddingService()
 embedding_service.load_index()
+CONFIDENCE_THRESHOLD = 0.8
+COLUMN_PRIORITY = {
+    "Stock Name": 1,
+    "Employee Name": 1,
+    "Product": 1,
+    "Ticker": 2,
+    "Region": 3
+}
 def retrieval_agent(state: AgentState):
     print("\n=== RETRIEVAL AGENT ===")
     parsed_query = state["parsed_query"]
@@ -29,7 +37,19 @@ def retrieval_agent(state: AgentState):
     print("\nCandidates:")
     for result in results:
         print(result)
-    best_match = results[0]
+    best_match = sorted(
+    results,
+    key=lambda r: (
+        COLUMN_PRIORITY.get(
+            r["column"],
+            999
+        ),
+        r["distance"]
+    )
+)[0]
+    if best_match["distance"] > CONFIDENCE_THRESHOLD:
+     state["retrieval_result"] = None
+     return state
     state["retrieval_result"] = {
         "resolved_entity":
             best_match["value"],

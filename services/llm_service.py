@@ -15,7 +15,23 @@ Available dataset contexts:
 
 {json.dumps(contexts, indent=2)}
 
-Extract the user's intent.
+Your job is ONLY to convert the question into JSON.
+
+Allowed intents:
+- aggregation
+- ranking
+- comparison
+- count
+- filter
+- unknown
+
+Allowed operations:
+- sum
+- max
+- min
+- compare
+- count
+- filter
 
 Return ONLY valid JSON.
 
@@ -26,6 +42,18 @@ Schema:
     "metric": "",
     "entities": [],
     "operation": "",
+    "filters": [],
+    "time_period": null
+}}
+
+If the question is unrelated to the datasets,
+return:
+
+{{
+    "intent": "unknown",
+    "metric": null,
+    "entities": [],
+    "operation": null,
     "filters": [],
     "time_period": null
 }}
