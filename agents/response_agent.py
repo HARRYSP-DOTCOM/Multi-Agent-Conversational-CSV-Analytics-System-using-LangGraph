@@ -5,54 +5,171 @@ def response_agent(state: AgentState):
 
     print("\n=== RESPONSE AGENT ===")
 
-    parsed = state["parsed_query"]
-
-    retrieval = state["retrieval_result"]
-
     analysis = state["analysis_result"]
 
-    entities = parsed.get(
-        "entities",
-        []
+    parsed = state["parsed_query"]
+
+    retrieval = state.get(
+        "retrieval_result"
     )
 
-    original_entity = (
-        entities[0]
-        if entities
-        else "Unknown"
-    )
+    # ==========================================
+    # Error
+    # ==========================================
+    if analysis["type"] == "error":
 
-    resolved_entity = (
-        retrieval["resolved_entity"]
-        if retrieval
-        else original_entity
-    )
+        response = analysis["message"]
 
-    metric = analysis.get(
-        "metric",
-        "Value"
-    )
+    # ==========================================
+    # Aggregation
+    # ==========================================
+    elif analysis["type"] == "aggregation":
 
-    value = analysis.get(
-        "value",
-        None
-    )
-
-    if value is None:
-
-        response = (
-            "I could not compute an answer."
+        entities = parsed.get(
+            "entities",
+            []
         )
 
-    else:
+        original_entity = (
+            entities[0]
+            if entities
+            else "Unknown"
+        )
 
-        formatted_value = f"{value:,.0f}"
+        resolved_entity = (
+            retrieval["resolved_entity"]
+            if retrieval
+            else original_entity
+        )
 
         response = (
+
             f'I interpreted "{original_entity}" '
             f'as "{resolved_entity}".\n\n'
-            f'The {metric} is '
-            f'{formatted_value}.'
+
+            f'The {analysis["metric"]} is '
+
+            f'{analysis["value"]:,.0f}.'
+        )
+
+    # ==========================================
+    # Ranking
+    # ==========================================
+    elif analysis["type"] == "ranking":
+
+        operation = analysis["operation"]
+
+        operation_text = (
+
+            "highest"
+            if operation == "max"
+            else "lowest"
+        )
+
+        response = (
+
+            f'{analysis["entity"]} '
+
+            f'has the {operation_text} '
+
+            f'{analysis["metric"]} '
+
+            f'of '
+
+            f'{analysis["value"]:,.0f}.'
+        )
+
+    # ==========================================
+    # Count
+    # ==========================================
+    elif analysis["type"] == "count":
+
+        response = (
+
+            f'The count is '
+
+            f'{analysis["value"]}.'
+        )
+
+    # ==========================================
+    # Comparison
+    # ==========================================
+    elif analysis["type"] == "comparison":
+
+        lines = [
+
+            f'Comparison of '
+
+            f'{analysis["metric"]}:'
+        ]
+
+        highest = None
+
+        for item in analysis["comparisons"]:
+
+            lines.append(
+
+                f'{item["entity"]}: '
+
+                f'{item["value"]:,.0f}'
+            )
+
+            if (
+
+                highest is None
+
+                or
+
+                item["value"]
+                >
+                highest["value"]
+
+            ):
+
+                highest = item
+
+        if highest:
+
+            lines.append(
+                f'\nHighest: '
+                f'{highest["entity"]}'
+            )
+
+        response = "\n".join(lines)
+
+    # ==========================================
+    # Filter
+    # ==========================================
+    elif analysis["type"] == "filter":
+
+        rows = analysis["rows"]
+
+        if not rows:
+
+            response = (
+                "No matching records found."
+            )
+
+        else:
+
+            response = (
+
+                f'Found '
+
+                f'{len(rows)} '
+
+                f'matching records.\n\n'
+
+                f'{rows}'
+            )
+
+    # ==========================================
+    # Fallback
+    # ==========================================
+    else:
+
+        response = (
+            "I could not generate a response."
         )
 
     print(response)
