@@ -6,19 +6,26 @@ def retrieval_agent(state: AgentState):
     print("\n=== RETRIEVAL AGENT ===")
     parsed_query = state["parsed_query"]
     entities = parsed_query.get(
-        "entities",
-        []
-    )
+    "entities",
+    []
+)
     if not entities:
-        state["retrieval_result"] = None
-        return state
+       state["retrieval_result"] = None
+       return state
     entity = entities[0]
-    print("\nSearching for:")
-    print(entity)
-    results = embedding_service.search(
-        entity,
-        top_k=3
+    if isinstance(entity, dict):
+       entity_value = entity.get(
+        "value",
+        ""
     )
+    else:
+     entity_value = entity
+    print("\nSearching for:")
+    print(entity_value)
+    results = embedding_service.search(
+     entity_value,
+     top_k=3
+)
     print("\nCandidates:")
     for result in results:
         print(result)

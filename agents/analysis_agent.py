@@ -15,27 +15,107 @@ def analysis_agent(state: AgentState):
 
     parsed = state["parsed_query"]
 
-    intent = parsed.get("intent", "").lower()
+    # ==========================================
+    # Extract raw values
+    # ==========================================
+    intent = parsed.get(
+        "intent",
+        ""
+    ).lower()
 
-    operation = parsed.get("operation", "").lower()
+    operation = parsed.get(
+        "operation",
+        ""
+    ).lower()
 
-    metric = parsed.get("metric")
+    metric = parsed.get(
+        "metric"
+    )
 
     if metric:
         metric = metric.title()
 
     # ==========================================
-    # Aggregation / Get
+    # Normalize intent
     # ==========================================
-    if operation in ["sum", "get"]:
+    intent_mapping = {
 
-        retrieval = state["retrieval_result"]
+        "aggregation": "aggregation",
+        "profit": "aggregation",
+        "get profit": "aggregation",
+        "retrieve profit": "aggregation",
+
+        "ranking": "ranking",
+
+        "comparison": "comparison",
+
+        "count": "count",
+
+        "filter": "filter"
+    }
+
+    intent = intent_mapping.get(
+        intent,
+        intent
+    )
+
+    # ==========================================
+    # Normalize operation
+    # ==========================================
+    operation_mapping = {
+
+        # Aggregation
+        "get": "sum",
+        "value": "sum",
+        "retrieve": "sum",
+        "fetch": "sum",
+        "show": "sum",
+        "sum": "sum",
+
+        # Ranking
+        "highest": "max",
+        "maximum": "max",
+        "max": "max",
+
+        "lowest": "min",
+        "minimum": "min",
+        "min": "min",
+
+        # Count
+        "count": "count",
+        "number": "count",
+
+        # Comparison
+        "compare": "compare",
+        "comparison": "compare"
+    }
+
+    operation = operation_mapping.get(
+        operation,
+        operation
+    )
+
+    print("Intent:", intent)
+    print("Operation:", operation)
+    print("Metric:", metric)
+
+    # ==========================================
+    # Aggregation
+    # ==========================================
+    if operation == "sum":
+
+        retrieval = state.get(
+            "retrieval_result"
+        )
 
         if retrieval is None:
 
             state["analysis_result"] = {
+
                 "type": "error",
-                "message": "No retrieval result found."
+
+                "message":
+                    "No retrieval result found."
             }
 
             return state
@@ -44,19 +124,36 @@ def analysis_agent(state: AgentState):
 
         entity_column = retrieval["column"]
 
-        entity_value = retrieval["resolved_entity"]
+        entity_value = retrieval[
+            "resolved_entity"
+        ]
 
         print("Dataset:", dataset_name)
-        print("Metric:", metric)
         print("Entity:", entity_value)
 
         df = datasets[dataset_name]
 
         filtered_df = df[
-            df[entity_column] == entity_value
+            df[entity_column]
+            ==
+            entity_value
         ]
 
-        value = filtered_df[metric].sum()
+        if metric not in df.columns:
+
+            state["analysis_result"] = {
+
+                "type": "error",
+
+                "message":
+                    f"{metric} column not found."
+            }
+
+            return state
+
+        value = filtered_df[
+            metric
+        ].sum()
 
         print("Computed Value:")
         print(value)
@@ -73,19 +170,35 @@ def analysis_agent(state: AgentState):
         return state
 
     # ==========================================
-    # Ranking (max/min)
+    # Ranking
     # ==========================================
     if operation in ["max", "min"]:
 
         df = datasets["stocks"]
 
+        if metric not in df.columns:
+
+            state["analysis_result"] = {
+
+                "type": "error",
+
+                "message":
+                    f"{metric} column not found."
+            }
+
+            return state
+
         if operation == "max":
 
-            idx = df[metric].idxmax()
+            idx = df[
+                metric
+            ].idxmax()
 
         else:
 
-            idx = df[metric].idxmin()
+            idx = df[
+                metric
+            ].idxmin()
 
         row = df.loc[idx]
 
@@ -97,9 +210,11 @@ def analysis_agent(state: AgentState):
 
             "metric": metric,
 
-            "entity": row["Stock Name"],
+            "entity":
+                row["Stock Name"],
 
-            "value": float(row[metric])
+            "value":
+                float(row[metric])
         }
 
         return state
@@ -134,8 +249,22 @@ def analysis_agent(state: AgentState):
 
         for entity in entities:
 
-            matches = embedding_service.search(
+            if isinstance(
                 entity,
+                dict
+            ):
+
+                entity_value = entity.get(
+                    "value",
+                    ""
+                )
+
+            else:
+
+                entity_value = entity
+
+            matches = embedding_service.search(
+                entity_value,
                 top_k=1
             )
 
@@ -145,7 +274,7 @@ def analysis_agent(state: AgentState):
                 best_match["table"]
             ]
 
-            filtered = df[
+            filtered_df = df[
                 df[
                     best_match["column"]
                 ]
@@ -153,7 +282,7 @@ def analysis_agent(state: AgentState):
                 best_match["value"]
             ]
 
-            value = filtered[
+            value = filtered_df[
                 metric
             ].sum()
 
@@ -192,9 +321,20 @@ def analysis_agent(state: AgentState):
 
         for filter_item in filters:
 
-            column = filter_item["column"]
+            column = filter_item.get(
+                "column"
+            )
 
-            value = filter_item["value"]
+            value = filter_item.get(
+                "value"
+            )
+
+            if (
+                column
+                not in df.columns
+            ):
+
+                continue
 
             df = df[
                 df[column]
@@ -222,7 +362,8 @@ def analysis_agent(state: AgentState):
         "type": "error",
 
         "message":
-            "Unsupported operation."
+            f"Unsupported operation: "
+            f"{operation}"
     }
 
     return state
