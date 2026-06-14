@@ -1,29 +1,62 @@
 from state.agent_state import AgentState
+
+
 def response_agent(state: AgentState):
+
     print("\n=== RESPONSE AGENT ===")
+
     parsed = state["parsed_query"]
+
     retrieval = state["retrieval_result"]
+
     analysis = state["analysis_result"]
-    original_entity = parsed["entity"]
+
+    entities = parsed.get(
+        "entities",
+        []
+    )
+
+    original_entity = (
+        entities[0]
+        if entities
+        else "Unknown"
+    )
+
     resolved_entity = (
         retrieval["resolved_entity"]
-    )
-    metric = analysis["metric"]
-    value = analysis["value"]
-
-    formatted_value = (
-        f"{value:,.0f}"
+        if retrieval
+        else original_entity
     )
 
-    response = (
-        f'I interpreted "{original_entity}" '
-        f'as "{resolved_entity}  ".'
-        f'The {metric} is '
-        f'{formatted_value}.'
+    metric = analysis.get(
+        "metric",
+        "Value"
     )
-    print(response)        
 
-    state["final_response"] = (
-        response
+    value = analysis.get(
+        "value",
+        None
     )
+
+    if value is None:
+
+        response = (
+            "I could not compute an answer."
+        )
+
+    else:
+
+        formatted_value = f"{value:,.0f}"
+
+        response = (
+            f'I interpreted "{original_entity}" '
+            f'as "{resolved_entity}".\n\n'
+            f'The {metric} is '
+            f'{formatted_value}.'
+        )
+
+    print(response)
+
+    state["final_response"] = response
+
     return state

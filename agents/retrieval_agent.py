@@ -5,7 +5,14 @@ embedding_service.load_index()
 def retrieval_agent(state: AgentState):
     print("\n=== RETRIEVAL AGENT ===")
     parsed_query = state["parsed_query"]
-    entity = parsed_query["entity"]
+    entities = parsed_query.get(
+        "entities",
+        []
+    )
+    if not entities:
+        state["retrieval_result"] = None
+        return state
+    entity = entities[0]
     print("\nSearching for:")
     print(entity)
     results = embedding_service.search(
@@ -16,7 +23,6 @@ def retrieval_agent(state: AgentState):
     for result in results:
         print(result)
     best_match = results[0]
-    
     state["retrieval_result"] = {
         "resolved_entity":
             best_match["value"],
@@ -29,4 +35,4 @@ def retrieval_agent(state: AgentState):
         "candidates":
             results
     }
-    return state    
+    return state

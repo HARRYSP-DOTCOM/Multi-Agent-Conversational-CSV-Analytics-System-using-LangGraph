@@ -7,10 +7,16 @@ def analysis_agent(state: AgentState):
     metric = (
         state["parsed_query"]["metric"]
     )
+    metric = metric.title()
 
-    retrieval = (
-        state["retrieval_result"]
-    )
+    retrieval = state["retrieval_result"]
+
+    if retrieval is None:
+      state["analysis_result"] = {
+        "error": "No retrieval result found."
+     }
+
+      return state
 
     dataset_name = retrieval["table"]
 
