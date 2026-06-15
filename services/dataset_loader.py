@@ -2,7 +2,13 @@ import os
 import pandas as pd
 
 class DatasetLoader:
-    def __init__(self, data_directory="sample_data"):
+
+    def __init__(
+        self,
+        data_directory="uploads"
+    ):
+
+        self.data_directory = data_directory
         self.data_directory = data_directory
     def discover_csv_files(self):
         csv_files = []

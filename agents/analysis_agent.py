@@ -2,10 +2,6 @@ from state.agent_state import AgentState
 from services.dataset_loader import DatasetLoader
 from services.embedding_service import EmbeddingService
 
-# ==========================================
-# Cached Resources
-# ==========================================
-
 _datasets = None
 _embedding_service = None
 
@@ -44,9 +40,19 @@ def get_embedding_service():
     return _embedding_service
 
 
-# ==========================================
-# Analysis Agent
-# ==========================================
+def resolve_metric(df, metric):
+
+    if metric is None:
+        return None
+
+    for column in df.columns:
+
+        if column.lower() == metric.lower():
+
+            return column
+
+    return None
+
 
 def analysis_agent(state: AgentState):
 
@@ -66,13 +72,7 @@ def analysis_agent(state: AgentState):
 
     metric = parsed.get("metric")
 
-    if metric:
-        metric = metric.title()
-
-    # ==========================================
     # Unsupported
-    # ==========================================
-
     if intent == "unknown":
 
         state["analysis_result"] = {
@@ -80,10 +80,6 @@ def analysis_agent(state: AgentState):
         }
 
         return state
-
-    # ==========================================
-    # Normalize operations
-    # ==========================================
 
     operation_mapping = {
 
@@ -152,12 +148,18 @@ def analysis_agent(state: AgentState):
             dataset_name
         ]
 
-        if metric not in df.columns:
+        metric_column = resolve_metric(
+            df,
+            metric
+        )
+
+        if metric_column is None:
 
             state["analysis_result"] = {
                 "type": "error",
                 "message":
-                    f"{metric} column not found."
+                    f"{metric} column not found.\n"
+                    f"Available columns: {df.columns.tolist()}"
             }
 
             return state
@@ -169,12 +171,12 @@ def analysis_agent(state: AgentState):
         ]
 
         value = filtered_df[
-            metric
+            metric_column
         ].sum()
 
         state["analysis_result"] = {
             "type": "aggregation",
-            "metric": metric,
+            "metric": metric_column,
             "value": float(value)
         }
 
@@ -190,12 +192,18 @@ def analysis_agent(state: AgentState):
 
         df = datasets["stocks"]
 
-        if metric not in df.columns:
+        metric_column = resolve_metric(
+            df,
+            metric
+        )
+
+        if metric_column is None:
 
             state["analysis_result"] = {
                 "type": "error",
                 "message":
-                    f"{metric} column not found."
+                    f"{metric} column not found.\n"
+                    f"Available columns: {df.columns.tolist()}"
             }
 
             return state
@@ -203,25 +211,33 @@ def analysis_agent(state: AgentState):
         if operation == "max":
 
             idx = df[
-                metric
+                metric_column
             ].idxmax()
 
         else:
 
             idx = df[
-                metric
+                metric_column
             ].idxmin()
 
         row = df.loc[idx]
 
+        stock_name_column = next(
+            (
+                col for col in df.columns
+                if col.lower() == "stock name"
+            ),
+            df.columns[0]
+        )
+
         state["analysis_result"] = {
             "type": "ranking",
             "operation": operation,
-            "metric": metric,
+            "metric": metric_column,
             "entity":
-                row["Stock Name"],
+                row[stock_name_column],
             "value":
-                float(row[metric])
+                float(row[metric_column])
         }
 
         return state
@@ -234,14 +250,14 @@ def analysis_agent(state: AgentState):
 
         datasets = get_datasets()
 
-        df = datasets[
-            "employees"
-        ]
+        first_dataset = list(
+            datasets.values()
+        )[0]
 
         state["analysis_result"] = {
             "type": "count",
             "value":
-                len(df)
+                len(first_dataset)
         }
 
         return state
@@ -267,19 +283,11 @@ def analysis_agent(state: AgentState):
 
         for entity in entities:
 
-            if isinstance(
-                entity,
-                dict
-            ):
-
-                entity_value = entity.get(
-                    "value",
-                    ""
-                )
-
-            else:
-
-                entity_value = entity
+            entity_value = (
+                entity.get("value", "")
+                if isinstance(entity, dict)
+                else entity
+            )
 
             matches = embedding_service.search(
                 entity_value,
@@ -292,6 +300,14 @@ def analysis_agent(state: AgentState):
                 best_match["table"]
             ]
 
+            metric_column = resolve_metric(
+                df,
+                metric
+            )
+
+            if metric_column is None:
+                continue
+
             filtered_df = df[
                 df[
                     best_match["column"]
@@ -301,7 +317,7 @@ def analysis_agent(state: AgentState):
             ]
 
             value = filtered_df[
-                metric
+                metric_column
             ].sum()
 
             comparisons.append({
@@ -328,16 +344,18 @@ def analysis_agent(state: AgentState):
 
     if intent == "filter":
 
+        datasets = get_datasets()
+
+        first_dataset = list(
+            datasets.values()
+        )[0]
+
         filters = parsed.get(
             "filters",
             []
         )
 
-        datasets = get_datasets()
-
-        df = datasets[
-            "employees"
-        ]
+        df = first_dataset
 
         for filter_item in filters:
 
@@ -349,11 +367,16 @@ def analysis_agent(state: AgentState):
                 "value"
             )
 
-            if column not in df.columns:
+            actual_column = resolve_metric(
+                df,
+                column
+            )
+
+            if actual_column is None:
                 continue
 
             df = df[
-                df[column]
+                df[actual_column]
                 ==
                 value
             ]

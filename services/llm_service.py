@@ -5,6 +5,7 @@ from ollama import chat
 class LLMService:
 
     def __init__(self):
+
         self.model = "qwen2.5:1.5b"
 
     def understand_query(
@@ -71,6 +72,45 @@ Output:
     "metric": "Profit",
     "entities": [],
     "operation": "max",
+    "filters": [],
+    "time_period": null
+}}
+
+Question:
+Which company has the highest profit?
+
+Output:
+{{
+    "intent": "ranking",
+    "metric": "Profit",
+    "entities": [],
+    "operation": "max",
+    "filters": [],
+    "time_period": null
+}}
+
+Question:
+Which is the company with highest profit?
+
+Output:
+{{
+    "intent": "ranking",
+    "metric": "Profit",
+    "entities": [],
+    "operation": "max",
+    "filters": [],
+    "time_period": null
+}}
+
+Question:
+Which company has the lowest profit?
+
+Output:
+{{
+    "intent": "ranking",
+    "metric": "Profit",
+    "entities": [],
+    "operation": "min",
     "filters": [],
     "time_period": null
 }}
@@ -146,7 +186,10 @@ Question:
             ]
         )
 
-        content = response["message"]["content"].strip()
+        content = (
+            response["message"]["content"]
+            .strip()
+        )
 
         try:
 

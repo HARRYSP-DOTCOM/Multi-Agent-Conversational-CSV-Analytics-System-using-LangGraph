@@ -42,6 +42,37 @@ def query_agent(state: AgentState):
         question
     )
 
+    # ==========================================
+    # Guardrails for Qwen mistakes
+    # ==========================================
+
+    q = question.lower()
+
+    # Highest → Ranking
+    if "highest" in q:
+
+        parsed_query["intent"] = "ranking"
+
+        parsed_query["operation"] = "max"
+
+    # Lowest → Ranking
+    elif "lowest" in q:
+
+        parsed_query["intent"] = "ranking"
+
+        parsed_query["operation"] = "min"
+
+    # Count
+    elif (
+        "how many" in q
+        or "count" in q
+        or "number of" in q
+    ):
+
+        parsed_query["intent"] = "count"
+
+        parsed_query["operation"] = "count"
+
     print("\nParsed Query:")
     print(parsed_query)
 
