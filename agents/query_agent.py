@@ -1,11 +1,9 @@
 from state.agent_state import AgentState
 from services.llm_service import LLMService
-
-# ==========================================
-# Cached LLM
-# ==========================================
+from services.context_service import ContextService
 
 _llm = None
+_context_service = None
 
 
 def get_llm():
@@ -23,59 +21,58 @@ def get_llm():
     return _llm
 
 
-# ==========================================
-# Query Agent
-# ==========================================
+def get_context_service():
+
+    global _context_service
+
+    if _context_service is None:
+
+        _context_service = ContextService()
+
+    return _context_service
+
 
 def query_agent(state: AgentState):
 
     print("\n=== QUERY AGENT ===")
-
-    llm = get_llm()
 
     question = state["question"]
 
     print("Question:")
     print(question)
 
+    llm = get_llm()
+
+    context_service = get_context_service()
+
+    contexts = context_service.load_contexts()
+
+    # ------------------------------------------
+    # Existing JSON understanding (fallback)
+    # ------------------------------------------
+
     parsed_query = llm.understand_query(
-        question
+        question,
+        contexts
     )
-
-    # ==========================================
-    # Guardrails for Qwen mistakes
-    # ==========================================
-
-    q = question.lower()
-
-    # Highest → Ranking
-    if "highest" in q:
-
-        parsed_query["intent"] = "ranking"
-
-        parsed_query["operation"] = "max"
-
-    # Lowest → Ranking
-    elif "lowest" in q:
-
-        parsed_query["intent"] = "ranking"
-
-        parsed_query["operation"] = "min"
-
-    # Count
-    elif (
-        "how many" in q
-        or "count" in q
-        or "number of" in q
-    ):
-
-        parsed_query["intent"] = "count"
-
-        parsed_query["operation"] = "count"
 
     print("\nParsed Query:")
     print(parsed_query)
 
     state["parsed_query"] = parsed_query
+
+    # ------------------------------------------
+    # NEW: Generate Python
+    # ------------------------------------------
+
+    generated_code = llm.generate_python(
+        question,
+        contexts
+    )
+
+    print("\nGenerated Python:")
+    print(generated_code)
+
+    state["generated_code"] = generated_code
 
     return state

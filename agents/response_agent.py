@@ -5,6 +5,24 @@ def response_agent(state: AgentState):
 
     print("\n=== RESPONSE AGENT ===")
 
+    # ==========================================
+    # NEW: Python Execution Responses
+    # ==========================================
+
+    execution_result = state.get(
+        "execution_result"
+    )
+
+    if execution_result:
+
+        state["final_response"] = execution_result
+
+        return state
+
+    # ==========================================
+    # Existing Logic
+    # ==========================================
+
     parsed = state["parsed_query"]
 
     analysis = state["analysis_result"]
@@ -13,10 +31,7 @@ def response_agent(state: AgentState):
         "retrieval_result"
     )
 
-    # ==========================================
-    # Unsupported
-    # ==========================================
-
+    # Unsupported Queries
     if analysis["type"] == "unsupported":
 
         response = (
@@ -28,10 +43,7 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ==========================================
     # Errors
-    # ==========================================
-
     if analysis["type"] == "error":
 
         state["final_response"] = (
@@ -40,10 +52,7 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ==========================================
     # Aggregation
-    # ==========================================
-
     if analysis["type"] == "aggregation":
 
         entities = parsed.get(
@@ -83,10 +92,7 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ==========================================
     # Ranking
-    # ==========================================
-
     if analysis["type"] == "ranking":
 
         operation_text = (
@@ -106,10 +112,7 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ==========================================
     # Count
-    # ==========================================
-
     if analysis["type"] == "count":
 
         state["final_response"] = (
@@ -119,10 +122,7 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ==========================================
     # Comparison
-    # ==========================================
-
     if analysis["type"] == "comparison":
 
         lines = [
@@ -163,10 +163,7 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ==========================================
     # Filter
-    # ==========================================
-
     if analysis["type"] == "filter":
 
         rows = analysis["rows"]
@@ -192,10 +189,7 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ==========================================
-    # Fallback
-    # ==========================================
-
+    # Final Fallback
     state["final_response"] = (
         "I could not generate a response."
     )

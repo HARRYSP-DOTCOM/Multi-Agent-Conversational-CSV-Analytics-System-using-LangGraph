@@ -1,6 +1,9 @@
 from state.agent_state import AgentState
 from services.dataset_loader import DatasetLoader
 from services.embedding_service import EmbeddingService
+from services.python_execution_service import (
+    PythonExecutionService
+)
 
 _datasets = None
 _embedding_service = None
@@ -58,6 +61,44 @@ def analysis_agent(state: AgentState):
 
     print("\n=== ANALYSIS AGENT ===")
 
+    # ==========================================
+    # NEW: Python Execution Path
+    # ==========================================
+
+    generated_code = state.get(
+        "generated_code"
+    )
+
+    if generated_code:
+
+        print("\nExecuting Generated Python:")
+
+        print(generated_code)
+
+        executor = PythonExecutionService()
+
+        execution_result = executor.execute(
+            generated_code
+        )
+
+        print("\nExecution Result:")
+
+        print(execution_result)
+
+        state["execution_result"] = (
+            execution_result
+        )
+
+        state["analysis_result"] = {
+            "type": "python_execution"
+        }
+
+        return state
+
+    # ==========================================
+    # Existing Logic (Fallback)
+    # ==========================================
+
     parsed = state["parsed_query"]
 
     intent = (
@@ -72,7 +113,6 @@ def analysis_agent(state: AgentState):
 
     metric = parsed.get("metric")
 
-    # Unsupported
     if intent == "unknown":
 
         state["analysis_result"] = {
@@ -208,17 +248,11 @@ def analysis_agent(state: AgentState):
 
             return state
 
-        if operation == "max":
-
-            idx = df[
-                metric_column
-            ].idxmax()
-
-        else:
-
-            idx = df[
-                metric_column
-            ].idxmin()
+        idx = (
+            df[metric_column].idxmax()
+            if operation == "max"
+            else df[metric_column].idxmin()
+        )
 
         row = df.loc[idx]
 
@@ -392,7 +426,7 @@ def analysis_agent(state: AgentState):
         return state
 
     # ==========================================
-    # Fallback
+    # Final Fallback
     # ==========================================
 
     state["analysis_result"] = {

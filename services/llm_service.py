@@ -8,6 +8,9 @@ class LLMService:
 
         self.model = "qwen2.5:1.5b"
 
+    # ==========================================
+    # Existing JSON Query Understanding
+    # ==========================================
     def understand_query(
         self,
         question,
@@ -18,22 +21,6 @@ class LLMService:
 You are a query understanding agent.
 
 Convert the user's question into JSON.
-
-Allowed intents:
-- aggregation
-- ranking
-- comparison
-- count
-- filter
-- unknown
-
-Allowed operations:
-- sum
-- max
-- min
-- compare
-- count
-- filter
 
 Return ONLY valid JSON.
 
@@ -48,121 +35,8 @@ Schema:
     "time_period": null
 }}
 
-Examples:
+If unrelated to the datasets, return:
 
-Question:
-What is the profit of Reliance?
-
-Output:
-{{
-    "intent": "aggregation",
-    "metric": "Profit",
-    "entities": ["Reliance"],
-    "operation": "sum",
-    "filters": [],
-    "time_period": null
-}}
-
-Question:
-Which stock has the highest profit?
-
-Output:
-{{
-    "intent": "ranking",
-    "metric": "Profit",
-    "entities": [],
-    "operation": "max",
-    "filters": [],
-    "time_period": null
-}}
-
-Question:
-Which company has the highest profit?
-
-Output:
-{{
-    "intent": "ranking",
-    "metric": "Profit",
-    "entities": [],
-    "operation": "max",
-    "filters": [],
-    "time_period": null
-}}
-
-Question:
-Which is the company with highest profit?
-
-Output:
-{{
-    "intent": "ranking",
-    "metric": "Profit",
-    "entities": [],
-    "operation": "max",
-    "filters": [],
-    "time_period": null
-}}
-
-Question:
-Which company has the lowest profit?
-
-Output:
-{{
-    "intent": "ranking",
-    "metric": "Profit",
-    "entities": [],
-    "operation": "min",
-    "filters": [],
-    "time_period": null
-}}
-
-Question:
-Compare Reliance and TCS profits.
-
-Output:
-{{
-    "intent": "comparison",
-    "metric": "Profit",
-    "entities": ["Reliance", "TCS"],
-    "operation": "compare",
-    "filters": [],
-    "time_period": null
-}}
-
-Question:
-How many employees are there?
-
-Output:
-{{
-    "intent": "count",
-    "metric": null,
-    "entities": [],
-    "operation": "count",
-    "filters": [],
-    "time_period": null
-}}
-
-Question:
-Show employees from HR.
-
-Output:
-{{
-    "intent": "filter",
-    "metric": null,
-    "entities": [],
-    "operation": "filter",
-    "filters": [
-        {{
-            "column": "Department",
-            "value": "HR"
-        }}
-    ],
-    "time_period": null
-}}
-
-Question:
-Tell me a joke.
-
-Output:
 {{
     "intent": "unknown",
     "metric": null,
@@ -213,3 +87,91 @@ Question:
                 "time_period": None,
                 "raw_response": content
             }
+
+    # ==========================================
+    # NEW: Python Generation
+    # ==========================================
+    def generate_python(
+        self,
+        question,
+        contexts
+    ):
+
+        prompt = f"""
+You are a Python data analyst.
+
+Available datasets and their schemas:
+
+{contexts}
+
+A variable called datasets already exists.
+
+datasets is a dictionary of pandas DataFrames.
+
+Rules:
+1. Generate ONLY executable Python code.
+2. Store the final answer in a variable named result.
+3. Do NOT import libraries.
+4. Do NOT explain anything.
+5. Do NOT use markdown fences.
+6. Use only pandas operations.
+7. Use only datasets and columns that exist in the provided contexts.
+8. If the answer should be a table, assign the DataFrame to result.
+9. If the answer should be a scalar/text value, assign it to result.
+
+Examples:
+
+Question:
+Show first 5 rows of stocks.
+
+Code:
+df = datasets["stocks"]
+result = df.head()
+
+Question:
+Which employee has the highest salary?
+
+Code:
+df = datasets["employees"]
+idx = df["Salary"].idxmax()
+result = df.loc[idx]
+
+Question:
+What is the average age of employees?
+
+Code:
+df = datasets["employees"]
+result = df["Age"].mean()
+
+Question:
+Top 5 products by sales.
+
+Code:
+df = datasets["sales"]
+result = df.sort_values(
+    "Sales",
+    ascending=False
+).head(5)
+
+Question:
+{question}
+"""
+
+        response = chat(
+            model=self.model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+
+        code = (
+            response["message"]["content"]
+            .replace("```python", "")
+            .replace("```", "")
+            .strip()
+        )
+
+        return code
