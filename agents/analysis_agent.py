@@ -9,11 +9,11 @@ _datasets = None
 _embedding_service = None
 
 
-def get_datasets():
+def get_datasets(force_reload=False):
 
     global _datasets
 
-    if _datasets is None:
+    if _datasets is None or force_reload:
 
         print("Loading datasets...")
 
@@ -24,6 +24,13 @@ def get_datasets():
         print("Datasets Ready.")
 
     return _datasets
+
+
+def clear_dataset_cache():
+
+    global _datasets
+
+    _datasets = None
 
 
 def get_embedding_service():

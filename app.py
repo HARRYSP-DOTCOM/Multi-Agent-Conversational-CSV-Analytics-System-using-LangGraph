@@ -4,6 +4,7 @@ import pandas as pd
 from graphs.analytics_graph import build_graph
 from services.upload_service import UploadService
 from services.rebuild_service import RebuildService
+from agents.analysis_agent import clear_dataset_cache
 
 
 # ==========================================
@@ -58,16 +59,29 @@ if uploaded_files:
 
     try:
 
-        with st.spinner("Preparing datasets..."):
+        with st.spinner(
+            "Preparing datasets..."
+        ):
 
             rebuild_service = RebuildService()
 
             rebuild_service.rebuild()
 
+            # Clear cached graph
             get_graph.clear()
 
+            # Clear cached datasets
+            clear_dataset_cache()
+
+            # Reset chat history
+            st.session_state.messages = []
+
         st.success(
-            "Contexts and embeddings rebuilt!"
+            "Contexts and embeddings rebuilt successfully!"
+        )
+
+        st.info(
+            "New datasets are now active."
         )
 
     except Exception as error:
@@ -82,6 +96,7 @@ if uploaded_files:
 # ==========================================
 
 if "messages" not in st.session_state:
+
     st.session_state.messages = []
 
 
@@ -91,7 +106,9 @@ if "messages" not in st.session_state:
 
 for message in st.session_state.messages:
 
-    with st.chat_message(message["role"]):
+    with st.chat_message(
+        message["role"]
+    ):
 
         content = message["content"]
 
@@ -111,7 +128,9 @@ for message in st.session_state.messages:
 
         else:
 
-            st.markdown(str(content))
+            st.markdown(
+                str(content)
+            )
 
 
 # ==========================================
@@ -130,11 +149,14 @@ question = st.chat_input(
 if question:
 
     st.session_state.messages.append({
+
         "role": "user",
+
         "content": question
     })
 
     with st.chat_message("user"):
+
         st.markdown(question)
 
     try:
@@ -158,7 +180,9 @@ if question:
             "execution_result": None
         }
 
-        with st.spinner("Analyzing..."):
+        with st.spinner(
+            "Analyzing..."
+        ):
 
             result = graph.invoke(
                 initial_state
@@ -171,7 +195,9 @@ if question:
     except Exception as error:
 
         response = {
+
             "type": "error",
+
             "data": str(error)
         }
 
@@ -185,9 +211,13 @@ if question:
 
         if isinstance(response, dict):
 
-            response_type = response.get("type")
+            response_type = response.get(
+                "type"
+            )
 
-            data = response.get("data")
+            data = response.get(
+                "data"
+            )
 
             # ----------------------------------
             # DataFrame
@@ -200,7 +230,9 @@ if question:
                     use_container_width=True
                 )
 
-                csv = data.to_csv(index=False)
+                csv = data.to_csv(
+                    index=False
+                )
 
                 st.download_button(
                     "⬇ Download CSV",
@@ -225,7 +257,7 @@ if question:
                 chat_content = data
 
             # ----------------------------------
-            # Numeric values
+            # Number
             # ----------------------------------
 
             elif response_type == "number":
@@ -243,7 +275,9 @@ if question:
 
             elif response_type == "text":
 
-                st.markdown(str(data))
+                st.markdown(
+                    str(data)
+                )
 
                 chat_content = str(data)
 
@@ -253,10 +287,13 @@ if question:
 
             elif response_type == "error":
 
-                st.error(str(data))
+                st.error(
+                    str(data)
+                )
 
                 chat_content = (
-                    "Error: " + str(data)
+                    "Error: "
+                    + str(data)
                 )
 
             # ----------------------------------
@@ -267,11 +304,16 @@ if question:
 
                 st.json(response)
 
-                chat_content = str(response)
+                chat_content = str(
+                    response
+                )
 
         else:
 
-            if isinstance(response, pd.DataFrame):
+            if isinstance(
+                response,
+                pd.DataFrame
+            ):
 
                 st.dataframe(
                     response,
@@ -289,7 +331,10 @@ if question:
                     mime="text/csv"
                 )
 
-            elif isinstance(response, pd.Series):
+            elif isinstance(
+                response,
+                pd.Series
+            ):
 
                 st.dataframe(
                     response.to_frame(),
@@ -298,7 +343,9 @@ if question:
 
             else:
 
-                st.markdown(str(response))
+                st.markdown(
+                    str(response)
+                )
 
             chat_content = response
 

@@ -9,6 +9,10 @@ class E2BExecutionService:
 
     def __init__(self):
 
+        api_key = os.getenv("E2B_API_KEY")
+
+        print("E2B API KEY:", api_key)
+
         self.sandbox = Sandbox.create()
 
         print("E2B EXECUTOR READY")
@@ -26,12 +30,19 @@ class E2BExecutionService:
             )
 
             csv_files = [
-                "employees.csv",
-                "sales.csv",
-                "stocks.csv"
+                file
+                for file in os.listdir(uploads_dir)
+                if file.endswith(".csv")
             ]
 
             print("\n===== UPLOADING FILES =====")
+
+            dataset_loading_code = """
+import pandas as pd
+
+datasets = {}
+
+"""
 
             for file_name in csv_files:
 
@@ -40,44 +51,38 @@ class E2BExecutionService:
                     file_name
                 )
 
-                if os.path.exists(local_path):
+                with open(
+                    local_path,
+                    "rb"
+                ) as f:
 
-                    with open(
-                        local_path,
-                        "rb"
-                    ) as f:
-
-                        self.sandbox.files.write(
-                            file_name,
-                            f.read()
-                        )
-
-                    print(
-                        f"Uploaded: {local_path}"
+                    self.sandbox.files.write(
+                        file_name,
+                        f.read()
                     )
 
-                else:
+                print(
+                    f"Uploaded: {local_path}"
+                )
 
-                    print(
-                        f"WARNING: {local_path} not found."
-                    )
+                dataset_name = os.path.splitext(
+                    file_name
+                )[0]
 
-            full_code = """
-import pandas as pd
+                dataset_loading_code += f'''
+datasets["{dataset_name}"] = pd.read_csv("{file_name}")
+'''
 
-datasets = {}
-
-datasets["employees"] = pd.read_csv("employees.csv")
-datasets["sales"] = pd.read_csv("sales.csv")
-datasets["stocks"] = pd.read_csv("stocks.csv")
-
-"""
-
-            full_code += generated_code
+            full_code = (
+                dataset_loading_code
+                + "\n"
+                + generated_code
+            )
 
             full_code += """
 
 print(result)
+
 """
 
             print("\n===== E2B CODE =====\n")
@@ -114,9 +119,11 @@ print(result)
 
             if stdout:
 
+                output = "\n".join(stdout)
+
                 return {
                     "type": "text",
-                    "data": "\n".join(stdout)
+                    "data": output
                 }
 
             if execution.results:
@@ -125,8 +132,8 @@ print(result)
                     "type": "text",
                     "data": "\n".join(
                         [
-                            str(r)
-                            for r in execution.results
+                            str(result)
+                            for result in execution.results
                         ]
                     )
                 }
