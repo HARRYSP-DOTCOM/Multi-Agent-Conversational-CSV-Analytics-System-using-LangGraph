@@ -1,5 +1,6 @@
 import streamlit as st
 from graphs.analytics_graph import build_graph
+from services.upload_service import UploadService
 
 
 # ==========================================
@@ -27,6 +28,24 @@ st.title("📊 CSV Analytics Agent")
 st.write(
     "Ask questions about your datasets."
 )
+uploaded_files = st.file_uploader(
+    "Upload CSV files",
+    type=["csv"],
+    accept_multiple_files=True
+)
+if uploaded_files:
+
+    upload_service = UploadService()
+
+    saved_paths = upload_service.save_files(
+        uploaded_files
+    )
+
+    st.success(
+        f"{len(saved_paths)} file(s) uploaded."
+    )
+
+    st.write(saved_paths)
 
 
 # ==========================================
