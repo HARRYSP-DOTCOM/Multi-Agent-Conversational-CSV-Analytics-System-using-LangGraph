@@ -1,0 +1,147 @@
+{
+    "dataset": "machine-readable-business-employment-data-mar-2026-quarter",
+    "row_count": 26059,
+    "column_count": 14,
+    "columns": [
+        {
+            "name": "Series_reference",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 462,
+            "top_values": [
+                "BDCQ.SEA1AA",
+                "BDCQ.SEA1AS",
+                "BDCQ.SEA1AT",
+                "BDCQ.SEA1BA",
+                "BDCQ.SEA1BS"
+            ]
+        },
+        {
+            "name": "Period",
+            "datatype": "float",
+            "missing_values": 0,
+            "min": 2011.06,
+            "max": 2026.03,
+            "mean": 2018.0364434552362
+        },
+        {
+            "name": "Data_value",
+            "datatype": "float",
+            "missing_values": 2839,
+            "min": 1.171797,
+            "max": 2321295.0,
+            "mean": 74018.02448268975
+        },
+        {
+            "name": "Suppressed",
+            "datatype": "string",
+            "missing_values": 23220,
+            "unique_count": 1,
+            "top_values": [
+                "Y"
+            ]
+        },
+        {
+            "name": "STATUS",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 3,
+            "top_values": [
+                "F",
+                "R",
+                "C"
+            ]
+        },
+        {
+            "name": "UNITS",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 2,
+            "top_values": [
+                "Number",
+                "Value"
+            ]
+        },
+        {
+            "name": "Magnitude",
+            "datatype": "int",
+            "missing_values": 0,
+            "min": 0.0,
+            "max": 6.0,
+            "mean": 2.2492804789132355
+        },
+        {
+            "name": "Subject",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 1,
+            "top_values": [
+                "Business Data Collection - BDC"
+            ]
+        },
+        {
+            "name": "Group",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 5,
+            "top_values": [
+                "Territorial authority by employment variable",
+                "Industry by employment variable",
+                "Region by employment variable",
+                "Age by employment variable",
+                "Sex by employment variable"
+            ]
+        },
+        {
+            "name": "Series_title_1",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 3,
+            "top_values": [
+                "Filled jobs",
+                "Total earnings",
+                "Filled jobs (workplace location based)"
+            ]
+        },
+        {
+            "name": "Series_title_2",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 116,
+            "top_values": [
+                "Auckland",
+                "Northland",
+                "Waikato",
+                "Bay of Plenty",
+                "Gisborne"
+            ]
+        },
+        {
+            "name": "Series_title_3",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 3,
+            "top_values": [
+                "Actual",
+                "Seasonally adjusted",
+                "Trend"
+            ]
+        },
+        {
+            "name": "Series_title_4",
+            "datatype": "float",
+            "missing_values": 26059,
+            "min": NaN,
+            "max": NaN,
+            "mean": NaN
+        },
+        {
+            "name": "Series_title_5",
+            "datatype": "float",
+            "missing_values": 26059,
+            "min": NaN,
+            "max": NaN,
+            "mean": NaN
+        }
+    ]
+}

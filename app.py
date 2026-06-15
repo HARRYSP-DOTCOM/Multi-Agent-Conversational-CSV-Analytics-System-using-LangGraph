@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 from graphs.analytics_graph import build_graph
 from services.upload_service import UploadService
@@ -11,7 +12,6 @@ from services.rebuild_service import RebuildService
 
 @st.cache_resource
 def get_graph():
-
     return build_graph()
 
 
@@ -58,17 +58,12 @@ if uploaded_files:
 
     try:
 
-        with st.spinner(
-            "Preparing datasets..."
-        ):
+        with st.spinner("Preparing datasets..."):
 
-            rebuild_service = (
-                RebuildService()
-            )
+            rebuild_service = RebuildService()
 
             rebuild_service.rebuild()
 
-            # Refresh LangGraph cache
             get_graph.clear()
 
         st.success(
@@ -87,7 +82,6 @@ if uploaded_files:
 # ==========================================
 
 if "messages" not in st.session_state:
-
     st.session_state.messages = []
 
 
@@ -97,13 +91,27 @@ if "messages" not in st.session_state:
 
 for message in st.session_state.messages:
 
-    with st.chat_message(
-        message["role"]
-    ):
+    with st.chat_message(message["role"]):
 
-        st.markdown(
-            message["content"]
-        )
+        content = message["content"]
+
+        if isinstance(content, pd.DataFrame):
+
+            st.dataframe(
+                content,
+                use_container_width=True
+            )
+
+        elif isinstance(content, pd.Series):
+
+            st.dataframe(
+                content.to_frame(),
+                use_container_width=True
+            )
+
+        else:
+
+            st.markdown(str(content))
 
 
 # ==========================================
@@ -121,19 +129,12 @@ question = st.chat_input(
 
 if question:
 
-    # --------------------------------------
-    # Display User Message
-    # --------------------------------------
-
     st.session_state.messages.append({
-
         "role": "user",
-
         "content": question
     })
 
     with st.chat_message("user"):
-
         st.markdown(question)
 
     try:
@@ -157,9 +158,7 @@ if question:
             "execution_result": None
         }
 
-        with st.spinner(
-            "Analyzing..."
-        ):
+        with st.spinner("Analyzing..."):
 
             result = graph.invoke(
                 initial_state
@@ -172,105 +171,140 @@ if question:
     except Exception as error:
 
         response = {
-
             "type": "error",
-
             "data": str(error)
         }
 
-    # --------------------------------------
+    # ======================================
     # Display Assistant Response
-    # --------------------------------------
+    # ======================================
 
     with st.chat_message("assistant"):
 
+        chat_content = response
+
         if isinstance(response, dict):
 
-            response_type = response.get(
-                "type"
-            )
+            response_type = response.get("type")
 
-            # ------------------------------
+            data = response.get("data")
+
+            # ----------------------------------
             # DataFrame
-            # ------------------------------
+            # ----------------------------------
 
             if response_type == "dataframe":
 
                 st.dataframe(
-                    response["data"]
+                    data,
+                    use_container_width=True
                 )
 
-                chat_content = (
-                    response["data"]
-                    .to_string()
+                csv = data.to_csv(index=False)
+
+                st.download_button(
+                    "⬇ Download CSV",
+                    csv,
+                    file_name="result.csv",
+                    mime="text/csv"
                 )
 
-            # ------------------------------
+                chat_content = data
+
+            # ----------------------------------
             # Series
-            # ------------------------------
+            # ----------------------------------
 
             elif response_type == "series":
 
                 st.dataframe(
-                    response["data"]
+                    data.to_frame(),
+                    use_container_width=True
                 )
 
-                chat_content = str(
-                    response["data"]
+                chat_content = data
+
+            # ----------------------------------
+            # Numeric values
+            # ----------------------------------
+
+            elif response_type == "number":
+
+                st.metric(
+                    label="Result",
+                    value=data
                 )
 
-            # ------------------------------
+                chat_content = str(data)
+
+            # ----------------------------------
             # Text
-            # ------------------------------
+            # ----------------------------------
 
             elif response_type == "text":
 
-                st.markdown(
-                    response["data"]
-                )
+                st.markdown(str(data))
 
-                chat_content = response[
-                    "data"
-                ]
+                chat_content = str(data)
 
-            # ------------------------------
+            # ----------------------------------
             # Error
-            # ------------------------------
+            # ----------------------------------
 
             elif response_type == "error":
 
-                st.error(
-                    response["data"]
-                )
+                st.error(str(data))
 
                 chat_content = (
-                    "Error: "
-                    + response["data"]
+                    "Error: " + str(data)
                 )
 
-            # ------------------------------
+            # ----------------------------------
             # Unknown Dict
-            # ------------------------------
+            # ----------------------------------
 
             else:
 
-                st.markdown(
-                    str(response)
-                )
+                st.json(response)
 
-                chat_content = str(
-                    response
-                )
+                chat_content = str(response)
 
         else:
 
-            st.markdown(response)
+            if isinstance(response, pd.DataFrame):
+
+                st.dataframe(
+                    response,
+                    use_container_width=True
+                )
+
+                csv = response.to_csv(
+                    index=False
+                )
+
+                st.download_button(
+                    "⬇ Download CSV",
+                    csv,
+                    file_name="result.csv",
+                    mime="text/csv"
+                )
+
+            elif isinstance(response, pd.Series):
+
+                st.dataframe(
+                    response.to_frame(),
+                    use_container_width=True
+                )
+
+            else:
+
+                st.markdown(str(response))
 
             chat_content = response
 
-    # --------------------------------------
+    # ======================================
     # Save Assistant Message
-    # --------------------------------------
+    # ======================================
 
     st.session_state.messages.append({
 
