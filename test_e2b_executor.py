@@ -1,15 +1,13 @@
 from services.e2b_execution_service import (
-    PythonExecutionService
+    E2BExecutionService
 )
 
-executor = PythonExecutionService()
+executor = E2BExecutionService()
 
 code = """
 df = datasets["stocks"]
 
-result = df[
-    ["Stock Name", "Profit"]
-].head()
+print(df.head())
 """
 
 response = executor.execute(

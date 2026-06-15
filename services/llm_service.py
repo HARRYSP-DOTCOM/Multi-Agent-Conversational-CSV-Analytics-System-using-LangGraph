@@ -118,6 +118,7 @@ Rules:
 7. Use only datasets and columns that exist in the provided contexts.
 8. If the answer should be a table, assign the DataFrame to result.
 9. If the answer should be a scalar/text value, assign it to result.
+10. Always print(result) as the final line of the code.
 
 Examples:
 
@@ -127,6 +128,7 @@ Show first 5 rows of stocks.
 Code:
 df = datasets["stocks"]
 result = df.head()
+print(result)
 
 Question:
 Which employee has the highest salary?

@@ -1,8 +1,8 @@
 from state.agent_state import AgentState
 from services.dataset_loader import DatasetLoader
 from services.embedding_service import EmbeddingService
-from services.python_execution_service import (
-    PythonExecutionService
+from services.e2b_execution_service import (
+    E2BExecutionService
 )
 
 _datasets = None
@@ -75,11 +75,11 @@ def analysis_agent(state: AgentState):
 
         print(generated_code)
 
-        executor = PythonExecutionService()
+        executor = E2BExecutionService()
 
         execution_result = executor.execute(
-            generated_code
-        )
+          generated_code
+)
 
         print("\nExecution Result:")
 
