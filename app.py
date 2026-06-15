@@ -1,4 +1,5 @@
 import streamlit as st
+#from graphs.analytics_graph import build_graph
 st.set_page_config(
     page_title="CSV Analytics Agent",
     page_icon="📊",
@@ -29,28 +30,27 @@ question = st.chat_input(
 if question:
 
     st.session_state.messages.append({
-
         "role": "user",
-
         "content": question
     })
 
     with st.chat_message("user"):
-
         st.markdown(question)
 
-    response = (
-        "Backend integration "
-        "coming next..."
-    )
+    try:
+
+        response = (
+            "Streamlit backend connected successfully."
+        )
+
+    except Exception as error:
+
+        response = f"Error: {error}"
 
     with st.chat_message("assistant"):
-
         st.markdown(response)
 
     st.session_state.messages.append({
-
         "role": "assistant",
-
         "content": response
     })
