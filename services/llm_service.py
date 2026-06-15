@@ -1,21 +1,22 @@
 import json
 from ollama import chat
+
+
 class LLMService:
+
     def __init__(self):
-        self.model = "qwen3:4b"
+        self.model = "qwen2.5:1.5b"
+
     def understand_query(
         self,
         question,
-        contexts
-    ): 
+        contexts=None
+    ):
+
         prompt = f"""
 You are a query understanding agent.
 
-Available dataset contexts:
-
-{json.dumps(contexts, indent=2)}
-
-Your job is ONLY to convert the question into JSON.
+Convert the user's question into JSON.
 
 Allowed intents:
 - aggregation
@@ -46,9 +47,82 @@ Schema:
     "time_period": null
 }}
 
-If the question is unrelated to the datasets,
-return:
+Examples:
 
+Question:
+What is the profit of Reliance?
+
+Output:
+{{
+    "intent": "aggregation",
+    "metric": "Profit",
+    "entities": ["Reliance"],
+    "operation": "sum",
+    "filters": [],
+    "time_period": null
+}}
+
+Question:
+Which stock has the highest profit?
+
+Output:
+{{
+    "intent": "ranking",
+    "metric": "Profit",
+    "entities": [],
+    "operation": "max",
+    "filters": [],
+    "time_period": null
+}}
+
+Question:
+Compare Reliance and TCS profits.
+
+Output:
+{{
+    "intent": "comparison",
+    "metric": "Profit",
+    "entities": ["Reliance", "TCS"],
+    "operation": "compare",
+    "filters": [],
+    "time_period": null
+}}
+
+Question:
+How many employees are there?
+
+Output:
+{{
+    "intent": "count",
+    "metric": null,
+    "entities": [],
+    "operation": "count",
+    "filters": [],
+    "time_period": null
+}}
+
+Question:
+Show employees from HR.
+
+Output:
+{{
+    "intent": "filter",
+    "metric": null,
+    "entities": [],
+    "operation": "filter",
+    "filters": [
+        {{
+            "column": "Department",
+            "value": "HR"
+        }}
+    ],
+    "time_period": null
+}}
+
+Question:
+Tell me a joke.
+
+Output:
 {{
     "intent": "unknown",
     "metric": null,
@@ -61,6 +135,7 @@ return:
 Question:
 {question}
 """
+
         response = chat(
             model=self.model,
             messages=[
@@ -70,19 +145,22 @@ Question:
                 }
             ]
         )
-        content = (
-            response["message"]["content"]
-            .strip()
-        )
+
+        content = response["message"]["content"].strip()
+
         try:
+
             content = (
-            content
-            .replace("```json", "")
-            .replace("```", "")
-            .strip()
-)
+                content
+                .replace("```json", "")
+                .replace("```", "")
+                .strip()
+            )
+
             return json.loads(content)
+
         except Exception:
+
             return {
                 "intent": "unknown",
                 "metric": None,
@@ -92,4 +170,3 @@ Question:
                 "time_period": None,
                 "raw_response": content
             }
-           

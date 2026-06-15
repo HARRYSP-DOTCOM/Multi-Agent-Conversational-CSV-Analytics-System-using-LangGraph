@@ -2,12 +2,51 @@ from state.agent_state import AgentState
 from services.dataset_loader import DatasetLoader
 from services.embedding_service import EmbeddingService
 
-loader = DatasetLoader()
-datasets = loader.load_datasets()
+# ==========================================
+# Cached Resources
+# ==========================================
 
-embedding_service = EmbeddingService()
-embedding_service.load_index()
+_datasets = None
+_embedding_service = None
 
+
+def get_datasets():
+
+    global _datasets
+
+    if _datasets is None:
+
+        print("Loading datasets...")
+
+        loader = DatasetLoader()
+
+        _datasets = loader.load_datasets()
+
+        print("Datasets Ready.")
+
+    return _datasets
+
+
+def get_embedding_service():
+
+    global _embedding_service
+
+    if _embedding_service is None:
+
+        print("Loading embedding service...")
+
+        _embedding_service = EmbeddingService()
+
+        _embedding_service.load_index()
+
+        print("Embedding Service Ready.")
+
+    return _embedding_service
+
+
+# ==========================================
+# Analysis Agent
+# ==========================================
 
 def analysis_agent(state: AgentState):
 
@@ -33,6 +72,7 @@ def analysis_agent(state: AgentState):
     # ==========================================
     # Unsupported
     # ==========================================
+
     if intent == "unknown":
 
         state["analysis_result"] = {
@@ -44,6 +84,7 @@ def analysis_agent(state: AgentState):
     # ==========================================
     # Normalize operations
     # ==========================================
+
     operation_mapping = {
 
         "get": "sum",
@@ -80,6 +121,7 @@ def analysis_agent(state: AgentState):
     # ==========================================
     # Aggregation
     # ==========================================
+
     if operation == "sum":
 
         retrieval = state.get(
@@ -96,13 +138,19 @@ def analysis_agent(state: AgentState):
 
             return state
 
+        datasets = get_datasets()
+
         dataset_name = retrieval["table"]
 
         entity_column = retrieval["column"]
 
-        entity_value = retrieval["resolved_entity"]
+        entity_value = retrieval[
+            "resolved_entity"
+        ]
 
-        df = datasets[dataset_name]
+        df = datasets[
+            dataset_name
+        ]
 
         if metric not in df.columns:
 
@@ -115,7 +163,9 @@ def analysis_agent(state: AgentState):
             return state
 
         filtered_df = df[
-            df[entity_column] == entity_value
+            df[entity_column]
+            ==
+            entity_value
         ]
 
         value = filtered_df[
@@ -133,7 +183,10 @@ def analysis_agent(state: AgentState):
     # ==========================================
     # Ranking
     # ==========================================
+
     if operation in ["max", "min"]:
+
+        datasets = get_datasets()
 
         df = datasets["stocks"]
 
@@ -149,11 +202,15 @@ def analysis_agent(state: AgentState):
 
         if operation == "max":
 
-            idx = df[metric].idxmax()
+            idx = df[
+                metric
+            ].idxmax()
 
         else:
 
-            idx = df[metric].idxmin()
+            idx = df[
+                metric
+            ].idxmin()
 
         row = df.loc[idx]
 
@@ -161,8 +218,10 @@ def analysis_agent(state: AgentState):
             "type": "ranking",
             "operation": operation,
             "metric": metric,
-            "entity": row["Stock Name"],
-            "value": float(row[metric])
+            "entity":
+                row["Stock Name"],
+            "value":
+                float(row[metric])
         }
 
         return state
@@ -170,13 +229,19 @@ def analysis_agent(state: AgentState):
     # ==========================================
     # Count
     # ==========================================
+
     if operation == "count":
 
-        df = datasets["employees"]
+        datasets = get_datasets()
+
+        df = datasets[
+            "employees"
+        ]
 
         state["analysis_result"] = {
             "type": "count",
-            "value": len(df)
+            "value":
+                len(df)
         }
 
         return state
@@ -184,6 +249,7 @@ def analysis_agent(state: AgentState):
     # ==========================================
     # Comparison
     # ==========================================
+
     if operation == "compare":
 
         entities = parsed.get(
@@ -193,9 +259,18 @@ def analysis_agent(state: AgentState):
 
         comparisons = []
 
+        datasets = get_datasets()
+
+        embedding_service = (
+            get_embedding_service()
+        )
+
         for entity in entities:
 
-            if isinstance(entity, dict):
+            if isinstance(
+                entity,
+                dict
+            ):
 
                 entity_value = entity.get(
                     "value",
@@ -241,7 +316,8 @@ def analysis_agent(state: AgentState):
         state["analysis_result"] = {
             "type": "comparison",
             "metric": metric,
-            "comparisons": comparisons
+            "comparisons":
+                comparisons
         }
 
         return state
@@ -249,6 +325,7 @@ def analysis_agent(state: AgentState):
     # ==========================================
     # Filter
     # ==========================================
+
     if intent == "filter":
 
         filters = parsed.get(
@@ -256,7 +333,11 @@ def analysis_agent(state: AgentState):
             []
         )
 
-        df = datasets["employees"]
+        datasets = get_datasets()
+
+        df = datasets[
+            "employees"
+        ]
 
         for filter_item in filters:
 
@@ -272,7 +353,9 @@ def analysis_agent(state: AgentState):
                 continue
 
             df = df[
-                df[column] == value
+                df[column]
+                ==
+                value
             ]
 
         state["analysis_result"] = {
@@ -288,6 +371,7 @@ def analysis_agent(state: AgentState):
     # ==========================================
     # Fallback
     # ==========================================
+
     state["analysis_result"] = {
         "type": "error",
         "message":

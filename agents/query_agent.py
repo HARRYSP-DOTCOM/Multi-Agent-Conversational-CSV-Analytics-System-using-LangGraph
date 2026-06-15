@@ -1,23 +1,50 @@
 from state.agent_state import AgentState
-from services.llm_service import (
-    LLMService
-)
-from services.context_service import (
-    ContextService
-)
-llm = LLMService()
-context_service = ContextService()
-contexts = context_service.load_contexts()
+from services.llm_service import LLMService
+
+# ==========================================
+# Cached LLM
+# ==========================================
+
+_llm = None
+
+
+def get_llm():
+
+    global _llm
+
+    if _llm is None:
+
+        print("Loading Qwen...")
+
+        _llm = LLMService()
+
+        print("Qwen Ready.")
+
+    return _llm
+
+
+# ==========================================
+# Query Agent
+# ==========================================
 
 def query_agent(state: AgentState):
+
     print("\n=== QUERY AGENT ===")
+
+    llm = get_llm()
+
+    question = state["question"]
+
     print("Question:")
-    print(state["question"])
+    print(question)
+
     parsed_query = llm.understand_query(
-        state["question"],
-        contexts
+        question
     )
+
     print("\nParsed Query:")
     print(parsed_query)
+
     state["parsed_query"] = parsed_query
+
     return state

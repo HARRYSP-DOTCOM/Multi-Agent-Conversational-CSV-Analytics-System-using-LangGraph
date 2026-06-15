@@ -14,16 +14,15 @@ def response_agent(state: AgentState):
     )
 
     # ==========================================
-    # Unsupported Queries
+    # Unsupported
     # ==========================================
+
     if analysis["type"] == "unsupported":
 
         response = (
             "I can answer questions "
-            "related to the uploaded datasets only."
+            "related to the available datasets only."
         )
-
-        print(response)
 
         state["final_response"] = response
 
@@ -32,25 +31,27 @@ def response_agent(state: AgentState):
     # ==========================================
     # Errors
     # ==========================================
+
     if analysis["type"] == "error":
 
-        response = analysis["message"]
-
-        print(response)
-
-        state["final_response"] = response
+        state["final_response"] = (
+            analysis["message"]
+        )
 
         return state
 
     # ==========================================
     # Aggregation
     # ==========================================
+
     if analysis["type"] == "aggregation":
 
         entities = parsed.get(
             "entities",
             []
         )
+
+        original_entity = "Unknown"
 
         if entities:
 
@@ -67,10 +68,6 @@ def response_agent(state: AgentState):
 
                 original_entity = entity
 
-        else:
-
-            original_entity = "Unknown"
-
         resolved_entity = retrieval[
             "resolved_entity"
         ]
@@ -82,8 +79,6 @@ def response_agent(state: AgentState):
             f'{analysis["value"]:,.0f}.'
         )
 
-        print(response)
-
         state["final_response"] = response
 
         return state
@@ -91,6 +86,7 @@ def response_agent(state: AgentState):
     # ==========================================
     # Ranking
     # ==========================================
+
     if analysis["type"] == "ranking":
 
         operation_text = (
@@ -106,8 +102,6 @@ def response_agent(state: AgentState):
             f'{analysis["value"]:,.0f}.'
         )
 
-        print(response)
-
         state["final_response"] = response
 
         return state
@@ -115,22 +109,20 @@ def response_agent(state: AgentState):
     # ==========================================
     # Count
     # ==========================================
+
     if analysis["type"] == "count":
 
-        response = (
+        state["final_response"] = (
             f'The count is '
             f'{analysis["value"]}.'
         )
-
-        print(response)
-
-        state["final_response"] = response
 
         return state
 
     # ==========================================
     # Comparison
     # ==========================================
+
     if analysis["type"] == "comparison":
 
         lines = [
@@ -165,19 +157,16 @@ def response_agent(state: AgentState):
                 f'{highest["entity"]}'
             )
 
-        response = "\n".join(
-            lines
+        state["final_response"] = (
+            "\n".join(lines)
         )
-
-        print(response)
-
-        state["final_response"] = response
 
         return state
 
     # ==========================================
     # Filter
     # ==========================================
+
     if analysis["type"] == "filter":
 
         rows = analysis["rows"]
@@ -197,11 +186,7 @@ def response_agent(state: AgentState):
 
             for row in rows:
 
-                response += (
-                    f'{row}\n'
-                )
-
-        print(response)
+                response += f"{row}\n"
 
         state["final_response"] = response
 
@@ -210,13 +195,9 @@ def response_agent(state: AgentState):
     # ==========================================
     # Fallback
     # ==========================================
-    response = (
-        "I could not generate "
-        "a response."
+
+    state["final_response"] = (
+        "I could not generate a response."
     )
-
-    print(response)
-
-    state["final_response"] = response
 
     return state
