@@ -6,7 +6,7 @@ def response_agent(state: AgentState):
     print("\n=== RESPONSE AGENT ===")
 
     # ==========================================
-    # NEW: Python Execution Responses
+    # E2B Responses
     # ==========================================
 
     execution_result = state.get(
@@ -15,12 +15,14 @@ def response_agent(state: AgentState):
 
     if execution_result:
 
-        state["final_response"] = execution_result
+        state["final_response"] = (
+            execution_result
+        )
 
         return state
 
     # ==========================================
-    # Existing Logic
+    # Deterministic Responses
     # ==========================================
 
     parsed = state["parsed_query"]
@@ -31,36 +33,47 @@ def response_agent(state: AgentState):
         "retrieval_result"
     )
 
+    # ------------------------------------------
     # Unsupported Queries
+    # ------------------------------------------
+
     if analysis["type"] == "unsupported":
 
         response = (
             "I can answer questions "
-            "related to the available datasets only."
+            "related to the uploaded datasets only."
         )
+
+        print(response)
 
         state["final_response"] = response
 
         return state
 
+    # ------------------------------------------
     # Errors
+    # ------------------------------------------
+
     if analysis["type"] == "error":
 
-        state["final_response"] = (
-            analysis["message"]
-        )
+        response = analysis["message"]
+
+        print(response)
+
+        state["final_response"] = response
 
         return state
 
+    # ------------------------------------------
     # Aggregation
+    # ------------------------------------------
+
     if analysis["type"] == "aggregation":
 
         entities = parsed.get(
             "entities",
             []
         )
-
-        original_entity = "Unknown"
 
         if entities:
 
@@ -77,6 +90,10 @@ def response_agent(state: AgentState):
 
                 original_entity = entity
 
+        else:
+
+            original_entity = "Unknown"
+
         resolved_entity = retrieval[
             "resolved_entity"
         ]
@@ -88,11 +105,16 @@ def response_agent(state: AgentState):
             f'{analysis["value"]:,.0f}.'
         )
 
+        print(response)
+
         state["final_response"] = response
 
         return state
 
+    # ------------------------------------------
     # Ranking
+    # ------------------------------------------
+
     if analysis["type"] == "ranking":
 
         operation_text = (
@@ -108,21 +130,33 @@ def response_agent(state: AgentState):
             f'{analysis["value"]:,.0f}.'
         )
 
+        print(response)
+
         state["final_response"] = response
 
         return state
 
+    # ------------------------------------------
     # Count
+    # ------------------------------------------
+
     if analysis["type"] == "count":
 
-        state["final_response"] = (
+        response = (
             f'The count is '
             f'{analysis["value"]}.'
         )
 
+        print(response)
+
+        state["final_response"] = response
+
         return state
 
+    # ------------------------------------------
     # Comparison
+    # ------------------------------------------
+
     if analysis["type"] == "comparison":
 
         lines = [
@@ -148,6 +182,7 @@ def response_agent(state: AgentState):
                 >
                 highest["value"]
             ):
+
                 highest = item
 
         if highest:
@@ -157,13 +192,20 @@ def response_agent(state: AgentState):
                 f'{highest["entity"]}'
             )
 
-        state["final_response"] = (
-            "\n".join(lines)
+        response = "\n".join(
+            lines
         )
+
+        print(response)
+
+        state["final_response"] = response
 
         return state
 
+    # ------------------------------------------
     # Filter
+    # ------------------------------------------
+
     if analysis["type"] == "filter":
 
         rows = analysis["rows"]
@@ -183,15 +225,27 @@ def response_agent(state: AgentState):
 
             for row in rows:
 
-                response += f"{row}\n"
+                response += (
+                    f'{row}\n'
+                )
+
+        print(response)
 
         state["final_response"] = response
 
         return state
 
-    # Final Fallback
-    state["final_response"] = (
-        "I could not generate a response."
+    # ------------------------------------------
+    # Fallback
+    # ------------------------------------------
+
+    response = (
+        "I could not generate "
+        "a response."
     )
+
+    print(response)
+
+    state["final_response"] = response
 
     return state

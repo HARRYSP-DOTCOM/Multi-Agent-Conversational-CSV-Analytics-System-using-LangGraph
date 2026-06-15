@@ -1,8 +1,6 @@
-import pandas as pd
+import os
 from dotenv import load_dotenv
 from e2b_code_interpreter import Sandbox
-
-from services.dataset_loader import DatasetLoader
 
 load_dotenv()
 
@@ -11,172 +9,139 @@ class E2BExecutionService:
 
     def __init__(self):
 
-        loader = DatasetLoader()
+        self.sandbox = Sandbox.create()
 
-        self.datasets = loader.load_datasets()
+        print("E2B EXECUTOR READY")
 
     def execute(
         self,
-        code
+        generated_code
     ):
-
-        sandbox = None
 
         try:
 
-            # ==========================================
-            # Create Sandbox
-            # ==========================================
+            uploads_dir = os.path.join(
+                os.getcwd(),
+                "uploads"
+            )
 
-            sandbox = Sandbox.create()
+            csv_files = [
+                "employees.csv",
+                "sales.csv",
+                "stocks.csv"
+            ]
 
-            # ==========================================
-            # Upload datasets
-            # ==========================================
+            print("\n===== UPLOADING FILES =====")
 
-            for dataset_name, df in self.datasets.items():
+            for file_name in csv_files:
 
-                csv_content = df.to_csv(
-                    index=False
+                local_path = os.path.join(
+                    uploads_dir,
+                    file_name
                 )
 
-                sandbox.files.write(
-                    f"{dataset_name}.csv",
-                    csv_content
-                )
+                if os.path.exists(local_path):
 
-            # ==========================================
-            # Rebuild datasets dictionary
-            # ==========================================
+                    with open(
+                        local_path,
+                        "rb"
+                    ) as f:
 
-            bootstrap_code = """
+                        self.sandbox.files.write(
+                            file_name,
+                            f.read()
+                        )
+
+                    print(
+                        f"Uploaded: {local_path}"
+                    )
+
+                else:
+
+                    print(
+                        f"WARNING: {local_path} not found."
+                    )
+
+            full_code = """
 import pandas as pd
 
 datasets = {}
+
+datasets["employees"] = pd.read_csv("employees.csv")
+datasets["sales"] = pd.read_csv("sales.csv")
+datasets["stocks"] = pd.read_csv("stocks.csv")
+
 """
 
-            for dataset_name in self.datasets.keys():
+            full_code += generated_code
 
-                bootstrap_code += f"""
-datasets["{dataset_name}"] = pd.read_csv(
-    "{dataset_name}.csv"
-)
+            full_code += """
+
+print(result)
 """
 
-            # ==========================================
-            # Final code executed in E2B
-            # ==========================================
-
-            final_code = (
-                bootstrap_code
-                + "\n"
-                + code
-            )
-
-            print("\n===== E2B CODE =====")
-            print(final_code)
-
-            # ==========================================
-            # Execute
-            # ==========================================
-
-            execution = sandbox.run_code(
-                final_code
-            )
+            print("\n===== E2B CODE =====\n")
+            print(full_code)
 
             print("\n===== E2B EXECUTION =====")
+
+            execution = self.sandbox.run_code(
+                full_code
+            )
+
             print(execution)
 
-            # ==========================================
-            # STDOUT
-            # ==========================================
-
-            output = ""
-
-            try:
-
-                if hasattr(execution, "logs"):
-
-                    stdout_logs = (
-                        execution.logs.stdout
-                    )
-
-                    output = "\n".join(
-                        str(log)
-                        for log in stdout_logs
-                    )
-
-            except Exception:
-
-                pass
-
-            # If print(result) exists
-            if output.strip():
+            if execution.error:
 
                 return {
-
-                    "type": "text",
-
-                    "data": output
+                    "type": "error",
+                    "data": (
+                        f"{execution.error.name}: "
+                        f"{execution.error.value}"
+                    )
                 }
 
-            # ==========================================
-            # Fallback: execution results
-            # ==========================================
+            stdout = []
 
-            try:
+            if (
+                execution.logs
+                and execution.logs.stdout
+            ):
 
-                if hasattr(
-                    execution,
-                    "results"
-                ):
+                for line in execution.logs.stdout:
 
-                    results = (
-                        execution.results
+                    stdout.append(str(line))
+
+            if stdout:
+
+                return {
+                    "type": "text",
+                    "data": "\n".join(stdout)
+                }
+
+            if execution.results:
+
+                return {
+                    "type": "text",
+                    "data": "\n".join(
+                        [
+                            str(r)
+                            for r in execution.results
+                        ]
                     )
-
-                    if results:
-
-                        return {
-
-                            "type": "text",
-
-                            "data": str(results)
-                        }
-
-            except Exception:
-
-                pass
-
-            # ==========================================
-            # Nothing returned
-            # ==========================================
+                }
 
             return {
-
                 "type": "text",
-
-                "data":
-                    "No output returned."
+                "data": "No output returned."
             }
 
-        except Exception as error:
+        except Exception as e:
+
+            print("\n===== E2B ERROR =====")
+            print(e)
 
             return {
-
                 "type": "error",
-
-                "data": str(error)
+                "data": str(e)
             }
-
-        finally:
-
-            try:
-
-                if sandbox:
-
-                    sandbox.kill()
-
-            except Exception:
-
-                pass

@@ -7,26 +7,18 @@ _context_service = None
 
 
 def get_llm():
-
     global _llm
 
     if _llm is None:
-
-        print("Loading Qwen...")
-
         _llm = LLMService()
-
-        print("Qwen Ready.")
 
     return _llm
 
 
 def get_context_service():
-
     global _context_service
 
     if _context_service is None:
-
         _context_service = ContextService()
 
     return _context_service
@@ -41,29 +33,67 @@ def query_agent(state: AgentState):
     print("Question:")
     print(question)
 
-    llm = get_llm()
+    q = question.lower()
+
+    # =====================================
+    # Deterministic Questions
+    # =====================================
+
+    if (
+        "profit" in q
+        and "compare" not in q
+        and (
+            "highest" in q
+            or "lowest" in q
+            or "profit of" in q
+            or len(q.split()) <= 3
+        )
+    ):
+
+        llm = get_llm()
+
+        parsed = llm.understand_query(question)
+
+        print("\nParsed Query:")
+        print(parsed)
+
+        state["parsed_query"] = parsed
+        state["generated_code"] = None
+
+        print("\nUsing Deterministic Path")
+
+        return state
+
+    if (
+        "compare" in q
+        and "profit" in q
+    ):
+
+        llm = get_llm()
+
+        parsed = llm.understand_query(question)
+
+        print("\nParsed Query:")
+        print(parsed)
+
+        state["parsed_query"] = parsed
+        state["generated_code"] = None
+
+        print("\nUsing Deterministic Path")
+
+        return state
+
+    # =====================================
+    # Everything Else → E2B
+    # =====================================
+
+    print("\nUsing E2B Path")
 
     context_service = get_context_service()
 
     contexts = context_service.load_contexts()
 
-    # ------------------------------------------
-    # Existing JSON understanding (fallback)
-    # ------------------------------------------
-
-    parsed_query = llm.understand_query(
-        question,
-        contexts
-    )
-
-    print("\nParsed Query:")
-    print(parsed_query)
-
-    state["parsed_query"] = parsed_query
-
-    # ------------------------------------------
-    # NEW: Generate Python
-    # ------------------------------------------
+    llm = get_llm()
 
     generated_code = llm.generate_python(
         question,
@@ -72,6 +102,10 @@ def query_agent(state: AgentState):
 
     print("\nGenerated Python:")
     print(generated_code)
+
+    state["parsed_query"] = {
+        "intent": "dynamic"
+    }
 
     state["generated_code"] = generated_code
 

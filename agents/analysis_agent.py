@@ -46,6 +46,7 @@ def get_embedding_service():
 def resolve_metric(df, metric):
 
     if metric is None:
+
         return None
 
     for column in df.columns:
@@ -62,7 +63,7 @@ def analysis_agent(state: AgentState):
     print("\n=== ANALYSIS AGENT ===")
 
     # ==========================================
-    # NEW: Python Execution Path
+    # E2B PATH
     # ==========================================
 
     generated_code = state.get(
@@ -71,18 +72,15 @@ def analysis_agent(state: AgentState):
 
     if generated_code:
 
-        print("\nExecuting Generated Python:")
-
-        print(generated_code)
+        print("\nUsing E2B Analysis")
 
         executor = E2BExecutionService()
 
         execution_result = executor.execute(
-          generated_code
-)
+            generated_code
+        )
 
         print("\nExecution Result:")
-
         print(execution_result)
 
         state["execution_result"] = (
@@ -96,7 +94,7 @@ def analysis_agent(state: AgentState):
         return state
 
     # ==========================================
-    # Existing Logic (Fallback)
+    # DETERMINISTIC PATH
     # ==========================================
 
     parsed = state["parsed_query"]
@@ -340,6 +338,7 @@ def analysis_agent(state: AgentState):
             )
 
             if metric_column is None:
+
                 continue
 
             filtered_df = df[
@@ -407,6 +406,7 @@ def analysis_agent(state: AgentState):
             )
 
             if actual_column is None:
+
                 continue
 
             df = df[

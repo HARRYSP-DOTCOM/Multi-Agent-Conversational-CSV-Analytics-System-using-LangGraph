@@ -1,9 +1,7 @@
 from state.agent_state import AgentState
 from services.embedding_service import EmbeddingService
 
-# ==========================================
-# Configuration
-# ==========================================
+_embedding_service = None
 
 CONFIDENCE_THRESHOLD = 0.8
 
@@ -15,12 +13,6 @@ COLUMN_PRIORITY = {
     "Region": 3
 }
 
-# ==========================================
-# Cached Embedding Service
-# ==========================================
-
-_embedding_service = None
-
 
 def get_embedding_service():
 
@@ -28,7 +20,7 @@ def get_embedding_service():
 
     if _embedding_service is None:
 
-        print("Loading Embedding Service...")
+        print("Loading embedding service...")
 
         _embedding_service = EmbeddingService()
 
@@ -39,13 +31,19 @@ def get_embedding_service():
     return _embedding_service
 
 
-# ==========================================
-# Retrieval Agent
-# ==========================================
-
 def retrieval_agent(state: AgentState):
 
     print("\n=== RETRIEVAL AGENT ===")
+
+    # ==========================================
+    # Skip Retrieval for E2B Path
+    # ==========================================
+
+    if state.get("generated_code"):
+
+        print("Skipping Retrieval.")
+
+        return state
 
     parsed_query = state["parsed_query"]
 
@@ -54,26 +52,15 @@ def retrieval_agent(state: AgentState):
         []
     )
 
-    # ------------------------------------------
-    # No entities
-    # ------------------------------------------
-
     if not entities:
+
+        print("No entities found.")
 
         state["retrieval_result"] = None
 
         return state
 
     entity = entities[0]
-
-    # ------------------------------------------
-    # Support both:
-    # ["Reliance"]
-    #
-    # and
-    #
-    # [{"value": "Reliance"}]
-    # ------------------------------------------
 
     if isinstance(entity, dict):
 
@@ -102,10 +89,6 @@ def retrieval_agent(state: AgentState):
 
         print(result)
 
-    # ------------------------------------------
-    # Pick best candidate
-    # ------------------------------------------
-
     best_match = sorted(
         results,
         key=lambda r: (
@@ -117,23 +100,13 @@ def retrieval_agent(state: AgentState):
         )
     )[0]
 
-    # ------------------------------------------
-    # Confidence threshold
-    # ------------------------------------------
-
     if best_match["distance"] > CONFIDENCE_THRESHOLD:
 
-        print(
-            "\nLow confidence retrieval."
-        )
+        print("\nLow confidence retrieval.")
 
         state["retrieval_result"] = None
 
         return state
-
-    # ------------------------------------------
-    # Save retrieval result
-    # ------------------------------------------
 
     state["retrieval_result"] = {
 
