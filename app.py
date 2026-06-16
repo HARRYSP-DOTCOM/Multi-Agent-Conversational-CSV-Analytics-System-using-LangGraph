@@ -6,19 +6,9 @@ from services.upload_service import UploadService
 from services.rebuild_service import RebuildService
 from agents.analysis_agent import clear_dataset_cache
 
-
-# ==========================================
-# Cache Graph
-# ==========================================
-
 @st.cache_resource
 def get_graph():
     return build_graph()
-
-
-# ==========================================
-# Streamlit Config
-# ==========================================
 
 st.set_page_config(
     page_title="CSV Analytics Agent",
@@ -31,11 +21,6 @@ st.title("📊 CSV Analytics Agent")
 st.write(
     "Upload CSV files and ask questions about your data."
 )
-
-
-# ==========================================
-# Upload CSVs
-# ==========================================
 
 uploaded_files = st.file_uploader(
     "Upload CSV files",
@@ -80,19 +65,9 @@ if uploaded_files:
             f"Rebuild failed:\n{error}"
         )
 
-
-# ==========================================
-# Session State
-# ==========================================
-
 if "messages" not in st.session_state:
 
     st.session_state.messages = []
-
-
-# ==========================================
-# Display Chat History
-# ==========================================
 
 for message in st.session_state.messages:
 
@@ -146,19 +121,9 @@ for message in st.session_state.messages:
                 str(content)
             )
 
-
-# ==========================================
-# Chat Input
-# ==========================================
-
 question = st.chat_input(
     "Ask a question..."
 )
-
-
-# ==========================================
-# Process Question
-# ==========================================
 
 if question:
 

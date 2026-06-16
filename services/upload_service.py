@@ -1,6 +1,5 @@
 import os
 
-
 class UploadService:
 
     def __init__(self):
@@ -79,4 +78,4 @@ class UploadService:
                 f"{save_path}"
             )
 
-        return saved_paths
+        return saved_paths              

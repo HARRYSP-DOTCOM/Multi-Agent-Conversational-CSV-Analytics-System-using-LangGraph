@@ -6,7 +6,6 @@ from e2b_code_interpreter import Sandbox
 
 load_dotenv()
 
-
 class E2BExecutionService:
 
     def __init__(self):

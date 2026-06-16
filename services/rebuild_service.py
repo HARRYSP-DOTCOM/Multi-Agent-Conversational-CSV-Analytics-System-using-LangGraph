@@ -3,7 +3,6 @@ from services.context_generator import ContextGenerator
 from services.embedding_preparation import EmbeddingPreparation
 from services.embedding_service import EmbeddingService
 
-
 import os
 import shutil
 

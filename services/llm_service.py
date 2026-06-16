@@ -1,7 +1,6 @@
 import json
 from ollama import chat
 
-
 class LLMService:
 
     def __init__(self):

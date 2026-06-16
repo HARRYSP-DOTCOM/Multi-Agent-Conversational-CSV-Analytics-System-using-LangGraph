@@ -13,7 +13,6 @@ COLUMN_PRIORITY = {
     "Region": 3
 }
 
-
 def get_embedding_service():
 
     global _embedding_service
@@ -29,7 +28,6 @@ def get_embedding_service():
         print("Embedding Service Ready.")
 
     return _embedding_service
-
 
 def retrieval_agent(state: AgentState):
 

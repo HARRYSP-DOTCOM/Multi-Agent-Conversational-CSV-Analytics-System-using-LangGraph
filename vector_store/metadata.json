@@ -1,122 +1,3578 @@
 [
     {
-        "value": "John Smith",
-        "table": "employees",
-        "column": "Employee Name",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1AA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "Alice Brown",
-        "table": "employees",
-        "column": "Employee Name",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1AS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "David Lee",
-        "table": "employees",
-        "column": "Employee Name",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1AT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "Finance",
-        "table": "employees",
-        "column": "Department",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1BA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "HR",
-        "table": "employees",
-        "column": "Department",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1BS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "IT",
-        "table": "employees",
-        "column": "Department",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1BT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "North",
-        "table": "sales",
-        "column": "Region",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1CA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "South",
-        "table": "sales",
-        "column": "Region",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1CS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "West",
-        "table": "sales",
-        "column": "Region",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1CT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "Laptop",
-        "table": "sales",
-        "column": "Product",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1DA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "Phone",
-        "table": "sales",
-        "column": "Product",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1DS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "Tablet",
-        "table": "sales",
-        "column": "Product",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1DT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "Reliance Industries Limited",
-        "table": "stocks",
-        "column": "Stock Name",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1EA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "Reliance Power",
-        "table": "stocks",
-        "column": "Stock Name",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1ES",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "XYZ Ltd",
-        "table": "stocks",
-        "column": "Stock Name",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1ET",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "ABC Industries",
-        "table": "stocks",
-        "column": "Stock Name",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1FA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "RELIANCE",
-        "table": "stocks",
-        "column": "Ticker",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1FS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "RPOWER",
-        "table": "stocks",
-        "column": "Ticker",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1FT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "XYZ",
-        "table": "stocks",
-        "column": "Ticker",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1GA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
     },
     {
-        "value": "ABC",
-        "table": "stocks",
-        "column": "Ticker",
-        "column_type": "identifier"
+        "value": "BDCQ.SEA1GS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1GT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1HA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1HS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1HT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1IA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1IS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1IT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1JA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1JS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1JT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1KA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1KS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1KT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1LA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1LS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1LT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1MA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1MS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1MT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1NA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1NS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1NT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1OA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1OS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1OT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1PA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1PS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1PT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1QA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1QS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1QT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1RA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1RS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1RT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1SA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1SS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1ST",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1ZA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1ZS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA1ZT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2AA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2AS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2AT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2BA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2BS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2BT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2CA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2CS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2CT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2DA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2DS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2DT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2EA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2ES",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2ET",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2FA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2FS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2FT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2GA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2GS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2GT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2HA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2HS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2HT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2IA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2IS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2IT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2JA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2JS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2JT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2KA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2KS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2KT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2LA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2LS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2LT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2MA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2MS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2MT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2NA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2NS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2NT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2OA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2OS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2OT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2PA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2PS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2PT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2QA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2QS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2QT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2RA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2RS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2RT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2SA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2SS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2ST",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2ZA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2ZS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEA2ZT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEB1X1A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEB1X2A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEB2X1A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEB2X2A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1AAA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1ABA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1ACA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1ADA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1AEA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1AFA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1AGA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1AHA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1AIA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1AJA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC1AKA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2AAA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2ABA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2ACA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2ADA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2AEA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2AFA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2AGA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2AHA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2AIA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2AJA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEC2AKA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RAA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RAS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RAT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RBA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RBS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RBT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RCA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RCS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RCT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RDA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RDS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RDT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1REA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RES",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RET",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RFA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RFS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RFT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RGA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RGS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RGT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RHA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RHS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RHT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RIA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RIS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RIT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RJA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RJS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RJT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RKA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RKS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RKT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RLA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RLS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RLT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RMA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RMS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RMT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RNA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RNS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RNT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1ROA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1ROS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1ROT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RPA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RPS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED1RPT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RAA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RAS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RAT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RBA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RBS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RBT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RCA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RCS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RCT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RDA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RDS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RDT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2REA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RES",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RET",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RFA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RFS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RFT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RGA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RGS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RGT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RHA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RHS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RHT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RIA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RIS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RIT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RJA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RJS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RJT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RKA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RKS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RKT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RLA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RLS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RLT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RMA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RMS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RMT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RNA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RNS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RNT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2ROA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2ROS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2ROT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RPA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RPS",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED2RPT",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RAA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RBA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RCA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RDA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3REA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RFA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RGA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RHA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RIA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RJA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RKA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RLA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RMA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RNA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3ROA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SED3RPA",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1001A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1002A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1003A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1011A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1012A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1013A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1015A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1016A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1017A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1018A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1019A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1020A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1021A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1022A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1023A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1024A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1025A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1026A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1027A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1028A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1029A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1030A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1031A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1032A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1033A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1034A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1035A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1036A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1037A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1038A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1039A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1040A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1041A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1042A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1043A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1044A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1045A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1046A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1047A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1048A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1049A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1050A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1051A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1052A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1053A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1054A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1055A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1056A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1057A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1058A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1059A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1060A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1062A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1063A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1064A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1065A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1066A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1067A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1068A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1069A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1070A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1071A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1072A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1073A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1074A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1075A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1076A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE1999A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2001A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2002A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2003A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2011A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2012A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2013A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2015A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2016A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2017A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2018A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2019A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2020A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2021A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2022A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2023A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2024A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2025A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2026A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2027A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2028A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2029A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2030A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2031A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2032A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2033A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2034A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2035A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2036A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2037A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2038A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2039A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2040A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2041A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2042A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2043A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2044A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2045A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2046A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2047A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2048A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2049A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2050A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2051A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2052A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2053A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2054A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2055A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2056A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2057A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2058A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2059A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2060A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2062A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2063A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2064A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2065A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2066A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2067A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2068A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2069A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2070A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2071A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2072A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2073A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2074A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2075A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2076A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE2999A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3001A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3002A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3003A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3011A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3012A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3013A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3015A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3016A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3017A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3018A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3019A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3020A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3021A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3022A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3023A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3024A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3025A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3026A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3027A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3028A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3029A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3030A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3031A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3032A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3033A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3034A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3035A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3036A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3037A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3038A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3039A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3040A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3041A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3042A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3043A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3044A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3045A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3046A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3047A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3048A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3049A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3050A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3051A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3052A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3053A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3054A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3055A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3056A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3057A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3058A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3059A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3060A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3062A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3063A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3064A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3065A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3066A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3067A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3068A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3069A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3070A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3071A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3072A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3073A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3074A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3075A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3076A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "BDCQ.SEE3999A",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_reference",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Y",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Suppressed",
+        "column_type": "categorical"
+    },
+    {
+        "value": "F",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "STATUS",
+        "column_type": "categorical"
+    },
+    {
+        "value": "R",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "STATUS",
+        "column_type": "categorical"
+    },
+    {
+        "value": "C",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "STATUS",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Number",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "UNITS",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Value",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "UNITS",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Business Data Collection - BDC",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Subject",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Industry by employment variable",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Group",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Sex by employment variable",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Group",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Age by employment variable",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Group",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Region by employment variable",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Group",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Territorial authority by employment variable",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Group",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Filled jobs",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_1",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Total earnings",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_1",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Filled jobs (workplace location based)",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_1",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Agriculture, Forestry and Fishing",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Mining",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Manufacturing",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Electricity, Gas, Water and Waste Services",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Construction",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Wholesale Trade",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Retail Trade",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Accommodation and Food Services",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Transport, Postal and Warehousing",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Information Media and Telecommunications",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Financial and Insurance Services",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Rental, Hiring and Real Estate Services",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Professional, Scientific and Technical Services",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Administrative and Support Services",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Public Administration and Safety",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Education and Training",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Health Care and Social Assistance",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Arts and Recreation Services",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Other Services",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Total Industry",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Male",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Female",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "15-19",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "20-24",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "25-29",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "30-34",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "35-39",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "40-44",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "45-49",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "50-54",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "55-59",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "60-64",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "65 +",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Northland",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Auckland",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Waikato",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Bay of Plenty",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Gisborne",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Hawke's Bay",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Taranaki",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Manawatu-Whanganui",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Wellington",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Tasman",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Nelson",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Marlborough",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "West Coast",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Canterbury",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Otago",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Southland",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Far North District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Whangarei District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Kaipara District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Thames-Coromandel District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Hauraki District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Waikato District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Matamata-Piako District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Hamilton City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Waipa District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Otorohanga District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "South Waikato District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Waitomo District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Taupo District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Western Bay of Plenty District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Tauranga City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Rotorua District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Whakatane District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Kawerau District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Opotiki District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Gisborne District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Wairoa District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Hastings District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Napier City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Central Hawke's Bay District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "New Plymouth District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Stratford District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "South Taranaki District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Ruapehu District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Whanganui District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Rangitikei District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Manawatu District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Palmerston North City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Tararua District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Horowhenua District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Kapiti Coast District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Porirua City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Upper Hutt City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Lower Hutt City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Wellington City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Masterton District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Carterton District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "South Wairarapa District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Tasman District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Nelson City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Marlborough District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Kaikoura District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Buller District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Grey District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Westland District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Hurunui District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Waimakariri District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Christchurch City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Selwyn District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Ashburton District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Timaru District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Mackenzie District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Waimate District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Chatham Islands Territory",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Waitaki District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Central Otago District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Queenstown-Lakes District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Dunedin City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Clutha District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Southland District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Gore District",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Invercargill City",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Area Outside Territorial Authority",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_2",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Actual",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_3",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Seasonally adjusted",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_3",
+        "column_type": "categorical"
+    },
+    {
+        "value": "Trend",
+        "table": "machine-readable-business-employment-data-mar-2026-quarter",
+        "column": "Series_title_3",
+        "column_type": "categorical"
     }
 ]

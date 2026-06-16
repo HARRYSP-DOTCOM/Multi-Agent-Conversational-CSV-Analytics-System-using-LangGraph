@@ -5,7 +5,6 @@ from services.context_service import ContextService
 _llm = None
 _context_service = None
 
-
 def get_llm():
     global _llm
 
@@ -14,7 +13,6 @@ def get_llm():
 
     return _llm
 
-
 def get_context_service():
     global _context_service
 
@@ -22,7 +20,6 @@ def get_context_service():
         _context_service = ContextService()
 
     return _context_service
-
 
 def query_agent(state: AgentState):
 

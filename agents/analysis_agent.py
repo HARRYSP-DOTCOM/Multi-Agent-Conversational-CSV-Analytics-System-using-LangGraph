@@ -8,7 +8,6 @@ from services.e2b_execution_service import (
 _datasets = None
 _embedding_service = None
 
-
 def get_datasets(force_reload=False):
 
     global _datasets
@@ -25,13 +24,11 @@ def get_datasets(force_reload=False):
 
     return _datasets
 
-
 def clear_dataset_cache():
 
     global _datasets
 
     _datasets = None
-
 
 def get_embedding_service():
 
@@ -49,7 +46,6 @@ def get_embedding_service():
 
     return _embedding_service
 
-
 def resolve_metric(df, metric):
 
     if metric is None:
@@ -63,7 +59,6 @@ def resolve_metric(df, metric):
             return column
 
     return None
-
 
 def analysis_agent(state: AgentState):
 

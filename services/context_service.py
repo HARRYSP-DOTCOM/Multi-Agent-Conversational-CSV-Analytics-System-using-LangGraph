@@ -1,7 +1,6 @@
 import json
 import os
 
-
 class ContextService:
 
     def __init__(
