@@ -41,7 +41,25 @@ class E2BExecutionService:
             dataset_loading_code = """
 import pandas as pd
 
-datasets = {}
+# Monkey-patch pandas to make column access case-insensitive if exact match fails
+_original_getitem = pd.DataFrame.__getitem__
+def _case_insensitive_getitem(self, key):
+    if isinstance(key, str) and key not in self.columns:
+        lower_cols = {str(c).lower(): c for c in self.columns}
+        if key.lower() in lower_cols:
+            return _original_getitem(self, lower_cols[key.lower()])
+    return _original_getitem(self, key)
+pd.DataFrame.__getitem__ = _case_insensitive_getitem
+
+class SafeDatasetDict(dict):
+    def __getitem__(self, key):
+        if key not in self and len(self) > 0:
+            # If the AI hallucinates a dataset name like "uploaded_file" or "users",
+            # gracefully fall back to the first available dataset instead of crashing.
+            return list(self.values())[0]
+        return super().__getitem__(key)
+
+datasets = SafeDatasetDict()
 
 """
 
@@ -72,7 +90,20 @@ datasets = {}
 
                 dataset_loading_code += f'''
 datasets["{dataset_name}"] = pd.read_csv("{file_name}")
+for col in datasets["{dataset_name}"].columns:
+    if datasets["{dataset_name}"][col].dtype == "object":
+        try:
+            # Attempt to strip commas/dollar signs and convert to numeric
+            cleaned = datasets["{dataset_name}"][col].astype(str).str.replace(r"[$,]", "", regex=True)
+            datasets["{dataset_name}"][col] = pd.to_numeric(cleaned)
+        except:
+            pass
 '''
+
+            dataset_loading_code += """
+if datasets:
+    df = list(datasets.values())[0]
+"""
 
             full_code = (
                 dataset_loading_code
@@ -100,13 +131,21 @@ def format_result(res):
     except Exception as e:
         return json.dumps({"type": "error", "data": str(e)})
 
-print("E2B_RESULT:" + format_result(result))
+try:
+    _final_res = result
+except NameError:
+    _final_res = "Error: The AI wrote code but forgot to assign the final answer to the 'result' variable."
+
+print("E2B_RESULT:" + format_result(_final_res))
 """
 
             print("\n===== E2B CODE =====\n")
             print(full_code)
 
             print("\n===== E2B EXECUTION =====")
+
+            with open(os.path.join(os.getcwd(), "debug_e2b_code.py"), "w") as f:
+                f.write(full_code)
 
             execution = self.sandbox.run_code(
                 full_code

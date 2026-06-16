@@ -198,50 +198,54 @@ Question:
     # E2B PYTHON GENERATION
     # ==================================================
 
-    def generate_python(
-        self,
-        question,
-        contexts
-    ):
+    def generate_python(self, question, contexts_json, error_message=None, previous_code=None):
+        
+        # Extract valid dataset keys
+        try:
+            import json
+            schemas = json.loads(contexts_json)
+            valid_keys = list(schemas.keys())
+            keys_str = ", ".join(f'"{k}"' for k in valid_keys)
+        except:
+            keys_str = "the keys provided in the schema"
 
         prompt = f"""
-You are a Python data analyst.
+You are a Python data analyst. You have access to a dictionary called `datasets` containing pandas DataFrames.
+The available datasets and their columns are:
+{contexts_json}
 
-Available datasets and schemas:
+Your task is to write ONLY Python code to answer the user's question.
 
-{contexts}
-
-A variable called datasets already exists.
-
-datasets is a dictionary of pandas DataFrames.
-
-Rules:
-
+RULES:
 1. Generate ONLY executable Python code.
 2. Store the final answer in a variable called `result`.
 3. Do NOT import libraries.
 4. Use only pandas operations.
 5. You MUST enclose your Python code inside a ```python ... ``` markdown block. Do not output any conversational text or prefixes.
-6. IMPORTANT: The key in datasets[...] MUST MATCH the subject of the question! If the question asks about "stocks", use datasets["stocks"]. If it asks about "employees", use datasets["employees"].
+6. IMPORTANT: The key in datasets[...] MUST MATCH the subject of the question! If the question asks about "stocks", use datasets["stocks"].
+7. CRITICAL: You MUST use one of the following valid keys: {keys_str}. If the question is ambiguous, just pick the FIRST key from this list: {keys_str}.
+8. CRITICAL: Column names are strictly CASE-SENSITIVE. You MUST use the exact capitalization shown in the schema (e.g. if the schema says "UNITS", do not use "Units" or "units").
 9. IMPORTANT: When searching or filtering by text (like names), ALWAYS use partial case-insensitive matching with `.str.contains("query", case=False, na=False)`.
+10. IMPORTANT: If filtering by a year (e.g. 2002) on a column that contains year-month as floats (e.g. 2002.03), you MUST use `df['ColumnName'].astype(int) == 2002` to match all months in that year.
 
 Examples:
 
 Question:
-Show first 5 rows of users.
+Show first 5 rows of data.
 
 ```python
-df = datasets["users"]
+# Assuming 'sales_data' is one of the keys in the provided schemas
+df = datasets["sales_data"]
 result = df.head()
 ```
 
 Question:
-Which employee has the highest salary?
+Which person has the highest salary?
 
 ```python
+# Assuming 'employees' is one of the keys in the provided schemas
 df = datasets["employees"]
-idx = df["Salary"].idxmax()
-result = df.loc[idx]
+result = df.loc[df['salary'].idxmax()]
 ```
 
 Question:
@@ -272,6 +276,20 @@ result = df.sort_values(
 ```
 """
 
+        if error_message:
+            prompt += f"""
+CRITICAL FEEDBACK:
+Your previous code failed with the following error:
+{error_message}
+
+Previous code you generated:
+```python
+{previous_code}
+```
+
+Please analyze the error, fix the mistake, and generate the corrected Python code.
+"""
+
         response = chat(
             model=self.model,
             messages=[
@@ -289,13 +307,39 @@ result = df.sort_values(
         raw_content = response["message"]["content"]
         
         import re
-        match = re.search(r"```python\n(.*?)\n```", raw_content, re.DOTALL)
+        # Try to find ```python ... ``` or just ``` ... ```
+        match = re.search(r"```(?:python)?\n(.*?)\n```", raw_content, re.DOTALL | re.IGNORECASE)
         if match:
             code = match.group(1).strip()
         else:
+            # Fallback if the AI completely forgot markdown blocks
             code = raw_content.replace("```python", "").replace("```", "").strip()
             if code.lower().startswith("code:"):
                 code = code[5:].strip()
+            
+            # If the code contains conversational text, try to extract just the python lines
+            lines = code.split("\n")
+            python_lines = []
+            for line in lines:
+                if "=" in line or line.startswith("df") or line.startswith("result"):
+                    python_lines.append(line)
+            
+            if python_lines:
+                code = "\n".join(python_lines)
+            else:
+                # Complete hallucination: no valid python lines found
+                code = "result = 'Error: The AI failed to generate valid Python code.'"
+
+        # UNCONDITIONAL CHECK: If the AI forgot to assign to 'result', force the last line to be the result
+        if "result" not in code:
+            lines = code.split("\n")
+            lines[-1] = "result = " + lines[-1]
+            code = "\n".join(lines)
+
+        # Auto-fix float year filtering if the AI ignored Rule 10
+        import re
+        code = re.sub(r"\[\s*['\"]?Period['\"]?\s*\]\s*==\s*(\d{4})", r"['Period'].astype(int) == \1", code, flags=re.IGNORECASE)
+        code = re.sub(r"df\s*\.\s*Period\s*==\s*(\d{4})", r"df['Period'].astype(int) == \1", code, flags=re.IGNORECASE)
 
         print("\nGenerated Code:")
         print(code)

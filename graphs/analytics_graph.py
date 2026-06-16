@@ -46,9 +46,21 @@ def build_graph():
         "analysis"
     )
 
-    graph.add_edge(
+    def route_after_analysis(state: AgentState):
+        error_message = state.get("error_message")
+        retry_count = state.get("retry_count", 0)
+        
+        if error_message and retry_count < 3:
+            return "query"
+        return "response"
+
+    graph.add_conditional_edges(
         "analysis",
-        "response"
+        route_after_analysis,
+        {
+            "query": "query",
+            "response": "response"
+        }
     )
 
     graph.add_edge(

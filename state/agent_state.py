@@ -14,3 +14,9 @@ class AgentState(TypedDict):
     analysis_result: Optional[dict]
 
     final_response: Optional[object]
+    
+    error_message: Optional[str]
+    
+    retry_count: Optional[int]
+    
+    previous_code: Optional[str]

@@ -92,6 +92,11 @@ def analysis_agent(state: AgentState):
         state["analysis_result"] = {
             "type": "python_execution"
         }
+        
+        # If it's an error, capture it for the retry loop
+        if isinstance(execution_result, dict) and execution_result.get("type") == "error":
+            state["error_message"] = execution_result.get("data", "Unknown execution error")
+            state["previous_code"] = generated_code
 
         return state
 

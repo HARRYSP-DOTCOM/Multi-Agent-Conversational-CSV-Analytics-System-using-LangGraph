@@ -1,0 +1,37 @@
+{
+    "dataset": "employees",
+    "row_count": 3,
+    "column_count": 3,
+    "columns": [
+        {
+            "name": "Employee Name",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 3,
+            "top_values": [
+                "John Smith",
+                "Alice Brown",
+                "David Lee"
+            ]
+        },
+        {
+            "name": "Department",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 3,
+            "top_values": [
+                "Finance",
+                "HR",
+                "IT"
+            ]
+        },
+        {
+            "name": "Salary",
+            "datatype": "int",
+            "missing_values": 0,
+            "min": 55000.0,
+            "max": 85000.0,
+            "mean": 68333.33333333333
+        }
+    ]
+}
