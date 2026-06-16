@@ -51,11 +51,7 @@ if uploaded_files:
         uploaded_files
     )
 
-    st.success(
-        f"{len(saved_paths)} file(s) uploaded."
-    )
-
-    st.write(saved_paths)
+    # Removed UI debug messages
 
     try:
 
@@ -76,13 +72,7 @@ if uploaded_files:
             # Reset chat history
             st.session_state.messages = []
 
-        st.success(
-            "Contexts and embeddings rebuilt successfully!"
-        )
-
-        st.info(
-            "New datasets are now active."
-        )
+        # Removed success and info messages from the UI
 
     except Exception as error:
 
