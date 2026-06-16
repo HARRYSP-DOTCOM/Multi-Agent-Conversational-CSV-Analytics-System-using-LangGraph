@@ -36,52 +36,8 @@ def query_agent(state: AgentState):
     q = question.lower()
 
     # =====================================
-    # Deterministic Questions
+    # All Queries -> E2B (Dynamic Execution)
     # =====================================
-
-    if (
-        "profit" in q
-        and "compare" not in q
-        and (
-            "highest" in q
-            or "lowest" in q
-            or "profit of" in q
-            or len(q.split()) <= 3
-        )
-    ):
-
-        llm = get_llm()
-
-        parsed = llm.understand_query(question)
-
-        print("\nParsed Query:")
-        print(parsed)
-
-        state["parsed_query"] = parsed
-        state["generated_code"] = None
-
-        print("\nUsing Deterministic Path")
-
-        return state
-
-    if (
-        "compare" in q
-        and "profit" in q
-    ):
-
-        llm = get_llm()
-
-        parsed = llm.understand_query(question)
-
-        print("\nParsed Query:")
-        print(parsed)
-
-        state["parsed_query"] = parsed
-        state["generated_code"] = None
-
-        print("\nUsing Deterministic Path")
-
-        return state
 
     # =====================================
     # Everything Else → E2B
