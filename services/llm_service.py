@@ -225,7 +225,7 @@ RULES:
 6. IMPORTANT: The key in datasets[...] MUST MATCH the subject of the question! If the question asks about "stocks", use datasets["stocks"].
 7. CRITICAL: You MUST use one of the following valid keys: {keys_str}. If the question is ambiguous, just pick the FIRST key from this list: {keys_str}.
 8. CRITICAL: Column names are strictly CASE-SENSITIVE. You MUST use the exact capitalization shown in the schema (e.g. if the schema says "UNITS", do not use "Units" or "units").
-9. IMPORTANT: When searching or filtering by text (like names), ALWAYS use partial case-insensitive matching with `.str.contains("query", case=False, na=False)`.
+9. IMPORTANT: When searching or filtering by text, default to partial case-insensitive matching with `.str.contains("query", case=False, na=False)`. HOWEVER, if the user asks for text that "starts with" a letter/word, you MUST use `.str.lower().str.startswith("query")`. If they ask for text that "ends with", use `.str.lower().str.endswith("query")`.
 10. IMPORTANT: If filtering by a year (e.g. 2002) on a column that contains year-month as floats (e.g. 2002.03), you MUST use `df['ColumnName'].astype(int) == 2002` to match all months in that year.
 
 Examples:
@@ -341,6 +341,19 @@ Please analyze the error, fix the mistake, and generate the corrected Python cod
         code = re.sub(r"\[\s*['\"]?Period['\"]?\s*\]\s*==\s*(\d{4})", r"['Period'].astype(int) == \1", code, flags=re.IGNORECASE)
         code = re.sub(r"df\s*\.\s*Period\s*==\s*(\d{4})", r"df['Period'].astype(int) == \1", code, flags=re.IGNORECASE)
 
+        # Auto-fix common LLM syntax error where it puts .sum() or .count() inside the df[] brackets
+        # e.g., df[df['Name'].str.startswith('Z').sum()] -> df['Name'].str.startswith('Z').sum()
+        import re
+        code = re.sub(r"df\[(df\[.*?\](?:\.[a-zA-Z_]\w*(?:\([^)]*\))?)*\.(?:sum|count)\(\))\]", r"\1", code)
+
+        # Deterministic safeguard: If the user asked for "starts with", aggressively convert contains to startswith
+        # to prevent the 1.5B LLM from stubbornly ignoring the prompt instructions
+        q_lower = question.lower()
+        if "start with" in q_lower or "starts with" in q_lower or "starting with" in q_lower:
+            code = code.replace(".str.contains(", ".str.startswith(")
+        elif "end with" in q_lower or "ends with" in q_lower or "ending with" in q_lower:
+            code = code.replace(".str.contains(", ".str.endswith(")
+
         print("\nGenerated Code:")
         print(code)
 
@@ -359,13 +372,17 @@ Please analyze the error, fix the mistake, and generate the corrected Python cod
         prompt = f"""
 You are a helpful data assistant.
 The user asked: "{question}"
-The data analysis returned:
+The data analysis returned EXACTLY:
 {raw_result}
 
 Provide a clear, concise, natural-language response to answer the user's question based ONLY on the data provided.
-Do NOT use markdown tables if the data is large, just summarize it clearly or provide the direct answer.
-Do NOT output raw pandas representations like 'dtype: object'.
-If the data is an error, politely state that you couldn't find the answer due to an error.
+
+CRITICAL RULES:
+1. DO NOT ALTER, CONVERT, OR "CORRECT" ANY NUMBERS, DATES, OR VALUES.
+2. You MUST copy the values EXACTLY as they appear in the data analysis result. If the raw data says a value is "rgb(0,50,0)", you MUST output "rgb(0,50,0)" and NEVER hallucinate standard knowledge like "(0,255,0)".
+3. Do NOT use markdown tables if the data is large, just summarize it clearly or provide the direct answer.
+4. Do NOT output raw pandas representations like 'dtype: object' or 'Name: RGB'.
+5. If the data is an error, politely state that you couldn't find the answer due to an error.
 """
 
         response = chat(

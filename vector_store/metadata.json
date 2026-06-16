@@ -34,5 +34,89 @@
         "table": "employees",
         "column": "Department",
         "column_type": "identifier"
+    },
+    {
+        "value": "North",
+        "table": "sales",
+        "column": "Region",
+        "column_type": "identifier"
+    },
+    {
+        "value": "South",
+        "table": "sales",
+        "column": "Region",
+        "column_type": "identifier"
+    },
+    {
+        "value": "West",
+        "table": "sales",
+        "column": "Region",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Laptop",
+        "table": "sales",
+        "column": "Product",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Phone",
+        "table": "sales",
+        "column": "Product",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Tablet",
+        "table": "sales",
+        "column": "Product",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Reliance Industries Limited",
+        "table": "stocks",
+        "column": "Stock Name",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Reliance Power",
+        "table": "stocks",
+        "column": "Stock Name",
+        "column_type": "identifier"
+    },
+    {
+        "value": "XYZ Ltd",
+        "table": "stocks",
+        "column": "Stock Name",
+        "column_type": "identifier"
+    },
+    {
+        "value": "ABC Industries",
+        "table": "stocks",
+        "column": "Stock Name",
+        "column_type": "identifier"
+    },
+    {
+        "value": "RELIANCE",
+        "table": "stocks",
+        "column": "Ticker",
+        "column_type": "identifier"
+    },
+    {
+        "value": "RPOWER",
+        "table": "stocks",
+        "column": "Ticker",
+        "column_type": "identifier"
+    },
+    {
+        "value": "XYZ",
+        "table": "stocks",
+        "column": "Ticker",
+        "column_type": "identifier"
+    },
+    {
+        "value": "ABC",
+        "table": "stocks",
+        "column": "Ticker",
+        "column_type": "identifier"
     }
 ]

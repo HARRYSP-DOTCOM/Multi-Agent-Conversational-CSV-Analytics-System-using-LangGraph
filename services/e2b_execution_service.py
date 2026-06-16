@@ -41,6 +41,8 @@ class E2BExecutionService:
             dataset_loading_code = """
 import pandas as pd
 
+from pandas.core.strings.accessor import StringMethods
+
 # Monkey-patch pandas to make column access case-insensitive if exact match fails
 _original_getitem = pd.DataFrame.__getitem__
 def _case_insensitive_getitem(self, key):
@@ -50,6 +52,36 @@ def _case_insensitive_getitem(self, key):
             return _original_getitem(self, lower_cols[key.lower()])
     return _original_getitem(self, key)
 pd.DataFrame.__getitem__ = _case_insensitive_getitem
+
+# Monkey-patch pandas Series equality to make all string comparisons case-insensitive
+_original_eq = pd.Series.__eq__
+def _case_insensitive_eq(self, other):
+    if isinstance(other, str):
+        return _original_eq(self.astype(str).str.lower(), other.lower())
+    return _original_eq(self, other)
+pd.Series.__eq__ = _case_insensitive_eq
+
+# Monkey-patch StringMethods for case-insensitivity
+_original_startswith = StringMethods.startswith
+def _case_insensitive_startswith(self, pat, na=None):
+    if isinstance(pat, str):
+        lower_series = self._parent.astype(str).str.lower()
+        return _original_startswith(lower_series.str, pat.lower(), na=na)
+    return _original_startswith(self, pat, na=na)
+StringMethods.startswith = _case_insensitive_startswith
+
+_original_endswith = StringMethods.endswith
+def _case_insensitive_endswith(self, pat, na=None):
+    if isinstance(pat, str):
+        lower_series = self._parent.astype(str).str.lower()
+        return _original_endswith(lower_series.str, pat.lower(), na=na)
+    return _original_endswith(self, pat, na=na)
+StringMethods.endswith = _case_insensitive_endswith
+
+_original_contains = StringMethods.contains
+def _case_insensitive_contains(self, pat, case=True, flags=0, na=None, regex=True):
+    return _original_contains(self, pat, case=False, flags=flags, na=na, regex=regex)
+StringMethods.contains = _case_insensitive_contains
 
 class SafeDatasetDict(dict):
     def __getitem__(self, key):

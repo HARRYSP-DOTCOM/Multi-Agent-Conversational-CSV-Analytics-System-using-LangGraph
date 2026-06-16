@@ -83,7 +83,10 @@ def analysis_agent(state: AgentState):
         )
 
         print("\nExecution Result:")
-        print(execution_result)
+        try:
+            print(execution_result)
+        except UnicodeEncodeError:
+            print(str(execution_result).encode("ascii", "replace").decode("ascii"))
 
         state["execution_result"] = (
             execution_result
