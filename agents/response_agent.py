@@ -1,5 +1,5 @@
 from state.agent_state import AgentState
-
+from services.llm_service import LLMService
 
 def response_agent(state: AgentState):
 
@@ -14,6 +14,12 @@ def response_agent(state: AgentState):
     )
 
     if execution_result:
+
+        if isinstance(execution_result, dict):
+            res_data = execution_result.get("data")
+            llm = LLMService()
+            summary = llm.format_response(state["question"], str(res_data))
+            execution_result["summary"] = summary
 
         state["final_response"] = (
             execution_result
@@ -164,32 +170,18 @@ def response_agent(state: AgentState):
             f'{analysis["metric"]}:'
         ]
 
-        highest = None
-
-        for item in analysis[
-            "comparisons"
-        ]:
-
-            lines.append(
-                f'- {item["entity"]}: '
-                f'{item["value"]:,.0f}'
-            )
-
-            if (
-                highest is None
-                or
-                item["value"]
-                >
-                highest["value"]
-            ):
-
-                highest = item
-
-        if highest:
-
+        if analysis.get("comparisons"):
+            
+            for item in analysis["comparisons"]:
+                lines.append(
+                    f'- {item["entity"]}: '
+                    f'{item["value"]:,.0f}'
+                )
+                
+            highest_item = max(analysis["comparisons"], key=lambda x: x["value"])
             lines.append(
                 f'\nHighest: '
-                f'{highest["entity"]}'
+                f'{highest_item["entity"]}'
             )
 
         response = "\n".join(

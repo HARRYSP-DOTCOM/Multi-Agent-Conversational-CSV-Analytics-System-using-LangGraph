@@ -112,7 +112,31 @@ for message in st.session_state.messages:
 
         content = message["content"]
 
-        if isinstance(content, pd.DataFrame):
+        if isinstance(content, dict):
+
+            response_type = content.get("type")
+            data = content.get("data")
+            summary = content.get("summary")
+
+            if summary:
+                st.markdown(summary)
+
+            if response_type == "dataframe":
+                st.dataframe(data, use_container_width=True)
+            elif response_type == "series":
+                st.dataframe(data.to_frame(), use_container_width=True)
+            elif response_type == "number":
+                st.metric(label="Result", value=data)
+            elif response_type == "text":
+                if not summary:
+                    st.markdown(str(data))
+            elif response_type == "error":
+                st.error(str(data))
+            else:
+                if not summary:
+                    st.json(content)
+
+        elif isinstance(content, pd.DataFrame):
 
             st.dataframe(
                 content,
@@ -218,6 +242,13 @@ if question:
             data = response.get(
                 "data"
             )
+            
+            summary = response.get(
+                "summary"
+            )
+            
+            if summary:
+                st.markdown(summary)
 
             # ----------------------------------
             # DataFrame
@@ -241,7 +272,7 @@ if question:
                     mime="text/csv"
                 )
 
-                chat_content = data
+                chat_content = response
 
             # ----------------------------------
             # Series
@@ -254,7 +285,7 @@ if question:
                     use_container_width=True
                 )
 
-                chat_content = data
+                chat_content = response
 
             # ----------------------------------
             # Number
@@ -267,19 +298,21 @@ if question:
                     value=data
                 )
 
-                chat_content = str(data)
+                chat_content = response
 
             # ----------------------------------
             # Text
             # ----------------------------------
 
             elif response_type == "text":
+                
+                # If we have a summary, we might not want to print raw text unless it's the only thing
+                if not summary:
+                    st.markdown(
+                        str(data)
+                    )
 
-                st.markdown(
-                    str(data)
-                )
-
-                chat_content = str(data)
+                chat_content = response
 
             # ----------------------------------
             # Error
@@ -291,10 +324,7 @@ if question:
                     str(data)
                 )
 
-                chat_content = (
-                    "Error: "
-                    + str(data)
-                )
+                chat_content = response
 
             # ----------------------------------
             # Unknown Dict
@@ -302,11 +332,10 @@ if question:
 
             else:
 
-                st.json(response)
+                if not summary:
+                    st.json(response)
 
-                chat_content = str(
-                    response
-                )
+                chat_content = response
 
         else:
 

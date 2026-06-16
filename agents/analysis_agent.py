@@ -235,7 +235,10 @@ def analysis_agent(state: AgentState):
 
         datasets = get_datasets()
 
-        df = datasets["stocks"]
+        df = list(datasets.values())[0] if datasets else None
+        
+        if df is None:
+            return state
 
         metric_column = resolve_metric(
             df,

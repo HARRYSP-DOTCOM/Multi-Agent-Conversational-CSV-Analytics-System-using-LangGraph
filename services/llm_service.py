@@ -219,83 +219,110 @@ datasets is a dictionary of pandas DataFrames.
 Rules:
 
 1. Generate ONLY executable Python code.
-2. Store the final answer in a variable called result.
+2. Store the final answer in a variable called `result`.
 3. Do NOT import libraries.
-4. Do NOT explain anything.
-5. Do NOT use markdown fences.
-6. Use only pandas operations.
-7. Use ONLY datasets and columns that exist in the provided schemas.
-8. If calculating averages, sums, maxima, or minima, use ONLY the relevant numeric column.
-9. NEVER perform aggregations on the entire DataFrame.
-10. If the answer is tabular, assign the DataFrame to result.
-11. If the answer is scalar/text, assign the value to result.
+4. Use only pandas operations.
+5. You MUST enclose your Python code inside a ```python ... ``` markdown block. Do not output any conversational text or prefixes.
+6. IMPORTANT: The key in datasets[...] MUST MATCH the subject of the question! If the question asks about "stocks", use datasets["stocks"]. If it asks about "employees", use datasets["employees"].
+9. IMPORTANT: When searching or filtering by text (like names), ALWAYS use partial case-insensitive matching with `.str.contains("query", case=False, na=False)`.
 
 Examples:
 
 Question:
-Show first 5 rows of stocks.
+Show first 5 rows of users.
 
-Code:
-df = datasets["stocks"]
+```python
+df = datasets["users"]
 result = df.head()
-
-Question:
-Show first 3 rows of sales.
-
-Code:
-df = datasets["sales"]
-result = df.head(3)
+```
 
 Question:
 Which employee has the highest salary?
 
-Code:
+```python
 df = datasets["employees"]
 idx = df["Salary"].idxmax()
 result = df.loc[idx]
+```
 
 Question:
-What is the average salary of employees?
+Which stocks have a profit greater than 100?
 
-Code:
-df = datasets["employees"]
-result = df["Salary"].mean()
+```python
+df = datasets["stocks"]
+result = df[df["Profit"] > 100]
+```
 
 Question:
 What is the average revenue in sales?
 
-Code:
+```python
 df = datasets["sales"]
 result = df["Revenue"].mean()
+```
 
 Question:
-Which company has the highest profit?
+Top 5 items in catalog by amount.
 
-Code:
-df = datasets["stocks"]
-idx = df["Profit"].idxmax()
-result = df.loc[idx]
-
-Question:
-Which company has the lowest profit?
-
-Code:
-df = datasets["stocks"]
-idx = df["Profit"].idxmin()
-result = df.loc[idx]
-
-Question:
-Top 5 companies by profit.
-
-Code:
-df = datasets["stocks"]
+```python
+df = datasets["catalog"]
 result = df.sort_values(
-    "Profit",
+    "amount",
     ascending=False
 ).head(5)
+```
+"""
 
-Question:
-{question}
+        response = chat(
+            model=self.model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": prompt
+                },
+                {
+                    "role": "user",
+                    "content": question
+                }
+            ]
+        )
+
+        raw_content = response["message"]["content"]
+        
+        import re
+        match = re.search(r"```python\n(.*?)\n```", raw_content, re.DOTALL)
+        if match:
+            code = match.group(1).strip()
+        else:
+            code = raw_content.replace("```python", "").replace("```", "").strip()
+            if code.lower().startswith("code:"):
+                code = code[5:].strip()
+
+        print("\nGenerated Code:")
+        print(code)
+
+        return code
+
+    # ==================================================
+    # FORMAT RESPONSE
+    # ==================================================
+
+    def format_response(
+        self,
+        question,
+        raw_result
+    ):
+
+        prompt = f"""
+You are a helpful data assistant.
+The user asked: "{question}"
+The data analysis returned:
+{raw_result}
+
+Provide a clear, concise, natural-language response to answer the user's question based ONLY on the data provided.
+Do NOT use markdown tables if the data is large, just summarize it clearly or provide the direct answer.
+Do NOT output raw pandas representations like 'dtype: object'.
+If the data is an error, politely state that you couldn't find the answer due to an error.
 """
 
         response = chat(
@@ -308,14 +335,5 @@ Question:
             ]
         )
 
-        code = (
-            response["message"]["content"]
-            .replace("```python", "")
-            .replace("```", "")
-            .strip()
-        )
-
-        print("\nGenerated Code:")
-        print(code)
-
-        return code
+        content = response["message"]["content"].strip()
+        return content

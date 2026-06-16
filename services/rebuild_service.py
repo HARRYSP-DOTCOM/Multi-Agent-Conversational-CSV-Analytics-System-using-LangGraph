@@ -4,9 +4,18 @@ from services.embedding_preparation import EmbeddingPreparation
 from services.embedding_service import EmbeddingService
 
 
+import os
+import shutil
+
 class RebuildService:
 
     def rebuild(self):
+
+        print("Cleaning old contexts and vector store...")
+        for d in ["contexts", "vector_store"]:
+            if os.path.exists(d):
+                shutil.rmtree(d)
+            os.makedirs(d, exist_ok=True)
 
         print("Loading datasets...")
 
