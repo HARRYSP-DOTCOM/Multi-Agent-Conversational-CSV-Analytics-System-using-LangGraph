@@ -20,3 +20,7 @@ class AgentState(TypedDict):
     retry_count: Optional[int]
     
     previous_code: Optional[str]
+
+    route: Optional[str]
+
+    web_result: Optional[dict]

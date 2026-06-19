@@ -10,3 +10,4 @@ e2b-code-interpreter
 python-dotenv
 matplotlib
 plotly
+exa-py
