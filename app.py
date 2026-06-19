@@ -143,21 +143,20 @@ if question:
         graph = get_graph()
 
         initial_state = {
+    "question": question,
 
-            "question": question,
+    "route": None,
+    "web_result": None,
 
-            "parsed_query": None,
+    "parsed_query": None,
+    "retrieval_result": None,
+    "analysis_result": None,
 
-            "retrieval_result": None,
+    "final_response": None,
 
-            "analysis_result": None,
-
-            "final_response": None,
-
-            "generated_code": None,
-
-            "execution_result": None
-        }
+    "generated_code": None,
+    "execution_result": None
+}
 
         with st.spinner(
             "Analyzing..."

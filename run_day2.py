@@ -14,12 +14,17 @@ while True:
         print("\nGoodbye!")
         break
     initial_state = {
-        "question": question,
-        "parsed_query": None,
-        "retrieval_result": None,
-        "analysis_result": None,
-        "final_response": None
-    }
+    "question": question,
+
+    "route": None,
+    "web_result": None,
+
+    "parsed_query": None,
+    "retrieval_result": None,
+    "analysis_result": None,
+
+    "final_response": None
+}
     try:
         result = graph.invoke(
             initial_state
