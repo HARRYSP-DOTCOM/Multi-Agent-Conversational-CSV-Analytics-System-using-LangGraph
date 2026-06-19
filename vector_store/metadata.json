@@ -1,38 +1,50 @@
 [
     {
-        "value": "John Smith",
-        "table": "employees",
-        "column": "Employee Name",
+        "value": "Reliance Industries Limited",
+        "table": "stocks",
+        "column": "Stock Name",
         "column_type": "identifier"
     },
     {
-        "value": "Alice Brown",
-        "table": "employees",
-        "column": "Employee Name",
+        "value": "Reliance Power",
+        "table": "stocks",
+        "column": "Stock Name",
         "column_type": "identifier"
     },
     {
-        "value": "David Lee",
-        "table": "employees",
-        "column": "Employee Name",
+        "value": "XYZ Ltd",
+        "table": "stocks",
+        "column": "Stock Name",
         "column_type": "identifier"
     },
     {
-        "value": "Finance",
-        "table": "employees",
-        "column": "Department",
+        "value": "ABC Industries",
+        "table": "stocks",
+        "column": "Stock Name",
         "column_type": "identifier"
     },
     {
-        "value": "HR",
-        "table": "employees",
-        "column": "Department",
+        "value": "RELIANCE",
+        "table": "stocks",
+        "column": "Ticker",
         "column_type": "identifier"
     },
     {
-        "value": "IT",
-        "table": "employees",
-        "column": "Department",
+        "value": "RPOWER",
+        "table": "stocks",
+        "column": "Ticker",
+        "column_type": "identifier"
+    },
+    {
+        "value": "XYZ",
+        "table": "stocks",
+        "column": "Ticker",
+        "column_type": "identifier"
+    },
+    {
+        "value": "ABC",
+        "table": "stocks",
+        "column": "Ticker",
         "column_type": "identifier"
     }
 ]

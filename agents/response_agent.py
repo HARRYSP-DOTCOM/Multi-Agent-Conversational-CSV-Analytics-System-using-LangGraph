@@ -1,12 +1,13 @@
 from state.agent_state import AgentState
 from services.llm_service import LLMService
 
+
 def response_agent(state: AgentState):
 
     print("\n=== RESPONSE AGENT ===")
 
     # ==========================================
-    # E2B Responses
+    # E2B Responses (Current Main Flow)
     # ==========================================
 
     execution_result = state.get(
@@ -16,9 +17,18 @@ def response_agent(state: AgentState):
     if execution_result:
 
         if isinstance(execution_result, dict):
-            res_data = execution_result.get("data")
+
+            res_data = execution_result.get(
+                "data"
+            )
+
             llm = LLMService()
-            summary = llm.format_response(state["question"], str(res_data))
+
+            summary = llm.format_response(
+                state["question"],
+                str(res_data)
+            )
+
             execution_result["summary"] = summary
 
         state["final_response"] = (
@@ -28,20 +38,122 @@ def response_agent(state: AgentState):
         return state
 
     # ==========================================
-    # Deterministic Responses
+    # WEB RESPONSES (NEW)
     # ==========================================
 
-    parsed = state["parsed_query"]
+    web_result = state.get(
+        "web_result"
+    )
 
-    analysis = state["analysis_result"]
+    if web_result:
+
+        try:
+
+            response = ""
+
+            # Exa SearchResponse object
+            if hasattr(web_result, "results"):
+
+                results = web_result.results
+
+            # Dictionary fallback
+            elif isinstance(web_result, dict):
+
+                results = web_result.get(
+                    "results",
+                    []
+                )
+
+            else:
+
+                results = []
+
+            if not results:
+
+                state["final_response"] = {
+                    "type": "text",
+                    "data": "No web results found."
+                }
+
+                return state
+
+            for i, item in enumerate(
+                results[:3],
+                start=1
+            ):
+
+                title = getattr(
+                    item,
+                    "title",
+                    "No Title"
+                )
+
+                url = getattr(
+                    item,
+                    "url",
+                    "No URL"
+                )
+
+                text = getattr(
+                    item,
+                    "text",
+                    ""
+                )
+
+                response += (
+                    f"### {i}. {title}\n"
+                    f"{url}\n\n"
+                    f"{text[:300]}...\n\n"
+                )
+
+            state["final_response"] = {
+                "type": "text",
+                "data": response
+            }
+
+            return state
+
+        except Exception as error:
+
+            state["final_response"] = {
+                "type": "error",
+                "data": str(error)
+            }
+
+            return state
+
+    # ==========================================
+    # Deterministic Responses (Old Path)
+    # ==========================================
+
+    parsed = state.get(
+        "parsed_query"
+    )
+
+    analysis = state.get(
+        "analysis_result"
+    )
 
     retrieval = state.get(
         "retrieval_result"
     )
 
-    # ------------------------------------------
+    # If analysis is missing entirely
+    if analysis is None:
+
+        response = (
+            "I could not generate a response."
+        )
+
+        print(response)
+
+        state["final_response"] = response
+
+        return state
+
+    # ==========================================
     # Unsupported Queries
-    # ------------------------------------------
+    # ==========================================
 
     if analysis["type"] == "unsupported":
 
@@ -56,9 +168,9 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ------------------------------------------
+    # ==========================================
     # Errors
-    # ------------------------------------------
+    # ==========================================
 
     if analysis["type"] == "error":
 
@@ -70,16 +182,16 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ------------------------------------------
+    # ==========================================
     # Aggregation
-    # ------------------------------------------
+    # ==========================================
 
     if analysis["type"] == "aggregation":
 
         entities = parsed.get(
             "entities",
             []
-        )
+        ) if parsed else []
 
         if entities:
 
@@ -102,7 +214,7 @@ def response_agent(state: AgentState):
 
         resolved_entity = retrieval[
             "resolved_entity"
-        ]
+        ] if retrieval else "Unknown"
 
         response = (
             f'I interpreted "{original_entity}" '
@@ -117,9 +229,9 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ------------------------------------------
+    # ==========================================
     # Ranking
-    # ------------------------------------------
+    # ==========================================
 
     if analysis["type"] == "ranking":
 
@@ -142,9 +254,9 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ------------------------------------------
+    # ==========================================
     # Count
-    # ------------------------------------------
+    # ==========================================
 
     if analysis["type"] == "count":
 
@@ -159,9 +271,9 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ------------------------------------------
+    # ==========================================
     # Comparison
-    # ------------------------------------------
+    # ==========================================
 
     if analysis["type"] == "comparison":
 
@@ -171,14 +283,21 @@ def response_agent(state: AgentState):
         ]
 
         if analysis.get("comparisons"):
-            
-            for item in analysis["comparisons"]:
+
+            for item in analysis[
+                "comparisons"
+            ]:
+
                 lines.append(
                     f'- {item["entity"]}: '
                     f'{item["value"]:,.0f}'
                 )
-                
-            highest_item = max(analysis["comparisons"], key=lambda x: x["value"])
+
+            highest_item = max(
+                analysis["comparisons"],
+                key=lambda x: x["value"]
+            )
+
             lines.append(
                 f'\nHighest: '
                 f'{highest_item["entity"]}'
@@ -194,9 +313,9 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ------------------------------------------
+    # ==========================================
     # Filter
-    # ------------------------------------------
+    # ==========================================
 
     if analysis["type"] == "filter":
 
@@ -227,9 +346,9 @@ def response_agent(state: AgentState):
 
         return state
 
-    # ------------------------------------------
+    # ==========================================
     # Fallback
-    # ------------------------------------------
+    # ==========================================
 
     response = (
         "I could not generate "

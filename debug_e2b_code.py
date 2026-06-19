@@ -54,20 +54,22 @@ class SafeDatasetDict(dict):
 datasets = SafeDatasetDict()
 
 
-datasets["employees"] = pd.read_csv("employees.csv")
-for col in datasets["employees"].columns:
-    if datasets["employees"][col].dtype == "object":
+datasets["stocks"] = pd.read_csv("stocks.csv")
+for col in datasets["stocks"].columns:
+    if datasets["stocks"][col].dtype == "object":
         try:
             # Attempt to strip commas/dollar signs and convert to numeric
-            cleaned = datasets["employees"][col].astype(str).str.replace(r"[$,]", "", regex=True)
-            datasets["employees"][col] = pd.to_numeric(cleaned)
+            cleaned = datasets["stocks"][col].astype(str).str.replace(r"[$,]", "", regex=True)
+            datasets["stocks"][col] = pd.to_numeric(cleaned)
         except:
             pass
 
 if datasets:
     df = list(datasets.values())[0]
 
-result = 'Error: The AI failed to generate valid Python code.'
+# Assuming 'world_cup_2022' is one of the keys in the provided schemas
+df = datasets["world_cup_2022"]
+result = df.loc[df['name'].str.contains("Winner")]
 import json
 import pandas as pd
 import numpy as np

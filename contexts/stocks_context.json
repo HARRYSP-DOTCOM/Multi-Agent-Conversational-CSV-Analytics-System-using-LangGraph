@@ -1,0 +1,47 @@
+{
+    "dataset": "stocks",
+    "row_count": 4,
+    "column_count": 4,
+    "columns": [
+        {
+            "name": "Stock Name",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 4,
+            "top_values": [
+                "Reliance Industries Limited",
+                "Reliance Power",
+                "XYZ Ltd",
+                "ABC Industries"
+            ]
+        },
+        {
+            "name": "Ticker",
+            "datatype": "string",
+            "missing_values": 0,
+            "unique_count": 4,
+            "top_values": [
+                "RELIANCE",
+                "RPOWER",
+                "XYZ",
+                "ABC"
+            ]
+        },
+        {
+            "name": "Profit",
+            "datatype": "int",
+            "missing_values": 0,
+            "min": -50000.0,
+            "max": 1200000.0,
+            "mean": 395000.0
+        },
+        {
+            "name": "Trade Date",
+            "datatype": "date",
+            "missing_values": 0,
+            "format": "YYYY-MM-DD",
+            "min": "2025-01-01",
+            "max": "2025-01-01"
+        }
+    ]
+}
