@@ -17,6 +17,9 @@ while True:
     "question": question,
 
     "route": None,
+    "route_reason": None,
+    "csv_question": None,
+    "web_question": None,
     "web_result": None,
 
     "parsed_query": None,

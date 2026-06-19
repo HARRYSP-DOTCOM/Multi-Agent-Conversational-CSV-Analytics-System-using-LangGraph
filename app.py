@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import os
+import requests
 
 from graphs.analytics_graph import build_graph
 from services.upload_service import UploadService
@@ -146,6 +148,9 @@ if question:
     "question": question,
 
     "route": None,
+    "route_reason": None,
+    "csv_question": None,
+    "web_question": None,
     "web_result": None,
 
     "parsed_query": None,

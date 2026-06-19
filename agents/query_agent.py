@@ -25,7 +25,10 @@ def query_agent(state: AgentState):
 
     print("\n=== QUERY AGENT ===")
 
-    question = state["question"]
+    question = (
+        state.get("csv_question")
+        or state["question"]
+    )
 
     print("Question:")
     print(question)

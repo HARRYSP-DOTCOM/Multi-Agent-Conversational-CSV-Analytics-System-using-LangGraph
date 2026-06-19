@@ -67,9 +67,13 @@ for col in datasets["stocks"].columns:
 if datasets:
     df = list(datasets.values())[0]
 
-# Assuming 'world_cup_2022' is one of the keys in the provided schemas
-df = datasets["world_cup_2022"]
-result = df.loc[df['name'].str.contains("Winner")]
+# Assuming 'stocks' is one of the keys in the provided schemas
+df = datasets["stocks"]
+
+result = df.loc[df['Profit'].idxmax()]['Stock Name']
+result += ', ' + result.split(' ')[1]
+
+result += ' (Owner: ' + df.loc[df['Profit'].idxmax(), 'Ticker'] + ')'
 import json
 import pandas as pd
 import numpy as np

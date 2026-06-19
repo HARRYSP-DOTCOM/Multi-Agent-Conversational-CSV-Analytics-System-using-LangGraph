@@ -2,292 +2,257 @@ from state.agent_state import AgentState
 from services.llm_service import LLMService
 
 
-def response_agent(state: AgentState):
+def _get_web_results(web_result):
+    if hasattr(web_result, "results"):
+        return web_result.results
 
-    print("\n=== RESPONSE AGENT ===")
-
-    # ==========================================
-    # E2B Responses (Current Main Flow)
-    # ==========================================
-
-    execution_result = state.get(
-        "execution_result"
-    )
-
-    if execution_result:
-
-        if isinstance(execution_result, dict):
-
-            res_data = execution_result.get(
-                "data"
-            )
-
-            llm = LLMService()
-
-            summary = llm.format_response(
-                state["question"],
-                str(res_data)
-            )
-
-            execution_result["summary"] = summary
-
-        state["final_response"] = (
-            execution_result
+    if isinstance(web_result, dict):
+        return web_result.get(
+            "results",
+            []
         )
 
-        return state
+    return []
 
-    # ==========================================
-    # WEB RESPONSES (NEW)
-    # ==========================================
 
-    web_result = state.get(
-        "web_result"
+def _format_web_context(web_result, limit=5):
+    results = _get_web_results(web_result)
+    lines = []
+
+    for i, item in enumerate(
+        results[:limit],
+        start=1
+    ):
+        title = getattr(
+            item,
+            "title",
+            "No Title"
+        )
+        url = getattr(
+            item,
+            "url",
+            "No URL"
+        )
+        text = getattr(
+            item,
+            "text",
+            ""
+        )
+
+        lines.append(
+            f"{i}. {title}\n{url}\n{text[:700]}"
+        )
+
+    return "\n\n".join(lines)
+
+
+def _fallback_web_response(web_result):
+    results = _get_web_results(web_result)
+    response = ""
+
+    for i, item in enumerate(
+        results[:5],
+        start=1
+    ):
+        title = getattr(
+            item,
+            "title",
+            "No Title"
+        )
+        url = getattr(
+            item,
+            "url",
+            "No URL"
+        )
+        text = getattr(
+            item,
+            "text",
+            ""
+        )
+
+        response += (
+            f"### {i}. {title}\n"
+            f"{url}\n\n"
+            f"{text[:300]}...\n\n"
+        )
+
+    return response
+
+
+def _set_text_response(state, text):
+    state["final_response"] = {
+        "type": "text",
+        "data": text
+    }
+
+    return state
+
+
+def _handle_hybrid_response(state, execution_result, web_result):
+    web_context = _format_web_context(
+        web_result
     )
 
-    if web_result:
+    if not web_context:
+        web_context = "No web results found."
 
-        try:
+    csv_result = execution_result
+    if isinstance(execution_result, dict):
+        csv_result = execution_result.get("data", execution_result)
 
-            response = ""
+    llm = LLMService()
+    summary = llm.format_hybrid_response(
+        state["question"],
+        str(csv_result),
+        web_context
+    )
 
-            # Exa SearchResponse object
-            if hasattr(web_result, "results"):
+    return _set_text_response(
+        state,
+        summary
+    )
 
-                results = web_result.results
 
-            # Dictionary fallback
-            elif isinstance(web_result, dict):
+def _handle_csv_execution_response(state, execution_result):
+    if isinstance(execution_result, dict):
+        res_data = execution_result.get(
+            "data"
+        )
 
-                results = web_result.get(
-                    "results",
-                    []
-                )
+        llm = LLMService()
+        summary = llm.format_response(
+            state["question"],
+            str(res_data)
+        )
 
-            else:
+        execution_result["summary"] = summary
 
-                results = []
+    state["final_response"] = execution_result
 
-            if not results:
+    return state
 
-                state["final_response"] = {
-                    "type": "text",
-                    "data": "No web results found."
-                }
 
-                return state
+def _handle_web_response(state, web_result):
+    results = _get_web_results(
+        web_result
+    )
 
-            for i, item in enumerate(
-                results[:3],
-                start=1
-            ):
+    if not results:
+        return _set_text_response(
+            state,
+            "No web results found."
+        )
 
-                title = getattr(
-                    item,
-                    "title",
-                    "No Title"
-                )
+    web_context = _format_web_context(
+        web_result
+    )
 
-                url = getattr(
-                    item,
-                    "url",
-                    "No URL"
-                )
+    try:
+        llm = LLMService()
+        response = llm.format_web_response(
+            state["question"],
+            web_context
+        )
+    except Exception:
+        response = _fallback_web_response(
+            web_result
+        )
 
-                text = getattr(
-                    item,
-                    "text",
-                    ""
-                )
+    return _set_text_response(
+        state,
+        response
+    )
 
-                response += (
-                    f"### {i}. {title}\n"
-                    f"{url}\n\n"
-                    f"{text[:300]}...\n\n"
-                )
 
-            state["final_response"] = {
-                "type": "text",
-                "data": response
-            }
-
-            return state
-
-        except Exception as error:
-
-            state["final_response"] = {
-                "type": "error",
-                "data": str(error)
-            }
-
-            return state
-
-    # ==========================================
-    # Deterministic Responses (Old Path)
-    # ==========================================
-
+def _handle_deterministic_response(state):
     parsed = state.get(
         "parsed_query"
     )
-
     analysis = state.get(
         "analysis_result"
     )
-
     retrieval = state.get(
         "retrieval_result"
     )
 
-    # If analysis is missing entirely
     if analysis is None:
-
-        response = (
-            "I could not generate a response."
-        )
-
-        print(response)
-
-        state["final_response"] = response
-
+        state["final_response"] = "I could not generate a response."
         return state
-
-    # ==========================================
-    # Unsupported Queries
-    # ==========================================
 
     if analysis["type"] == "unsupported":
-
-        response = (
-            "I can answer questions "
-            "related to the uploaded datasets only."
+        state["final_response"] = (
+            "I can answer questions related to the uploaded datasets only."
         )
-
-        print(response)
-
-        state["final_response"] = response
-
         return state
-
-    # ==========================================
-    # Errors
-    # ==========================================
 
     if analysis["type"] == "error":
-
-        response = analysis["message"]
-
-        print(response)
-
-        state["final_response"] = response
-
+        state["final_response"] = analysis["message"]
         return state
 
-    # ==========================================
-    # Aggregation
-    # ==========================================
-
     if analysis["type"] == "aggregation":
-
         entities = parsed.get(
             "entities",
             []
         ) if parsed else []
 
+        original_entity = "Unknown"
+
         if entities:
-
             entity = entities[0]
-
-            if isinstance(entity, dict):
-
-                original_entity = entity.get(
+            original_entity = (
+                entity.get(
                     "value",
                     "Unknown"
                 )
+                if isinstance(entity, dict)
+                else entity
+            )
 
-            else:
+        resolved_entity = (
+            retrieval["resolved_entity"]
+            if retrieval
+            else "Unknown"
+        )
 
-                original_entity = entity
-
-        else:
-
-            original_entity = "Unknown"
-
-        resolved_entity = retrieval[
-            "resolved_entity"
-        ] if retrieval else "Unknown"
-
-        response = (
-            f'I interpreted "{original_entity}" '
-            f'as "{resolved_entity}".\n\n'
+        state["final_response"] = (
+            f'I interpreted "{original_entity}" as '
+            f'"{resolved_entity}".\n\n'
             f'The {analysis["metric"]} is '
             f'{analysis["value"]:,.0f}.'
         )
 
-        print(response)
-
-        state["final_response"] = response
-
         return state
 
-    # ==========================================
-    # Ranking
-    # ==========================================
-
     if analysis["type"] == "ranking":
-
         operation_text = (
             "highest"
             if analysis["operation"] == "max"
             else "lowest"
         )
 
-        response = (
-            f'{analysis["entity"]} '
-            f'has the {operation_text} '
-            f'{analysis["metric"]} of '
-            f'{analysis["value"]:,.0f}.'
+        state["final_response"] = (
+            f'{analysis["entity"]} has the {operation_text} '
+            f'{analysis["metric"]} of {analysis["value"]:,.0f}.'
         )
 
-        print(response)
-
-        state["final_response"] = response
-
         return state
-
-    # ==========================================
-    # Count
-    # ==========================================
 
     if analysis["type"] == "count":
-
-        response = (
-            f'The count is '
-            f'{analysis["value"]}.'
+        state["final_response"] = (
+            f'The count is {analysis["value"]}.'
         )
-
-        print(response)
-
-        state["final_response"] = response
 
         return state
 
-    # ==========================================
-    # Comparison
-    # ==========================================
-
     if analysis["type"] == "comparison":
-
         lines = [
-            f'Comparison of '
-            f'{analysis["metric"]}:'
+            f'Comparison of {analysis["metric"]}:'
         ]
 
         if analysis.get("comparisons"):
-
             for item in analysis[
                 "comparisons"
             ]:
-
                 lines.append(
                     f'- {item["entity"]}: '
                     f'{item["value"]:,.0f}'
@@ -299,64 +264,80 @@ def response_agent(state: AgentState):
             )
 
             lines.append(
-                f'\nHighest: '
-                f'{highest_item["entity"]}'
+                f'\nHighest: {highest_item["entity"]}'
             )
 
-        response = "\n".join(
+        state["final_response"] = "\n".join(
             lines
         )
 
-        print(response)
-
-        state["final_response"] = response
-
         return state
 
-    # ==========================================
-    # Filter
-    # ==========================================
-
     if analysis["type"] == "filter":
-
         rows = analysis["rows"]
 
         if not rows:
+            state["final_response"] = "No matching records found."
+            return state
 
-            response = (
-                "No matching records found."
-            )
+        response = (
+            f'Found {len(rows)} matching records:\n\n'
+        )
 
-        else:
-
-            response = (
-                f'Found {len(rows)} '
-                f'matching records:\n\n'
-            )
-
-            for row in rows:
-
-                response += (
-                    f'{row}\n'
-                )
-
-        print(response)
+        for row in rows:
+            response += f'{row}\n'
 
         state["final_response"] = response
 
         return state
 
-    # ==========================================
-    # Fallback
-    # ==========================================
-
-    response = (
-        "I could not generate "
-        "a response."
-    )
-
-    print(response)
-
-    state["final_response"] = response
+    state["final_response"] = "I could not generate a response."
 
     return state
+
+
+def response_agent(state: AgentState):
+    print("\n=== RESPONSE AGENT ===")
+
+    route = state.get("route")
+    execution_result = state.get(
+        "execution_result"
+    )
+    web_result = state.get(
+        "web_result"
+    )
+
+    try:
+        if route == "hybrid" and (
+            execution_result
+            or web_result
+        ):
+            return _handle_hybrid_response(
+                state,
+                execution_result,
+                web_result
+            )
+
+        if execution_result:
+            return _handle_csv_execution_response(
+                state,
+                execution_result
+            )
+
+        if web_result:
+            return _handle_web_response(
+                state,
+                web_result
+            )
+
+        return _handle_deterministic_response(
+            state
+        )
+
+    except Exception as error:
+        state["final_response"] = {
+            "type": "error",
+            "data": str(error)
+        }
+
+        return state

@@ -24,3 +24,9 @@ class AgentState(TypedDict):
     route: Optional[str]
 
     web_result: Optional[dict]
+
+    route_reason: Optional[dict]
+
+    csv_question: Optional[str]
+
+    web_question: Optional[str]

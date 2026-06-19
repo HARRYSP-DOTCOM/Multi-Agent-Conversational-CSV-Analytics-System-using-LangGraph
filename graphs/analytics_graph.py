@@ -80,6 +80,10 @@ def build_graph():
         
         if error_message and retry_count < 3:
             return "query"
+
+        if state.get("route") == "hybrid":
+            return "web_search"
+
         return "response"
 
     graph.add_conditional_edges(
@@ -87,6 +91,7 @@ def build_graph():
         route_after_analysis,
         {
             "query": "query",
+            "web_search": "web_search",
             "response": "response"
         }
     )

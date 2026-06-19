@@ -16,7 +16,7 @@ class ExaService:
 
         self.exa = Exa(api_key)
 
-    def search(self, query, num_results=3):
+    def search(self, query, num_results=5):
         results = self.exa.search_and_contents(
             query,
             num_results=num_results

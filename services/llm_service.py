@@ -222,11 +222,13 @@ RULES:
 3. Do NOT import libraries.
 4. Use only pandas operations.
 5. You MUST enclose your Python code inside a ```python ... ``` markdown block. Do not output any conversational text or prefixes.
-6. IMPORTANT: The key in datasets[...] MUST MATCH the subject of the question! If the question asks about "stocks", use datasets["stocks"].
+6. IMPORTANT: The key in datasets[...] MUST MATCH the subject of the question! If the question asks about "stocks", use datasets["stocks"]. Do NOT invent or substitute dataset keys like "sales_data" unless that exact key appears in the schema.
 7. CRITICAL: You MUST use one of the following valid keys: {keys_str}. If the question is ambiguous, just pick the FIRST key from this list: {keys_str}.
 8. CRITICAL: Column names are strictly CASE-SENSITIVE. You MUST use the exact capitalization shown in the schema (e.g. if the schema says "UNITS", do not use "Units" or "units").
 9. IMPORTANT: When searching or filtering by text, default to partial case-insensitive matching with `.str.contains("query", case=False, na=False)`. HOWEVER, if the user asks for text that "starts with" a letter/word, you MUST use `.str.lower().str.startswith("query")`. If they ask for text that "ends with", use `.str.lower().str.endswith("query")`.
 10. IMPORTANT: If filtering by a year (e.g. 2002) on a column that contains year-month as floats (e.g. 2002.03), you MUST use `df['ColumnName'].astype(int) == 2002` to match all months in that year.
+11. CRITICAL: Never fetch web data, APIs, URLs, files outside `datasets`, or current market data. If the question contains web/current/external wording, answer only the uploaded CSV portion.
+12. CRITICAL: Do not use undefined variables such as `stocks_df`. Always create variables from `datasets[...]`.
 
 Examples:
 
@@ -234,8 +236,8 @@ Question:
 Show first 5 rows of data.
 
 ```python
-# Assuming 'sales_data' is one of the keys in the provided schemas
-df = datasets["sales_data"]
+# Assuming 'sales' is one of the keys in the provided schemas
+df = datasets["sales"]
 result = df.head()
 ```
 
@@ -336,6 +338,44 @@ Please analyze the error, fix the mistake, and generate the corrected Python cod
             lines[-1] = "result = " + lines[-1]
             code = "\n".join(lines)
 
+        forbidden_fragments = [
+            "read_json(",
+            "read_html(",
+            "read_xml(",
+            "read_excel(",
+            "requests.",
+            "urllib",
+            "http://",
+            "https://",
+            "api.",
+            "open(",
+            "import ",
+            "from ",
+        ]
+
+        if any(
+            fragment.lower() in code.lower()
+            for fragment in forbidden_fragments
+        ):
+            first_key = valid_keys[0] if "valid_keys" in locals() and valid_keys else None
+
+            if first_key:
+                code = (
+                    f'df = datasets["{first_key}"]\n'
+                    "numeric_columns = df.select_dtypes(include='number').columns.tolist()\n"
+                    "profit_columns = [col for col in df.columns if col.lower() == 'profit']\n"
+                    "if profit_columns:\n"
+                    "    result = df.sort_values(profit_columns[0], ascending=False)\n"
+                    "elif numeric_columns:\n"
+                    "    result = df[numeric_columns].describe().reset_index()\n"
+                    "else:\n"
+                    "    result = df.head(20)"
+                )
+            else:
+                code = (
+                    "result = 'No uploaded datasets are available for CSV analysis.'"
+                )
+
         # Auto-fix float year filtering if the AI ignored Rule 10
         import re
         code = re.sub(r"\[\s*['\"]?Period['\"]?\s*\]\s*==\s*(\d{4})", r"['Period'].astype(int) == \1", code, flags=re.IGNORECASE)
@@ -397,3 +437,80 @@ CRITICAL RULES:
 
         content = response["message"]["content"].strip()
         return content
+
+    def format_hybrid_response(
+        self,
+        question,
+        csv_result,
+        web_context
+    ):
+
+        prompt = f"""
+You are a helpful data assistant.
+
+The user asked:
+"{question}"
+
+The uploaded CSV analysis returned:
+{csv_result}
+
+The web search context returned:
+{web_context}
+
+Write one concise answer that combines both sources.
+
+CRITICAL RULES:
+1. Clearly distinguish what came from the uploaded CSV data and what came from web context.
+2. Do NOT invent numbers, dates, URLs, or facts not present in the two inputs.
+3. If one source is weak or missing, say that briefly and still answer from the available source.
+4. Keep the answer short and practical.
+"""
+
+        response = chat(
+            model=self.model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+
+        return response["message"]["content"].strip()
+
+    def format_web_response(
+        self,
+        question,
+        web_context
+    ):
+
+        prompt = f"""
+You are a precise web research assistant.
+
+The user asked:
+"{question}"
+
+Web search context:
+{web_context}
+
+Answer the user's question directly using only the web context.
+
+CRITICAL RULES:
+1. Start with the direct answer.
+2. Do NOT mention irrelevant search results.
+3. Do NOT invent facts, dates, numbers, or names not present in the context.
+4. If the context is insufficient, say what is missing and provide the best supported answer.
+5. Include source URLs when they are available in the context.
+"""
+
+        response = chat(
+            model=self.model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+
+        return response["message"]["content"].strip()
