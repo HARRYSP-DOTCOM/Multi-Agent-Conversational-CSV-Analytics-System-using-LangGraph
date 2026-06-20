@@ -2,6 +2,8 @@ from typing import TypedDict, Optional
 
 class AgentState(TypedDict):
     question: str
+    
+    chat_history: Optional[list]
 
     parsed_query: Optional[dict]
 

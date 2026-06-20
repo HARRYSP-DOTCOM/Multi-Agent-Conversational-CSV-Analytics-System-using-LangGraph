@@ -1,5 +1,77 @@
 [
     {
+        "value": "John Smith",
+        "table": "employees",
+        "column": "Employee Name",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Alice Brown",
+        "table": "employees",
+        "column": "Employee Name",
+        "column_type": "identifier"
+    },
+    {
+        "value": "David Lee",
+        "table": "employees",
+        "column": "Employee Name",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Finance",
+        "table": "employees",
+        "column": "Department",
+        "column_type": "identifier"
+    },
+    {
+        "value": "HR",
+        "table": "employees",
+        "column": "Department",
+        "column_type": "identifier"
+    },
+    {
+        "value": "IT",
+        "table": "employees",
+        "column": "Department",
+        "column_type": "identifier"
+    },
+    {
+        "value": "North",
+        "table": "sales",
+        "column": "Region",
+        "column_type": "identifier"
+    },
+    {
+        "value": "South",
+        "table": "sales",
+        "column": "Region",
+        "column_type": "identifier"
+    },
+    {
+        "value": "West",
+        "table": "sales",
+        "column": "Region",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Laptop",
+        "table": "sales",
+        "column": "Product",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Phone",
+        "table": "sales",
+        "column": "Product",
+        "column_type": "identifier"
+    },
+    {
+        "value": "Tablet",
+        "table": "sales",
+        "column": "Product",
+        "column_type": "identifier"
+    },
+    {
         "value": "Reliance Industries Limited",
         "table": "stocks",
         "column": "Stock Name",

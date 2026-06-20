@@ -253,9 +253,22 @@ Some objects are cached in memory while the app is running:
 
 When uploads change, `app.py` clears the graph cache, clears the dataset cache, and resets chat history.
 
-### Conversation Memory
+### Conversation Memory (Linear)
 
-Chat history is stored only in Streamlit session state. It is used for display, not as long-term reasoning memory for the LLM prompts. Each question is answered from the current uploaded data, generated contexts, generated code, and the current graph state.
+Chat history is stored only in Streamlit session state. It is used for display, not as long‑term reasoning memory for the LLM prompts. Each question is answered from the current uploaded data, generated contexts, generated code, and the current graph state.
+
+### Conversation Branching
+
+The app now supports ChatGPT‑style branching. Every message is stored with a unique `id`, a `parent_id` (the message it branches from), and an optional `branch_id`. Users can start a new branch from any previous message using the **↳ Branch** button. Navigation buttons allow moving to the parent (`← Parent`) or to sibling branches (`←` and `→`).
+
+The backend stores messages in `st.session_state.messages` as a dictionary keyed by message IDs and provides helper functions in `utils/tree_utils.py` to:
+- Add new messages with proper parent links (`add_message`).
+- Retrieve the active branch path for the current view (`get_branch_path`).
+- List children/siblings of a node (`get_children`).
+- Find the leaf node of a branch (`get_leaf_node`).
+
+These utilities enable the UI to render a dynamic conversation tree while keeping the LangGraph workflow unchanged.
+
 
 ## Error Handling And Retries
 

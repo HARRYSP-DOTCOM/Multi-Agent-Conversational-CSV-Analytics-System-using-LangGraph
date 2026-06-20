@@ -423,6 +423,7 @@ CRITICAL RULES:
 3. Do NOT use markdown tables if the data is large, just summarize it clearly or provide the direct answer.
 4. Do NOT output raw pandas representations like 'dtype: object' or 'Name: RGB'.
 5. If the data is an error, politely state that you couldn't find the answer due to an error.
+6. ASSUME the data analysis result is the correct and complete answer to the user's question. For example, if the user asks "who are the HR employees?" and the result is "['Alice']", your response must be "The HR employee is Alice." Do NOT say the information is missing.
 """
 
         response = chat(
