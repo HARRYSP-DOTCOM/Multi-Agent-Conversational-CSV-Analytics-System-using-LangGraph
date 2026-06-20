@@ -5,7 +5,12 @@ from typing import Optional, Dict, Any
 
 class HistoryService:
     def __init__(self, uri="mongodb://localhost:27017/", db_name="analytics_agent", collection_name="history"):
-        self.client = pymongo.MongoClient(uri, serverSelectionTimeoutMS=2000)
+        self.client = pymongo.MongoClient(
+            uri, 
+            serverSelectionTimeoutMS=1000,
+            connectTimeoutMS=1000,
+            socketTimeoutMS=1000
+        )
         self.db = self.client[db_name]
         self.collection = self.db[collection_name]
         # Load the model for embeddings

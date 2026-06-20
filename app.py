@@ -50,50 +50,82 @@ uploaded_files = st.file_uploader(
 )
 
 if uploaded_files:
-
-    upload_service = UploadService()
-
-    saved_paths = upload_service.save_files(
-        uploaded_files
-    )
-
-    # Removed UI debug messages
-
-    try:
-
-        with st.spinner(
-            "Preparing datasets..."
-        ):
-
-            rebuild_service = RebuildService()
-
-            rebuild_service.rebuild()
-
-            # Clear cached graph
-            get_graph.clear()
-
-            # Clear cached datasets
-            clear_dataset_cache()
-
-            # Reset chat history
-
-
-        # Removed success and info messages from the UI
-
-    except Exception as error:
-
-        st.error(
-            f"Rebuild failed:\n{error}"
+    current_files_info = [(f.name, f.size) for f in uploaded_files]
+    if st.session_state.get("last_uploaded_files") != current_files_info:
+        st.session_state["last_uploaded_files"] = current_files_info
+        upload_service = UploadService()
+    
+        saved_paths = upload_service.save_files(
+            uploaded_files
         )
+    
+        try:
+    
+            with st.spinner(
+                "Preparing datasets..."
+            ):
+    
+                rebuild_service = RebuildService()
+    
+                rebuild_service.rebuild()
+    
+                # Clear cached graph
+                get_graph.clear()
+    
+                # Clear cached datasets
+                clear_dataset_cache()
+    
+        except Exception as error:
+    
+            st.error(
+                f"Rebuild failed:\n{error}"
+            )
 
 if "messages" not in st.session_state or isinstance(st.session_state.messages, list):
     st.session_state.messages = {}
     st.session_state.current_message_id = None
+    # View mode: "all" shows the full conversation, "branch" shows a selected branch
+    if "view_mode" not in st.session_state:
+        st.session_state.view_mode = "all"
+    if "branch_root_id" not in st.session_state:
+        st.session_state.branch_root_id = None
+    if "main_leaf_id" not in st.session_state:
+        st.session_state.main_leaf_id = None
 
-active_branch = tree_utils.get_branch_path(st.session_state.messages, st.session_state.current_message_id)
+    # In "all" view we stay here; branch selection is handled by the Branch button per message
+    # In "all" view we stay here; branch selection is handled by the Branch button per message
 
-for msg in active_branch:
+
+# Determine which messages to display based on view mode
+if st.session_state.view_mode == "all":
+    # Show the main branch path
+    if st.session_state.main_leaf_id:
+        display_messages = tree_utils.get_branch_path(st.session_state.messages, st.session_state.main_leaf_id)
+    else:
+        if st.session_state.messages:
+            last_msg = sorted(st.session_state.messages.values(), key=lambda x: x.get("timestamp", ""))[-1]
+            st.session_state.main_leaf_id = last_msg["id"]
+            if not st.session_state.current_message_id:
+                st.session_state.current_message_id = last_msg["id"]
+            display_messages = tree_utils.get_branch_path(st.session_state.messages, st.session_state.main_leaf_id)
+        else:
+            display_messages = []
+else:
+    # Show only the active path starting from branch_root_id down to current_message_id
+    if st.session_state.branch_root_id and st.session_state.current_message_id:
+        full_path = tree_utils.get_branch_path(st.session_state.messages, st.session_state.current_message_id)
+        try:
+            idx = next(i for i, m in enumerate(full_path) if m["id"] == st.session_state.branch_root_id)
+            display_messages = full_path[idx:]
+        except StopIteration:
+            display_messages = [st.session_state.messages[st.session_state.branch_root_id]]
+    else:
+        display_messages = []
+
+# Render chat messages
+for msg in display_messages:
     role = msg["role"]
+    is_assistant = (role == "assistant")
     content = msg["content"]
     msg_id = msg["id"]
 
@@ -119,47 +151,39 @@ for msg in active_branch:
         else:
             st.markdown(str(content))
             
-        # Determine navigation UI components
-        nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns([0.2, 0.2, 0.2, 0.2, 0.2])
-        parent_id = msg.get("parent_id")
-        siblings = tree_utils.get_children(st.session_state.messages, parent_id)
-        my_children = tree_utils.get_children(st.session_state.messages, msg_id)
-        is_tip = (msg_id == st.session_state.current_message_id)
-        is_assistant = (role == "assistant")
-        has_nav = len(siblings) > 1
+        # Simple navigation buttons (1 and 2)
+        if is_assistant:
+            col1, col2, _ = st.columns([1, 1, 8])
+            is_active_branch_root = (st.session_state.view_mode == "branch" and st.session_state.branch_root_id == msg_id)
+            
+            with col1:
+                if st.session_state.view_mode == "all":
+                    st.button("1", key=f"btn1_{msg_id}", disabled=True)
+                else:
+                    if st.button("1", key=f"btn1_{msg_id}"):
+                        st.session_state.view_mode = "all"
+                        st.session_state.branch_root_id = None
+                        if st.session_state.main_leaf_id:
+                            st.session_state.current_message_id = st.session_state.main_leaf_id
+                        st.rerun()
+            with col2:
+                if is_active_branch_root:
+                    st.button("2", key=f"btn2_{msg_id}", disabled=True)
+                else:
+                    if st.button("2", key=f"btn2_{msg_id}"):
+                        st.session_state.view_mode = "branch"
+                        st.session_state.branch_root_id = msg_id
+                        
+                        # Smart branch restoration
+                        children = tree_utils.get_children(st.session_state.messages, msg_id)
+                        if len(children) > 1:
+                            leaf = tree_utils.get_leaf_node(st.session_state.messages, children[-1]["id"])
+                            st.session_state.current_message_id = leaf
+                        else:
+                            st.session_state.current_message_id = msg_id
+                        
+                        st.rerun()
 
-        # Parent navigation (if exists)
-        if parent_id:
-            with nav_col1:
-                if st.button("← Parent", key=f"parent_{msg_id}"):
-                    st.session_state.current_message_id = parent_id
-                    st.rerun()
-
-        # Sibling navigation arrows (only when multiple branches)
-        if has_nav:
-            idx = next((i for i, s in enumerate(siblings) if s["id"] == msg_id), 0)
-            with nav_col2:
-                if st.button("←", key=f"prev_{msg_id}", disabled=(idx == 0)):
-                    st.session_state.current_message_id = tree_utils.get_leaf_node(st.session_state.messages, siblings[idx-1]["id"])
-                    st.rerun()
-            with nav_col3:
-                st.markdown(f"<div style='text-align: center; margin-top: 10px; font-size: 0.8rem; color: gray;'>{idx+1} / {len(siblings)}</div>", unsafe_allow_html=True)
-            with nav_col4:
-                if st.button("→", key=f"next_{msg_id}", disabled=(idx == len(siblings)-1)):
-                    st.session_state.current_message_id = tree_utils.get_leaf_node(st.session_state.messages, siblings[idx+1]["id"])
-                    st.rerun()
-
-        # Branch / Cancel actions (always show Branch for assistants)
-        with nav_col5:
-            if is_tip and my_children:
-                if st.button("Cancel & Go Back", key=f"resume_{msg_id}"):
-                    leaf_id = tree_utils.get_leaf_node(st.session_state.messages, my_children[-1]["id"])
-                    st.session_state.current_message_id = leaf_id
-                    st.rerun()
-            if is_assistant:
-                if st.button("↳ Branch", key=f"branch_{msg_id}", help="Branch conversation from here"):
-                    st.session_state.current_message_id = msg_id
-                    st.rerun()
 
 
 question = st.chat_input(
@@ -175,6 +199,8 @@ if question:
         parent_id=st.session_state.current_message_id
     )
     st.session_state.current_message_id = new_user_id
+    if st.session_state.view_mode == "all":
+        st.session_state.main_leaf_id = new_user_id
 
     with st.chat_message("user"):
 
@@ -337,6 +363,8 @@ if question:
         parent_id=st.session_state.current_message_id
     )
     st.session_state.current_message_id = new_assistant_id
+    if st.session_state.view_mode == "all":
+        st.session_state.main_leaf_id = new_assistant_id
 
     # Save to history if it's a new successful response
     if history_service and result and result.get("route") != "cached":
@@ -344,3 +372,5 @@ if question:
             history_service.save_interaction(question, response)
         elif not isinstance(response, dict):
             history_service.save_interaction(question, {"type": "text", "data": str(response)})
+
+    st.rerun()

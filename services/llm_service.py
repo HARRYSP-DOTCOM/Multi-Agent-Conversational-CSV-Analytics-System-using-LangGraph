@@ -201,9 +201,13 @@ Question:
     def generate_python(self, question, contexts_json, error_message=None, previous_code=None):
         
         # Extract valid dataset keys
+        valid_keys = []
         try:
-            import json
-            schemas = json.loads(contexts_json)
+            if isinstance(contexts_json, str):
+                import json
+                schemas = json.loads(contexts_json)
+            else:
+                schemas = contexts_json
             valid_keys = list(schemas.keys())
             keys_str = ", ".join(f'"{k}"' for k in valid_keys)
         except:

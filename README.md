@@ -111,6 +111,8 @@ When files are uploaded in `app.py`, the following happens:
 9. Matching metadata is written to `vector_store/metadata.json`.
 10. Streamlit clears the cached graph, clears cached datasets, and resets chat history.
 
+**Performance Optimization:** The upload processing block tracks file states (`st.session_state["last_uploaded_files"]`). It only executes the expensive FAISS rebuild and dataset profiling operations when completely new files are uploaded, preventing unnecessary re-computations during normal chat interactions or page reruns.
+
 This means every upload replaces the active working dataset set. The app is designed around the current uploaded CSVs, not a growing historical collection.
 
 ## Question Workflow
@@ -259,15 +261,18 @@ Chat history is stored only in Streamlit session state. It is used for display, 
 
 ### Conversation Branching
 
-The app now supports ChatGPT‑style branching. Every message is stored with a unique `id`, a `parent_id` (the message it branches from), and an optional `branch_id`. Users can start a new branch from any previous message using the **↳ Branch** button. Navigation buttons allow moving to the parent (`← Parent`) or to sibling branches (`←` and `→`).
+The app supports branching conversation threads. Every message is stored with a unique `id` and a `parent_id` (the message it branches from). Users can spawn independent, isolated chat threads from any historical AI message.
 
-The backend stores messages in `st.session_state.messages` as a dictionary keyed by message IDs and provides helper functions in `utils/tree_utils.py` to:
-- Add new messages with proper parent links (`add_message`).
-- Retrieve the active branch path for the current view (`get_branch_path`).
-- List children/siblings of a node (`get_children`).
-- Find the leaf node of a branch (`get_leaf_node`).
+The UI relies on two numeric toggle buttons (`[1]` and `[2]`):
+- **Global View (`[1]`)**: Displays the main chronological conversation. Here, each AI message displays a `[2]` button.
+- **Branch View (`[2]`)**: Clicking `[2]` creates an isolated view showing only that specific message and any new follow-up messages you send underneath it. You can return to the main conversation by clicking the `[1]` button at the top of the branch.
 
-These utilities enable the UI to render a dynamic conversation tree while keeping the LangGraph workflow unchanged.
+The backend stores messages in `st.session_state.messages` as an adjacency-list dictionary keyed by message IDs. Helper functions in `utils/tree_utils.py` support:
+- Adding new messages with proper parent links (`add_message`).
+- Retrieving the active branch path for the current view (`get_branch_path`).
+- Traversing downward to find the most recent leaf node of an active branch (`get_leaf_node`).
+
+This allows the UI to render a dynamic conversation tree seamlessly while keeping the LangGraph execution flow completely linear.
 
 
 ## Error Handling And Retries
