@@ -50,12 +50,22 @@ def _tokens(text):
     return tokens | singular_tokens
 
 
+STOP_WORDS = {
+    "what", "is", "the", "of", "how", "many", "a", "an", "in", "to", "for",
+    "on", "with", "at", "by", "from", "up", "about", "into", "over", "after",
+    "who", "where", "why", "when", "which", "are", "do", "does", "did", "can",
+    "could", "would", "should", "will", "shall", "has", "have", "had", "been",
+    "be", "am", "was", "were", "this", "that", "these", "those", "then", "than"
+}
+
 def _add_term(terms, value):
     normalized_value = _normalize(value)
 
-    if normalized_value:
+    if normalized_value and normalized_value not in STOP_WORDS:
         terms.add(normalized_value)
-        terms.update(_tokens(value))
+        for token in _tokens(value):
+            if token not in STOP_WORDS:
+                terms.add(token)
 
 
 def _load_dataset_terms():

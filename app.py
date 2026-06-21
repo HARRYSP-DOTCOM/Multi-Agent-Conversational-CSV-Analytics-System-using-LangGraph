@@ -84,43 +84,22 @@ if uploaded_files:
 if "messages" not in st.session_state or isinstance(st.session_state.messages, list):
     st.session_state.messages = {}
     st.session_state.current_message_id = None
-    # View mode: "all" shows the full conversation, "branch" shows a selected branch
-    if "view_mode" not in st.session_state:
-        st.session_state.view_mode = "all"
-    if "branch_root_id" not in st.session_state:
-        st.session_state.branch_root_id = None
-    if "main_leaf_id" not in st.session_state:
-        st.session_state.main_leaf_id = None
 
-    # In "all" view we stay here; branch selection is handled by the Branch button per message
-    # In "all" view we stay here; branch selection is handled by the Branch button per message
+if st.session_state.get("new_edited_question"):
+    q_text = st.session_state.new_edited_question["content"]
+    p_id = st.session_state.new_edited_question["parent_id"]
+    new_user_id = tree_utils.add_message(st.session_state.messages, "user", q_text, p_id)
+    st.session_state.current_message_id = new_user_id
+    st.session_state.trigger_generation = q_text
+    del st.session_state["new_edited_question"]
 
-
-# Determine which messages to display based on view mode
-if st.session_state.view_mode == "all":
-    # Show the main branch path
-    if st.session_state.main_leaf_id:
-        display_messages = tree_utils.get_branch_path(st.session_state.messages, st.session_state.main_leaf_id)
-    else:
-        if st.session_state.messages:
-            last_msg = sorted(st.session_state.messages.values(), key=lambda x: x.get("timestamp", ""))[-1]
-            st.session_state.main_leaf_id = last_msg["id"]
-            if not st.session_state.current_message_id:
-                st.session_state.current_message_id = last_msg["id"]
-            display_messages = tree_utils.get_branch_path(st.session_state.messages, st.session_state.main_leaf_id)
-        else:
-            display_messages = []
-else:
-    # Show only the active path starting from branch_root_id down to current_message_id
-    if st.session_state.branch_root_id and st.session_state.current_message_id:
-        full_path = tree_utils.get_branch_path(st.session_state.messages, st.session_state.current_message_id)
-        try:
-            idx = next(i for i, m in enumerate(full_path) if m["id"] == st.session_state.branch_root_id)
-            display_messages = full_path[idx:]
-        except StopIteration:
-            display_messages = [st.session_state.messages[st.session_state.branch_root_id]]
-    else:
-        display_messages = []
+display_messages = []
+if st.session_state.current_message_id:
+    display_messages = tree_utils.get_branch_path(st.session_state.messages, st.session_state.current_message_id)
+elif st.session_state.messages:
+    last_msg = sorted(st.session_state.messages.values(), key=lambda x: x.get("timestamp", ""))[-1]
+    st.session_state.current_message_id = last_msg["id"]
+    display_messages = tree_utils.get_branch_path(st.session_state.messages, st.session_state.current_message_id)
 
 # Render chat messages
 for msg in display_messages:
@@ -130,68 +109,89 @@ for msg in display_messages:
     msg_id = msg["id"]
 
     with st.chat_message(role):
-        if isinstance(content, dict):
-            summary = content.get("summary")
-            data = content.get("data")
-            response_type = content.get("type")
-            
-            if summary:
-                st.markdown(summary)
-            
-            if response_type == "dataframe":
-                st.dataframe(data, use_container_width=True)
-            elif response_type == "number":
-                st.metric("Result", data)
-            elif response_type == "text":
-                st.markdown(str(data))
-            elif response_type == "error":
-                st.error(str(data))
-            else:
-                st.markdown(str(data))
-        else:
-            st.markdown(str(content))
-            
-        # Simple navigation buttons (1 and 2)
         if is_assistant:
-            col1, col2, _ = st.columns([1, 1, 8])
-            is_active_branch_root = (st.session_state.view_mode == "branch" and st.session_state.branch_root_id == msg_id)
-            
-            with col1:
-                if st.session_state.view_mode == "all":
-                    st.button("1", key=f"btn1_{msg_id}", disabled=True)
+            if isinstance(content, dict):
+                summary = content.get("summary")
+                data = content.get("data")
+                response_type = content.get("type")
+                
+                if summary:
+                    st.markdown(summary)
+                
+                if response_type == "dataframe":
+                    st.dataframe(data, use_container_width=True)
+                elif response_type == "number":
+                    st.metric("Result", data)
+                elif response_type == "text":
+                    st.markdown(str(data))
+                elif response_type == "error":
+                    st.error(str(data))
                 else:
-                    if st.button("1", key=f"btn1_{msg_id}"):
-                        st.session_state.view_mode = "all"
-                        st.session_state.branch_root_id = None
-                        if st.session_state.main_leaf_id:
-                            st.session_state.current_message_id = st.session_state.main_leaf_id
+                    st.markdown(str(data))
+            else:
+                st.markdown(str(content))
+        else:
+            if st.session_state.get(f"editing_{msg_id}", False):
+                with st.form(key=f"edit_form_{msg_id}"):
+                    new_text = st.text_area("Edit message", value=content, height=100)
+                    col1, col2, _ = st.columns([1, 1, 4])
+                    with col1:
+                        submit = st.form_submit_button("Submit")
+                    with col2:
+                        cancel = st.form_submit_button("Cancel")
+                    
+                    if submit:
+                        st.session_state[f"editing_{msg_id}"] = False
+                        st.session_state.new_edited_question = {
+                            "content": new_text,
+                            "parent_id": msg.get("parent_id")
+                        }
                         st.rerun()
-            with col2:
-                if is_active_branch_root:
-                    st.button("2", key=f"btn2_{msg_id}", disabled=True)
+                    if cancel:
+                        st.session_state[f"editing_{msg_id}"] = False
+                        st.rerun()
+            else:
+                st.markdown(str(content))
+                
+                parent_id = msg.get("parent_id")
+                if parent_id is None:
+                    siblings = [m for m in st.session_state.messages.values() if m.get("parent_id") is None]
                 else:
-                    if st.button("2", key=f"btn2_{msg_id}"):
-                        st.session_state.view_mode = "branch"
-                        st.session_state.branch_root_id = msg_id
-                        
-                        # Smart branch restoration
-                        children = tree_utils.get_children(st.session_state.messages, msg_id)
-                        if len(children) > 1:
-                            leaf = tree_utils.get_leaf_node(st.session_state.messages, children[-1]["id"])
-                            st.session_state.current_message_id = leaf
-                        else:
-                            st.session_state.current_message_id = msg_id
-                        
-                        st.rerun()
+                    siblings = tree_utils.get_children(st.session_state.messages, parent_id)
+                
+                siblings.sort(key=lambda x: x.get("timestamp", ""))
+                
+                col1, col2, col3, col4, _ = st.columns([1, 1, 1, 1, 6])
+                
+                if len(siblings) > 1:
+                    idx = siblings.index(msg)
+                    with col1:
+                        if st.button("◀", key=f"prev_{msg_id}", disabled=(idx == 0)):
+                            new_sibling = siblings[idx - 1]
+                            st.session_state.current_message_id = tree_utils.get_leaf_node(st.session_state.messages, new_sibling["id"])
+                            st.rerun()
+                    with col2:
+                        st.markdown(f"<div style='padding-top: 5px; text-align: center; font-size: 0.9em;'>{idx + 1}/{len(siblings)}</div>", unsafe_allow_html=True)
+                    with col3:
+                        if st.button("▶", key=f"next_{msg_id}", disabled=(idx == len(siblings) - 1)):
+                            new_sibling = siblings[idx + 1]
+                            st.session_state.current_message_id = tree_utils.get_leaf_node(st.session_state.messages, new_sibling["id"])
+                            st.rerun()
+                    with col4:
+                        if st.button("✏️", key=f"edit_btn_{msg_id}"):
+                            st.session_state[f"editing_{msg_id}"] = True
+                            st.rerun()
+                else:
+                    with col1:
+                        if st.button("✏️", key=f"edit_btn_{msg_id}"):
+                            st.session_state[f"editing_{msg_id}"] = True
+                            st.rerun()
 
 
 
-question = st.chat_input(
-    "Ask a question..."
-)
+question = st.chat_input("Ask a question...")
 
 if question:
-
     new_user_id = tree_utils.add_message(
         st.session_state.messages,
         role="user",
@@ -199,38 +199,32 @@ if question:
         parent_id=st.session_state.current_message_id
     )
     st.session_state.current_message_id = new_user_id
-    if st.session_state.view_mode == "all":
-        st.session_state.main_leaf_id = new_user_id
+    st.session_state.trigger_generation = question
+    st.rerun()
 
-    with st.chat_message("user"):
-
-        st.markdown(question)
+if st.session_state.get("trigger_generation"):
+    q_text = st.session_state.trigger_generation
+    del st.session_state["trigger_generation"]
 
     try:
-
         graph = get_graph()
-
         branch_history = tree_utils.get_branch_path(st.session_state.messages, st.session_state.current_message_id)
         
         initial_state = {
-    "question": question,
-    "chat_history": branch_history,
-
-    "route": None,
-    "route_reason": None,
-    "csv_question": None,
-    "web_question": None,
-    "web_result": None,
-
-    "parsed_query": None,
-    "retrieval_result": None,
-    "analysis_result": None,
-
-    "final_response": None,
-
-    "generated_code": None,
-    "execution_result": None
-}
+            "question": q_text,
+            "chat_history": branch_history,
+            "route": None,
+            "route_reason": None,
+            "csv_question": None,
+            "web_question": None,
+            "web_result": None,
+            "parsed_query": None,
+            "retrieval_result": None,
+            "analysis_result": None,
+            "final_response": None,
+            "generated_code": None,
+            "execution_result": None
+        }
 
         result = {}
         with st.spinner("Analyzing..."):
@@ -239,11 +233,9 @@ if question:
         response = result.get("final_response", {"type": "error", "data": "No response returned"})
 
     except Exception as error:
-
+        result = {}
         response = {
-
             "type": "error",
-
             "data": str(error)
         }
 
@@ -363,14 +355,12 @@ if question:
         parent_id=st.session_state.current_message_id
     )
     st.session_state.current_message_id = new_assistant_id
-    if st.session_state.view_mode == "all":
-        st.session_state.main_leaf_id = new_assistant_id
 
     # Save to history if it's a new successful response
     if history_service and result and result.get("route") != "cached":
         if isinstance(response, dict) and response.get("type") != "error":
-            history_service.save_interaction(question, response)
+            history_service.save_interaction(q_text, response)
         elif not isinstance(response, dict):
-            history_service.save_interaction(question, {"type": "text", "data": str(response)})
+            history_service.save_interaction(q_text, {"type": "text", "data": str(response)})
 
     st.rerun()

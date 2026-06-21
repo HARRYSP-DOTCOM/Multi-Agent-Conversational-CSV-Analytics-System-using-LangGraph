@@ -7,6 +7,66 @@ class LLMService:
         self.model = "qwen2.5:1.5b"
 
     # ==================================================
+    # CONVERSATIONAL MEMORY
+    # ==================================================
+
+    def check_conversational_memory(self, question, chat_history):
+        if not chat_history or len(chat_history) <= 1:
+            return None
+        
+        # Format history
+        history_text = ""
+        for msg in chat_history[:-1]: # Exclude the current question
+            role = msg.get("role", "unknown").capitalize()
+            content = msg.get("content", "")
+            if isinstance(content, dict):
+                content = str(content.get("data", content))
+            history_text += f"{role}: {content}\n"
+            
+        prompt = f"""You are an AI assistant. Analyze the Conversation History to see if it contains the exact answer to the Latest Question.
+Output ONLY valid JSON in this format:
+{{"found": true/false, "answer": "the exact answer from history or null"}}
+
+Conversation History:
+{history_text}
+
+Latest Question: "{question}"
+"""
+
+        response = chat(
+            model=self.model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+        
+        content = response["message"]["content"].strip()
+        
+        # Parse the JSON response
+        import json, re
+        
+        # Try to extract json if it's wrapped in markdown code blocks
+        match = re.search(r"```json\n(.*?)\n```", content, re.DOTALL | re.IGNORECASE)
+        if match:
+            content = match.group(1).strip()
+        else:
+            match = re.search(r"```\n(.*?)\n```", content, re.DOTALL | re.IGNORECASE)
+            if match:
+                content = match.group(1).strip()
+                
+        try:
+            parsed = json.loads(content)
+            if parsed.get("found") is True and parsed.get("answer"):
+                return str(parsed["answer"])
+        except Exception:
+            pass
+            
+        return None
+
+    # ==================================================
     # QUERY UNDERSTANDING
     # ==================================================
 

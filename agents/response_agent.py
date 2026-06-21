@@ -308,6 +308,9 @@ def response_agent(state: AgentState):
     )
 
     try:
+        if route == "cached":
+            return state
+
         if route == "hybrid" and (
             execution_result
             or web_result
