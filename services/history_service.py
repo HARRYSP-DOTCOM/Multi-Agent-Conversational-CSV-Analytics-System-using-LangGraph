@@ -34,7 +34,7 @@ class HistoryService:
         except Exception as e:
             print(f"Warning: Failed to save to MongoDB: {e}")
 
-    def find_similar_interaction(self, question: str, threshold: float = 0.85) -> Optional[Dict[str, Any]]:
+    def find_similar_interaction(self, question: str, threshold: float = 0.95) -> Optional[Dict[str, Any]]:
         """
         Find a previously answered question that is semantically similar to the new question.
         Returns the response dict if found, otherwise None.

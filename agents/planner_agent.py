@@ -182,20 +182,39 @@ def planner_agent(state):
 
     # Load terms for CSV scoring
     dataset_terms, _ = _load_dataset_terms()
-    csv_score, csv_matches, _ = _score_csv(question, dataset_terms)
+    csv_score, csv_matches, explicit_csv_matches = _score_csv(question, dataset_terms)
     web_score, web_matches = _score_web(question)
 
-    # Determine routing: prefer CSV when its score is higher (and >0) and the
-    # column appears in any uploaded dataset. Otherwise fall back to web.
+    # Check if any word in the question matches an actual column name
+    has_column = False
+    normalized_question = _normalize(question)
+    try:
+        contexts = get_context_service().load_contexts()
+        for context in contexts.values():
+            for column in context.get("columns", []):
+                col_name = _normalize(column.get("name", ""))
+                if col_name and col_name in normalized_question:
+                    has_column = True
+                    break
+            if has_column:
+                break
+    except Exception:
+        pass
+
+    # Determine routing: prefer CSV when its score is higher (and >0) 
+    # AND we either have explicit CSV terms or a direct column name match.
     route = "web"
-    if csv_score >= web_score and csv_score > 0:
-        if _has_column_in_datasets(question):
-            route = "csv"
-        else:
-            # If column not found but CSV still seems relevant, still use CSV
-            route = "csv"
-    elif web_score > 0:
+    is_csv_relevant = has_column or len(explicit_csv_matches) > 0
+    is_web_relevant = web_score > 0
+
+    if is_csv_relevant and is_web_relevant:
+        route = "hybrid"
+    elif is_csv_relevant or (csv_score > 0 and web_score == 0):
+        route = "csv"
+    elif is_web_relevant or web_score >= csv_score:
         route = "web"
+    else:
+        route = "csv"
 
     csv_q, web_q = _build_subquestions(question, route)
 
@@ -227,6 +246,14 @@ def _score_csv(question, dataset_terms):
         "columns",
         "rows",
     }
+
+    try:
+        from services.context_service import ContextService
+        contexts = ContextService().load_contexts()
+        for ds_name in contexts.keys():
+            explicit_csv_terms.add(_normalize(ds_name))
+    except Exception:
+        pass
 
     score = 0
     matches = []
@@ -379,11 +406,7 @@ def _build_subquestions(question, route):
         f"Original question: {question}"
     )
 
-    web_question = (
-        "Find only the current/external/web context needed for this "
-        "question, such as full forms, meanings, definitions, or current "
-        f"facts. Do not use uploaded CSV data. Original question: {question}"
-    )
+    web_question = question
 
     return csv_question, web_question
 

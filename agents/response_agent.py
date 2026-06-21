@@ -15,7 +15,7 @@ def _get_web_results(web_result):
     return []
 
 
-def _format_web_context(web_result, limit=5):
+def _format_web_context(web_result, limit=3):
     results = _get_web_results(web_result)
     lines = []
 
@@ -33,14 +33,17 @@ def _format_web_context(web_result, limit=5):
             "url",
             "No URL"
         )
+        
         text = getattr(
             item,
             "text",
             ""
         )
+        if text:
+            text = text[:3000]
 
         lines.append(
-            f"{i}. {title}\n{url}\n{text[:700]}"
+            f"{i}. {title}\n{url}\n{text}"
         )
 
     return "\n\n".join(lines)

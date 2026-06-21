@@ -19,7 +19,8 @@ class ExaService:
     def search(self, query, num_results=5):
         results = self.exa.search_and_contents(
             query,
-            num_results=num_results
+            num_results=num_results,
+            text=True
         )
 
         return results

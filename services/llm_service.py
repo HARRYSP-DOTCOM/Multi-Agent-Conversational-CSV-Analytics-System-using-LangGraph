@@ -23,7 +23,10 @@ class LLMService:
                 content = str(content.get("data", content))
             history_text += f"{role}: {content}\n"
             
-        prompt = f"""You are an AI assistant. Analyze the Conversation History to see if it contains the exact answer to the Latest Question.
+        prompt = f"""You are a strict cache-checking AI. 
+Read the Conversation History carefully. Does the history ALREADY contain the exact answer to the Latest Question?
+If the Latest Question asks for something new (like a different quantity, a new list, or a new fact not present in the history), you MUST output "found": false.
+
 Output ONLY valid JSON in this format:
 {{"found": true/false, "answer": "the exact answer from history or null"}}
 
@@ -293,6 +296,7 @@ RULES:
 10. IMPORTANT: If filtering by a year (e.g. 2002) on a column that contains year-month as floats (e.g. 2002.03), you MUST use `df['ColumnName'].astype(int) == 2002` to match all months in that year.
 11. CRITICAL: Never fetch web data, APIs, URLs, files outside `datasets`, or current market data. If the question contains web/current/external wording, answer only the uploaded CSV portion.
 12. CRITICAL: Do not use undefined variables such as `stocks_df`. Always create variables from `datasets[...]`.
+13. IMPORTANT: If your final answer is a raw number or single value, you MUST format it as a descriptive string that includes the name of the entity being queried. (e.g. use `result = f"The profit for Reliance is {{profit}}"` instead of `result = profit`).
 
 Examples:
 
@@ -403,6 +407,7 @@ Please analyze the error, fix the mistake, and generate the corrected Python cod
             code = "\n".join(lines)
 
         forbidden_fragments = [
+            "read_csv(",
             "read_json(",
             "read_html(",
             "read_xml(",
@@ -412,33 +417,17 @@ Please analyze the error, fix the mistake, and generate the corrected Python cod
             "http://",
             "https://",
             "api.",
-            "open(",
-            "import ",
-            "from ",
+            "open("
         ]
 
-        if any(
-            fragment.lower() in code.lower()
-            for fragment in forbidden_fragments
-        ):
-            first_key = valid_keys[0] if "valid_keys" in locals() and valid_keys else None
-
-            if first_key:
-                code = (
-                    f'df = datasets["{first_key}"]\n'
-                    "numeric_columns = df.select_dtypes(include='number').columns.tolist()\n"
-                    "profit_columns = [col for col in df.columns if col.lower() == 'profit']\n"
-                    "if profit_columns:\n"
-                    "    result = df.sort_values(profit_columns[0], ascending=False)\n"
-                    "elif numeric_columns:\n"
-                    "    result = df[numeric_columns].describe().reset_index()\n"
-                    "else:\n"
-                    "    result = df.head(20)"
-                )
-            else:
-                code = (
-                    "result = 'No uploaded datasets are available for CSV analysis.'"
-                )
+        # If it really violates, just let E2B sandbox handle it or fail!
+        # The E2B sandbox is isolated. We should not blindly replace their code 
+        # with a .describe() fallback because that ignores the user's question!
+        for fragment in forbidden_fragments:
+            if fragment.lower() in code.lower():
+                # We'll just replace the forbidden fragment with a comment
+                # to break it, so it will error and retry cleanly
+                code = code.replace(fragment, f"# FORBIDDEN: {fragment} ")
 
         # Auto-fix float year filtering if the AI ignored Rule 10
         import re
@@ -511,24 +500,17 @@ CRITICAL RULES:
     ):
 
         prompt = f"""
-You are a helpful data assistant.
+You must combine two pieces of information to answer the user's question.
 
-The user asked:
-"{question}"
+User Question: "{question}"
 
-The uploaded CSV analysis returned:
+Fact 1 (From user's private CSV file):
 {csv_result}
 
-The web search context returned:
+Fact 2 (From public web search):
 {web_context}
 
-Write one concise answer that combines both sources.
-
-CRITICAL RULES:
-1. Clearly distinguish what came from the uploaded CSV data and what came from web context.
-2. Do NOT invent numbers, dates, URLs, or facts not present in the two inputs.
-3. If one source is weak or missing, say that briefly and still answer from the available source.
-4. Keep the answer short and practical.
+Write a single, short response that explicitly states the information from Fact 1 and Fact 2. You MUST include the exact value from Fact 1. Do not ignore Fact 1.
 """
 
         response = chat(
@@ -548,24 +530,62 @@ CRITICAL RULES:
         question,
         web_context
     ):
+        q_lower = question.lower()
+        if "time" in q_lower and ("current" in q_lower or "now" in q_lower or "what is" in q_lower):
+            import datetime
+            try:
+                import zoneinfo
+                tz_mapping = {
+                    "ist": "Asia/Kolkata", "india": "Asia/Kolkata", "gmt": "GMT", "utc": "UTC",
+                    "pst": "America/Los_Angeles", "est": "America/New_York", "america": "America/New_York",
+                    "uk": "Europe/London", "japan": "Asia/Tokyo"
+                }
+                target_tz = None
+                tz_name = ""
+                
+                for term, tz in tz_mapping.items():
+                    if f"in {term}" in q_lower or f"for {term}" in q_lower or q_lower.endswith(term):
+                        target_tz = tz
+                        tz_name = term.upper()
+                        break
+                
+                if not target_tz:
+                    for tz_str in zoneinfo.available_timezones():
+                        city = tz_str.split("/")[-1].lower().replace("_", " ")
+                        if f"in {city}" in q_lower or f"for {city}" in q_lower or q_lower.endswith(city):
+                            target_tz = tz_str
+                            tz_name = city.title()
+                            break
 
+                if target_tz:
+                    dt = datetime.datetime.now(zoneinfo.ZoneInfo(target_tz))
+                    return f"The current time in {tz_name} is {dt.strftime('%A, %B %d, %Y %I:%M %p')}."
+            except Exception:
+                pass
+                
+            current_time_str = datetime.datetime.now().strftime("%A, %B %d, %Y %I:%M %p (System Local Time)")
+            return f"The current system time is {current_time_str}."
+
+        import datetime
+        current_time_str = datetime.datetime.now().strftime("%A, %B %d, %Y %I:%M %p (System Local Time)")
+        
         prompt = f"""
-You are a precise web research assistant.
+You are a direct question-answering assistant.
+Current System Date & Time: {current_time_str}
 
-The user asked:
+USER QUESTION:
 "{question}"
 
-Web search context:
+WEB SEARCH CONTEXT:
 {web_context}
 
-Answer the user's question directly using only the web context.
-
 CRITICAL RULES:
-1. Start with the direct answer.
-2. Do NOT mention irrelevant search results.
-3. Do NOT invent facts, dates, numbers, or names not present in the context.
-4. If the context is insufficient, say what is missing and provide the best supported answer.
-5. Include source URLs when they are available in the context.
+1. Answer the question directly. Do NOT write meta-commentary like "The user asked..." or "The web search provided...".
+2. Do NOT say "Based on the context" or "According to the search results". Just give the direct answer.
+3. For time questions, use the 'Current System Date & Time' (which is IST / UTC+5:30) as your base, and calculate the requested timezone difference. Do NOT just repeat the system time if they ask for a different timezone!
+4. If the context does not contain the answer (and it's not a time question), say "I could not find the answer in the web search results."
+5. If it's a list, output the actual list items clearly.
+6. Include source URLs at the bottom if they are available in the context.
 """
 
         response = chat(
