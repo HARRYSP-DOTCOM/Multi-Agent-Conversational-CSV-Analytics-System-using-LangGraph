@@ -1,10 +1,14 @@
 import csv
 import os
 import re
+from typing import Any, Optional, Dict
+from state.agent_state import AgentState
 from services.dataset_loader import DatasetLoader
 
 from services.context_service import ContextService
 from services.llm_service import LLMService
+from core.base_agent import BaseAgent
+from agents.agent_factory import AgentRegistry
 
 
 _context_service = None
@@ -168,13 +172,8 @@ def _has_column_in_datasets(metric):
     return False
 
 
-def planner_agent(state):
-    """Planner agent that decides whether to use CSV, Web, or Hybrid.
-
-    It analyses the user's question, scores CSV vs Web relevance, and checks if the
-    required column exists in any uploaded dataset. The function returns an updated
-    state dictionary expected by downstream agents.
-    """
+def _plan(state):
+    """Internal planning logic that scores CSV vs Web relevance."""
     question = state.get("question")
     if not question:
         state["route"] = "web"
@@ -227,6 +226,24 @@ def planner_agent(state):
             "web": web_matches
         }
     }
+
+
+@AgentRegistry.register("planner")
+class PlannerAgent(BaseAgent):
+    """
+    Planner agent that routes user questions to CSV analysis, Web search, or Hybrid.
+    Demonstrates BaseAgent subclassing and callable dispatch.
+    """
+
+    def __init__(self) -> None:
+        super().__init__(name="planner_agent", description="Routes queries between CSV and Web paths")
+
+    def process(self, state: Any) -> Any:
+        return _plan(state)
+
+
+planner_agent = PlannerAgent()
+
 
 
 def _score_csv(question, dataset_terms):

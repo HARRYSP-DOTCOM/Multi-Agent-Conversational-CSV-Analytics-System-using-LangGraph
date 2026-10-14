@@ -62,3 +62,16 @@ class HistoryService:
         except Exception as e:
             print(f"Warning: Failed to read from MongoDB: {e}")
             return None
+
+    def close(self):
+        """Safely close MongoDB client connection."""
+        try:
+            if hasattr(self, "client") and self.client:
+                self.client.close()
+        except Exception:
+            pass
+
+    def __del__(self):
+        """Teardown hook ensuring MongoDB connection is released."""
+        self.close()
+

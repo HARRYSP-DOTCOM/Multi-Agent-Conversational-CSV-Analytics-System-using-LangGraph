@@ -1,81 +1,88 @@
-import os
+"""
+Upload Service for managing CSV file ingestion and storage.
 
-class UploadService:
+Demonstrates:
+- Subclassing `BaseService`
+- Modern filesystem handling with `pathlib.Path`
+- Defensive file handling and error containment
+- Resource management using `with` context managers
+- Complete compatibility with Streamlit `UploadedFile` objects
+"""
 
-    def __init__(self):
+from pathlib import Path
+from typing import List, Any, Union, Dict
+from core.base_service import BaseService
 
-        self.upload_directory = "uploads"
 
-        os.makedirs(
-            self.upload_directory,
-            exist_ok=True
-        )
+class UploadService(BaseService):
+    """
+    Manages safe reception, storage, and lifecycle of uploaded CSV files.
+    """
 
-    def save_files(
-        self,
-        uploaded_files
-    ):
+    def __init__(self, upload_directory: Union[str, Path] = "uploads") -> None:
+        super().__init__(service_name="upload_service")
+        self._upload_directory = Path(upload_directory)
+        self._upload_directory.mkdir(parents=True, exist_ok=True)
+        self._initialized = True
 
-        # ==========================================
-        # Remove previously uploaded CSVs
-        # ==========================================
+    @property
+    def upload_directory(self) -> Path:
+        """Returns upload directory path."""
+        return self._upload_directory
 
-        for file_name in os.listdir(
-            self.upload_directory
-        ):
+    def clean_old_uploads(self) -> int:
+        """
+        Removes previously uploaded CSV files from the directory.
+        Demonstrates `pathlib.Path.glob` and error containment with `try...except...else`.
 
-            if file_name.lower().endswith(".csv"):
+        Returns:
+            Count of deleted files.
+        """
+        deleted_count = 0
+        for file_path in self._upload_directory.glob("*.csv"):
+            try:
+                file_path.unlink()
+                deleted_count += 1
+                self._logger.info(f"Deleted old upload: {file_path.name}")
+            except OSError as err:
+                self._logger.warning(f"Could not delete {file_path.name}: {err}")
+        return deleted_count
 
-                old_file_path = os.path.join(
-                    self.upload_directory,
-                    file_name
-                )
+    def save_files(self, uploaded_files: List[Any]) -> List[str]:
+        """
+        Saves incoming uploaded file streams to disk.
+        Cleans previously uploaded CSVs before writing new ones.
 
-                try:
+        Args:
+            uploaded_files: Iterable of file-like objects (e.g. Streamlit UploadedFile)
 
-                    os.remove(old_file_path)
+        Returns:
+            List of saved absolute file path strings.
+        """
+        self.clean_old_uploads()
 
-                    print(
-                        f"Deleted old upload: "
-                        f"{old_file_path}"
-                    )
-
-                except Exception as e:
-
-                    print(
-                        f"Could not delete "
-                        f"{old_file_path}: {e}"
-                    )
-
-        # ==========================================
-        # Save newly uploaded files
-        # ==========================================
-
-        saved_paths = []
-
+        saved_paths: List[str] = []
         for uploaded_file in uploaded_files:
+            file_name = getattr(uploaded_file, "name", "uploaded_data.csv")
+            save_path = self._upload_directory / file_name
 
-            save_path = os.path.join(
-                self.upload_directory,
-                uploaded_file.name
-            )
+            # Stream buffer safely to disk
+            with save_path.open("wb") as destination:
+                if hasattr(uploaded_file, "getbuffer"):
+                    destination.write(uploaded_file.getbuffer())
+                elif hasattr(uploaded_file, "read"):
+                    destination.write(uploaded_file.read())
 
-            with open(
-                save_path,
-                "wb"
-            ) as f:
+            saved_paths.append(str(save_path))
+            self._logger.info(f"Saved upload: {save_path}")
 
-                f.write(
-                    uploaded_file.getbuffer()
-                )
+        return saved_paths
 
-            saved_paths.append(
-                save_path
-            )
-
-            print(
-                f"Saved upload: "
-                f"{save_path}"
-            )
-
-        return saved_paths              
+    def health_check(self) -> Dict[str, Any]:
+        """BaseService health check."""
+        return {
+            "service": self.service_name,
+            "status": "HEALTHY",
+            "directory": str(self._upload_directory),
+            "files_present": len(list(self._upload_directory.glob("*.csv"))),
+        }

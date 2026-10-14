@@ -1,95 +1,97 @@
+"""
+Rebuild Service orchestrating dataset indexing, profiling, and semantic vector store generation.
+
+Demonstrates:
+- Subclassing `BaseService`
+- Custom Context Manager `BenchmarkTimer`
+- Standard library `shutil` and `pathlib.Path`
+- Service orchestration pattern
+"""
+
+import shutil
+from pathlib import Path
+from typing import Dict, Any, Union
+
+from core.base_service import BaseService
+from core.context_managers import BenchmarkTimer
 from services.dataset_loader import DatasetLoader
 from services.context_generator import ContextGenerator
 from services.embedding_preparation import EmbeddingPreparation
 from services.embedding_service import EmbeddingService
 
-import os
-import shutil
 
-class RebuildService:
+class RebuildService(BaseService):
+    """
+    Coordinates end-to-end dataset profile rebuilding and vector database re-indexing.
+    """
 
-    def rebuild(self):
+    def __init__(
+        self,
+        contexts_dir: Union[str, Path] = "contexts",
+        vector_store_dir: Union[str, Path] = "vector_store",
+    ) -> None:
+        super().__init__(service_name="rebuild_service")
+        self._contexts_dir = Path(contexts_dir)
+        self._vector_store_dir = Path(vector_store_dir)
+        self._initialized = True
 
-        print("Cleaning old contexts and vector store...")
-        for d in ["contexts", "vector_store"]:
-            if os.path.exists(d):
-                shutil.rmtree(d)
-            os.makedirs(d, exist_ok=True)
+    def clean_cache_directories(self) -> None:
+        """Purges old metadata and vector store files safely."""
+        for target_dir in [self._contexts_dir, self._vector_store_dir]:
+            if target_dir.exists():
+                shutil.rmtree(target_dir, ignore_errors=True)
+            target_dir.mkdir(parents=True, exist_ok=True)
 
-        print("Loading datasets...")
+    def rebuild(self) -> Dict[str, Any]:
+        """
+        Executes end-to-end pipeline:
+        1. Directory cleanup
+        2. Concurrent dataset loading
+        3. Parallel context profiling
+        4. Entity extraction
+        5. Embedding generation and FAISS indexing
+        """
+        with BenchmarkTimer(label="Full_System_Rebuild") as timer:
+            self._logger.info("Starting system rebuild...")
+            self.clean_cache_directories()
 
-        loader = DatasetLoader()
+            loader = DatasetLoader()
+            datasets = loader.load_datasets()
 
-        datasets = loader.load_datasets()
+            generator = ContextGenerator(output_directory=self._contexts_dir)
+            for dataset_name, df in datasets.items():
+                context = generator.generate_context(dataset_name, df)
+                generator.save_context(context)
 
-        print("Generating contexts...")
+            preparer = EmbeddingPreparation()
+            records = []
+            for dataset_name, df in datasets.items():
+                context = generator.generate_context(dataset_name, df)
+                embeddable_cols = preparer.get_embeddable_columns(df, context)
+                dataset_records = preparer.extract_values(df, dataset_name, embeddable_cols)
+                records.extend(dataset_records)
 
-        generator = ContextGenerator()
+            if records:
+                embedding_service = EmbeddingService()
+                embeddings = embedding_service.generate_embeddings(records)
+                embedding_service.build_index(embeddings, records)
+                embedding_service.save_index()
+                self._logger.info(f"Indexed {len(records)} records in vector store.")
+            else:
+                self._logger.info("No records available to embed.")
 
-        for dataset_name, dataframe in datasets.items():
+        self._logger.info(f"Rebuild completed successfully in {timer.elapsed_seconds:.2f}s")
+        return {
+            "status": "SUCCESS",
+            "duration_sec": timer.elapsed_seconds,
+            "datasets_indexed": list(datasets.keys()),
+            "records_count": len(records),
+        }
 
-          context = generator.generate_context(
-           dataset_name,
-           dataframe
-    )
-
-          generator.save_context(
-          context
-    )
-
-        print("Preparing records...")
-
-        preparer = EmbeddingPreparation()
-        records = []
-        generator = ContextGenerator()
-
-        for dataset_name, dataframe in datasets.items():
-
-             context = generator.generate_context(
-              dataset_name,
-              dataframe
-    )
-
-             embeddable_columns = (
-               preparer.get_embeddable_columns(
-                dataframe,
-                context
-        )
-    )
-
-             dataset_records = (
-                preparer.extract_values(
-                 dataframe,
-                 dataset_name,
-                 embeddable_columns
-        )
-    )
-
-             records.extend(
-              dataset_records
-    )
-
-        print(
-        f"{len(records)} records extracted."
-)
-
-        print("Generating embeddings...")
-
-        embedding_service = EmbeddingService()
-
-        embeddings = (
-            embedding_service.generate_embeddings(
-                records
-            )
-        )
-
-        print("Building FAISS...")
-
-        embedding_service.build_index(
-            embeddings,
-            records
-        )
-
-        embedding_service.save_index()
-
-        print("Rebuild complete.")
+    def health_check(self) -> Dict[str, Any]:
+        return {
+            "service": self.service_name,
+            "status": "HEALTHY",
+            "contexts_dir": str(self._contexts_dir),
+            "vector_store_dir": str(self._vector_store_dir),
+        }

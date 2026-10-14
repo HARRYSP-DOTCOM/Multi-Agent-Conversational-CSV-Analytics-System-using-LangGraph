@@ -1,5 +1,7 @@
 from state.agent_state import AgentState
 from services.llm_service import LLMService
+from core.base_agent import BaseAgent
+from agents.agent_factory import AgentRegistry
 
 
 def _get_web_results(web_result):
@@ -299,51 +301,46 @@ def _handle_deterministic_response(state):
     return state
 
 
-def response_agent(state: AgentState):
-    print("\n=== RESPONSE AGENT ===")
+@AgentRegistry.register("response")
+class ResponseAgent(BaseAgent):
+    """
+    Formats final system output based on execution route (CSV, Web, Hybrid, or Deterministic).
+    Demonstrates BaseAgent subclassing, polymorphism, and dynamic registry registration.
+    """
 
-    route = state.get("route")
-    execution_result = state.get(
-        "execution_result"
-    )
-    web_result = state.get(
-        "web_result"
-    )
+    def __init__(self) -> None:
+        super().__init__(name="response_agent", description="Formats execution and search outputs into user answers")
 
-    try:
-        if route == "cached":
+    def process(self, state: AgentState) -> AgentState:
+        print("\n=== RESPONSE AGENT ===")
+
+        route = state.get("route")
+        execution_result = state.get("execution_result")
+        web_result = state.get("web_result")
+
+        try:
+            if route == "cached":
+                return state
+
+            if route == "hybrid" and (execution_result or web_result):
+                return _handle_hybrid_response(state, execution_result, web_result)
+
+            if execution_result:
+                return _handle_csv_execution_response(state, execution_result)
+
+            if web_result:
+                return _handle_web_response(state, web_result)
+
+            return _handle_deterministic_response(state)
+
+        except Exception as error:
+            state["final_response"] = {
+                "type": "error",
+                "data": str(error)
+            }
             return state
 
-        if route == "hybrid" and (
-            execution_result
-            or web_result
-        ):
-            return _handle_hybrid_response(
-                state,
-                execution_result,
-                web_result
-            )
 
-        if execution_result:
-            return _handle_csv_execution_response(
-                state,
-                execution_result
-            )
+# Callable instance for LangGraph compatibility
+response_agent = ResponseAgent()
 
-        if web_result:
-            return _handle_web_response(
-                state,
-                web_result
-            )
-
-        return _handle_deterministic_response(
-            state
-        )
-
-    except Exception as error:
-        state["final_response"] = {
-            "type": "error",
-            "data": str(error)
-        }
-
-        return state

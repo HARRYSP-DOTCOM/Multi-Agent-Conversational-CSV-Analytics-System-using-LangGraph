@@ -4,6 +4,8 @@ from services.embedding_service import EmbeddingService
 from services.e2b_execution_service import (
     E2BExecutionService
 )
+from core.base_agent import BaseAgent
+from agents.agent_factory import AgentRegistry
 
 _datasets = None
 _embedding_service = None
@@ -60,7 +62,7 @@ def resolve_metric(df, metric):
 
     return None
 
-def analysis_agent(state: AgentState):
+def _run_analysis(state: AgentState):
 
     print("\n=== ANALYSIS AGENT ===")
 
@@ -449,3 +451,21 @@ def analysis_agent(state: AgentState):
     }
 
     return state
+
+
+@AgentRegistry.register("analysis")
+class AnalysisAgent(BaseAgent):
+    """
+    Executes generated analytics code in sandbox or performs deterministic dataset operations.
+    Demonstrates BaseAgent inheritance and callable execution.
+    """
+
+    def __init__(self) -> None:
+        super().__init__(name="analysis_agent", description="Executes data analysis queries")
+
+    def process(self, state: AgentState) -> AgentState:
+        return _run_analysis(state)
+
+
+# Singleton callable instance for LangGraph graph execution
+analysis_agent = AnalysisAgent()

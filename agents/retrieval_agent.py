@@ -1,5 +1,7 @@
 from state.agent_state import AgentState
 from services.embedding_service import EmbeddingService
+from core.base_agent import BaseAgent
+from agents.agent_factory import AgentRegistry
 
 _embedding_service = None
 
@@ -29,7 +31,7 @@ def get_embedding_service():
 
     return _embedding_service
 
-def retrieval_agent(state: AgentState):
+def _retrieve(state: AgentState):
 
     print("\n=== RETRIEVAL AGENT ===")
 
@@ -125,3 +127,20 @@ def retrieval_agent(state: AgentState):
     }
 
     return state
+
+
+@AgentRegistry.register("retrieval")
+class RetrievalAgent(BaseAgent):
+    """
+    Performs semantic vector search across cached entities.
+    Subclasses BaseAgent and registers with AgentRegistry.
+    """
+
+    def __init__(self) -> None:
+        super().__init__(name="retrieval_agent", description="Performs semantic entity resolution via FAISS vector store")
+
+    def process(self, state: AgentState) -> AgentState:
+        return _retrieve(state)
+
+
+retrieval_agent = RetrievalAgent()

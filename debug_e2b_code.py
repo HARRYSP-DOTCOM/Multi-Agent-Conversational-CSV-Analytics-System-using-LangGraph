@@ -54,40 +54,21 @@ class SafeDatasetDict(dict):
 datasets = SafeDatasetDict()
 
 
-datasets["employees"] = pd.read_csv("employees.csv")
-for col in datasets["employees"].columns:
-    if datasets["employees"][col].dtype == "object":
+datasets["industry"] = pd.read_csv("industry.csv")
+for col in datasets["industry"].columns:
+    if datasets["industry"][col].dtype == "object":
         try:
             # Attempt to strip commas/dollar signs and convert to numeric
-            cleaned = datasets["employees"][col].astype(str).str.replace(r"[$,]", "", regex=True)
-            datasets["employees"][col] = pd.to_numeric(cleaned)
-        except:
-            pass
-
-datasets["sales"] = pd.read_csv("sales.csv")
-for col in datasets["sales"].columns:
-    if datasets["sales"][col].dtype == "object":
-        try:
-            # Attempt to strip commas/dollar signs and convert to numeric
-            cleaned = datasets["sales"][col].astype(str).str.replace(r"[$,]", "", regex=True)
-            datasets["sales"][col] = pd.to_numeric(cleaned)
-        except:
-            pass
-
-datasets["stocks"] = pd.read_csv("stocks.csv")
-for col in datasets["stocks"].columns:
-    if datasets["stocks"][col].dtype == "object":
-        try:
-            # Attempt to strip commas/dollar signs and convert to numeric
-            cleaned = datasets["stocks"][col].astype(str).str.replace(r"[$,]", "", regex=True)
-            datasets["stocks"][col] = pd.to_numeric(cleaned)
+            cleaned = datasets["industry"][col].astype(str).str.replace(r"[$,]", "", regex=True)
+            datasets["industry"][col] = pd.to_numeric(cleaned)
         except:
             pass
 
 if datasets:
     df = list(datasets.values())[0]
 
-result = 'Error: The AI failed to generate valid Python code.'
+df = datasets["industry"]
+result = df["Industry"].unique()
 import json
 import pandas as pd
 import numpy as np

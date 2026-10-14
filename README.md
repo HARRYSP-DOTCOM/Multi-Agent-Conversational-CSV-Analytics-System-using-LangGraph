@@ -1,48 +1,92 @@
-# CSV Analytics Agent
+# 📊 Multi-Agent Conversational CSV Analytics System
 
-CSV Analytics Agent is a Streamlit app that lets you upload CSV files and ask natural-language questions about them. The app profiles the uploaded files, builds lightweight semantic memory for dataset values, asks a local LLM to generate pandas code, executes that code in an E2B sandbox, and returns the answer in chat.
+> **Academic Submission & Production Architecture Edition**  
+> Features an enterprise-grade LangGraph multi-agent architecture implementing **every major Python concept** (OOP, Dunder methods, Metaprogramming Decorators, Context Managers, Generators, Concurrency, Custom Exceptions, and Typing).  
+> **Evaluation Documentation:** [PYTHON_CONCEPTS_MANUAL.md](PYTHON_CONCEPTS_MANUAL.md) | [PROJECT_REPORT.md](PROJECT_REPORT.md)  
+> **Automated Test Suite:** 41 Unit Tests (100% Passing)
+
+---
 
 ## What It Does
 
-- Accepts one or more CSV uploads from the Streamlit UI.
-- Rebuilds dataset context whenever new files are uploaded.
-- Stores schema/profile metadata in `contexts/`.
-- Stores semantic lookup records and a FAISS index in `vector_store/`.
-- Uses a LangGraph workflow to move each question through query, retrieval, analysis, and response stages.
-- Uses Ollama with `qwen2.5:1.5b` for code generation and response summarization.
-- Uses E2B Code Interpreter to run generated pandas code safely outside the main app process.
+- **Multi-Agent Orchestration:** Uses LangGraph to coordinate Query, Retrieval, Analysis, Planning, History, and Response agents.
+- **Natural Language to Code:** Generates dynamic Pandas code from natural language using Ollama (`qwen2.5:1.5b`).
+- **Safe Sandboxed Execution:** Executes generated code safely in an isolated E2B Code Interpreter sandbox with automated retry correction.
+- **Semantic Entity Memory:** Uses SentenceTransformers and FAISS vector indices for semantic fuzzy matching on categorical values.
+- **Academic Python Concepts Showcase:** Implements Abstract Base Classes, Dunder protocols, Metaprogramming decorators, Context managers, Streaming generators, ThreadPool concurrency, and Custom Exception hierarchies.
+
+## Quick Start for Evaluation
+
+```powershell
+# 1. Run the Live Interactive Python Concepts Demonstration (Recommended for Viva/Professor review)
+python run_concepts_demo.py
+
+# 2. Run the Full Automated Test Suite (41 Tests)
+python -m unittest discover -s tests -p "test_*.py" -v
+
+# 3. Launch the Streamlit Web Application
+streamlit run app.py
+
+# 4. Run CLI Interactive Agent Session
+python run_day2.py
+```
 
 ## Project Layout
 
 ```text
 .
-|-- app.py                         # Streamlit chat UI
-|-- run_day1.py                    # Manual semantic-memory initialization script
-|-- run_day2.py                    # CLI chat runner for the LangGraph workflow
+|-- app.py                         # Streamlit interactive chat UI
+|-- run_concepts_demo.py           # Live interactive Python concepts demo for viva
+|-- run_day1.py                    # Semantic-memory initialization script
+|-- run_day2.py                    # CLI chat runner for LangGraph workflow
 |-- requirements.txt               # Python dependencies
-|-- agents/
-|   |-- query_agent.py             # Generates pandas code from the user question
-|   |-- retrieval_agent.py         # Semantic entity lookup path, skipped in the main E2B flow
-|   |-- analysis_agent.py          # Executes generated code and handles retries
-|   `-- response_agent.py          # Formats final chat response
+|-- PYTHON_CONCEPTS_MANUAL.md      # Professor evaluation guide & syllabus mapping
+|-- PROJECT_REPORT.md              # Formal academic project report
+|-- core/                          # Foundational Python Architecture
+|   |-- base_agent.py              # BaseAgent(abc.ABC) & Template Method pattern
+|   |-- base_service.py            # BaseService(abc.ABC) abstract service contract
+|   |-- context_managers.py        # BenchmarkTimer & temporary_directory_scope
+|   |-- decorators.py              # @retry, @timing_profiler, @memoize, @validate_non_empty
+|   |-- enums.py                   # QueryIntent, AgentRoute, ExecutionStatus, DataType
+|   |-- exceptions.py              # CSVAnalyticsError domain exception hierarchy
+|   |-- logger.py                  # Standard library logging configuration
+|   `-- models.py                  # DatasetContainer (dunder methods), @dataclass, namedtuple
+|-- agents/                        # Autonomous Agents (Polymorphic BaseAgent subclasses)
+|   |-- agent_factory.py           # Factory and Registry Design Patterns
+|   |-- query_agent.py             # Generates analytical code with timing profiler
+|   |-- analysis_agent.py          # E2B Sandbox executor & retry management
+|   |-- planner_agent.py           # Autonomous router (CSV, Web, Hybrid)
+|   |-- response_agent.py          # Response formatting & summarization
+|   |-- retrieval_agent.py         # FAISS vector store entity resolution
+|   |-- history_agent.py           # Conversational memory & DB cache lookup
+|   `-- web_search_agent.py        # Real-time web retrieval via Exa API
 |-- graphs/
-|   `-- analytics_graph.py         # LangGraph graph definition
-|-- pipelines/
-|   `-- day1_pipeline.py           # Original semantic-memory build pipeline
+|   `-- analytics_graph.py         # LangGraph StateGraph workflow definition
 |-- services/
-|   |-- upload_service.py          # Saves uploads and clears old CSVs
-|   |-- rebuild_service.py         # Rebuilds contexts and vector store
-|   |-- dataset_loader.py          # Loads CSVs from uploads/
-|   |-- context_generator.py       # Creates dataset and column profiles
-|   |-- context_service.py         # Loads saved context JSON files
-|   |-- embedding_preparation.py   # Chooses values to embed
-|   |-- embedding_service.py       # SentenceTransformer + FAISS index handling
-|   |-- llm_service.py             # Ollama prompts for code and summaries
-|   `-- e2b_execution_service.py   # E2B sandbox execution
+|   |-- dataset_loader.py          # Concurrent ThreadPool loading & yield streaming
+|   |-- context_generator.py       # Parallel column profiling & dataclass manifests
+|   |-- upload_service.py          # Upload lifecycle & SHA-256 fingerprinting
+|   |-- context_service.py         # Context deserialization & dictionary comprehensions
+|   |-- rebuild_service.py         # End-to-end pipeline orchestration
+|   |-- llm_service.py             # Ollama LLM prompt engineering
+|   `-- e2b_execution_service.py   # E2B sandbox code execution
+|-- utils/
+|   |-- functional_tools.py        # map, filter, reduce, partial, comprehensions
+|   `-- tree_utils.py              # Directory tree formatting utility
+|-- tests/                         # Comprehensive Automated Unit Test Suite (41 Tests)
+|   |-- test_oop_agents.py         # ABCs, inheritance, polymorphism, __call__, factory
+|   |-- test_data_structures.py    # Dataclasses, namedtuples, dunder methods, collections
+|   |-- test_decorators.py         # @retry, @timing_profiler, @memoize, @validate_non_empty
+|   |-- test_context_managers.py   # Class-based and generator-based context managers
+|   |-- test_custom_exceptions.py  # Exception hierarchy, attributes, and chaining
+|   |-- test_generators_and_iterators.py # yield streaming, iterator protocol, lazy eval
+|   |-- test_concurrency.py        # ThreadPoolExecutor, thread locks, race safety
+|   |-- test_functional_tools.py   # map, filter, reduce, partial, comprehensions
+|   `-- test_services.py           # DatasetLoader, ContextGenerator, SHA-256 hashing
 |-- state/
-|   `-- agent_state.py             # Shared graph state schema
-|-- uploads/                       # Current uploaded CSV files
-|-- contexts/                      # Generated dataset context JSON
+|   `-- agent_state.py             # Shared TypedDict graph state schema
+|-- uploads/                       # Active uploaded CSV files
+|-- contexts/                      # Generated dataset context JSON files
 |-- vector_store/                  # FAISS index and metadata
 `-- sample_data/                   # Example CSV files
 ```
