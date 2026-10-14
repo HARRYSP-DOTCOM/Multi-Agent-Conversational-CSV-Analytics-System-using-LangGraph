@@ -361,30 +361,326 @@ with ThreadPoolExecutor(max_workers=4) as executor:
 
 ---
 
-## 4. Master Concept-to-File Matrix
+## 4. Master Code & Location Directory (Exact Files, Lines & Code)
 
-| # | Python Syllabus Concept | Primary File | Key Symbols / Classes |
-|---|-------------------------|--------------|-----------------------|
-| 1 | **Abstract Base Classes** | [`core/base_agent.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/base_agent.py) | `BaseAgent(abc.ABC)`, `@abstractmethod` |
-| 2 | **Abstract Services** | [`core/base_service.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/base_service.py) | `BaseService(abc.ABC)`, `health_check()` |
-| 3 | **Inheritance & Polymorphism** | [`agents/`](file:///e:/CSV%20ANALYTICS%20AGENTS/agents/) | `QueryAgent`, `AnalysisAgent`, `PlannerAgent`, `ResponseAgent` |
-| 4 | **Design Pattern: Template Method** | [`core/base_agent.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/base_agent.py#L82) | `BaseAgent.__call__()` |
-| 5 | **Design Pattern: Factory & Registry** | [`agents/agent_factory.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/agents/agent_factory.py) | `AgentRegistry.register()`, `AgentRegistry.create()` |
-| 6 | **Magic Methods (`__len__`, `__getitem__`)** | [`core/models.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/models.py#L90) | `DatasetContainer` |
-| 7 | **Encapsulation & Validation** | [`core/models.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/models.py) | `@property`, `@name.setter` |
-| 8 | **Metaprogramming Decorators** | [`core/decorators.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/decorators.py) | `@retry`, `@timing_profiler`, `@memoize`, `@validate_non_empty` |
-| 9 | **Context Manager (Class-based)** | [`core/context_managers.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/context_managers.py#L32) | `BenchmarkTimer` (`__enter__`, `__exit__`) |
-| 10 | **Context Manager (Generator-based)** | [`core/context_managers.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/context_managers.py#L65) | `@contextmanager temporary_directory_scope()` |
-| 11 | **Generators (`yield`)** | [`services/dataset_loader.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/services/dataset_loader.py#L75) | `stream_csv_chunks()` |
-| 12 | **Custom Exception Hierarchy** | [`core/exceptions.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/exceptions.py) | `CSVAnalyticsError`, `DatasetNotFoundError`, `raise ... from` |
-| 13 | **Immutable Dataclasses** | [`core/models.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/models.py#L35) | `@dataclass(frozen=True, slots=True) ColumnProfile` |
-| 14 | **NamedTuples** | [`core/models.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/models.py#L25) | `TokenStat`, `DatasetFingerprint` |
-| 15 | **Advanced Collections** | [`services/dataset_loader.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/services/dataset_loader.py) | `collections.defaultdict`, `collections.Counter`, `deque` |
-| 16 | **Domain Enumerations** | [`core/enums.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/enums.py) | `QueryIntent`, `AgentRoute`, `DataType`, `ExecutionStatus` |
-| 17 | **Functional Programming** | [`utils/functional_tools.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/utils/functional_tools.py) | `map()`, `filter()`, `reduce()`, `partial()`, comprehensions |
-| 18 | **Concurrency & ThreadPool** | [`services/dataset_loader.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/services/dataset_loader.py#L125) | `concurrent.futures.ThreadPoolExecutor`, `as_completed` |
-| 19 | **Modern File I/O & Hashing** | [`services/`](file:///e:/CSV%20ANALYTICS%20AGENTS/services/) | `pathlib.Path`, `hashlib.sha256` |
-| 20 | **Automated Testing** | [`tests/`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/) | 41 unit tests with Python's built-in `unittest` |
+Below is the exhaustive, concept-by-concept directory listing the **exact file path, line numbers, and code snippets** for every Python concept implemented in this project.
+
+---
+
+### 1. Abstract Base Classes (ABC) & `@abstractmethod`
+- **File:** [`core/base_agent.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/base_agent.py#L24-L82)
+- **Concept:** Enforces a rigid contract across all LangGraph nodes so that any derived agent must implement `process()`.
+```python
+# core/base_agent.py (Lines 24-82)
+import abc
+
+class BaseAgent(abc.ABC):
+    @abc.abstractmethod
+    def process(self, state: AgentState) -> AgentState:
+        """Core logic of the agent. Must be overridden by subclasses."""
+        raise NotImplementedError("Subclasses must implement the 'process' method.")
+```
+
+---
+
+### 2. Inheritance & Polymorphic Dispatch
+- **Files:** [`agents/query_agent.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/agents/query_agent.py#L21), [`agents/analysis_agent.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/agents/analysis_agent.py#L456), [`agents/planner_agent.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/agents/planner_agent.py#L234), [`agents/response_agent.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/agents/response_agent.py#L305)
+- **Concept:** Concrete agents subclass `BaseAgent` and override `process()` polymorphically.
+```python
+# agents/query_agent.py (Lines 20-35)
+class QueryAgent(BaseAgent):
+    def __init__(self) -> None:
+        super().__init__(name="query_agent", description="Generates analytical Pandas code")
+
+    def process(self, state: AgentState) -> AgentState:
+        # Specialized query generation logic
+        ...
+```
+
+---
+
+### 3. Template Method Design Pattern
+- **File:** [`core/base_agent.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/base_agent.py#L95-L125)
+- **Concept:** Orchestrates `before_run()` $\rightarrow$ `process()` $\rightarrow$ `after_run()`, tracking latency and logging errors automatically inside `__call__`.
+```python
+# core/base_agent.py (Lines 95-125)
+def __call__(self, state: AgentState) -> AgentState:
+    self._execution_count += 1
+    self.before_run(state)
+    start_time = time.perf_counter()
+    try:
+        result_state = self.process(state)
+    except Exception as exc:
+        self._logger.error(f"[{self._name}] Encountered unhandled exception: {exc}")
+        raise
+    finally:
+        elapsed = time.perf_counter() - start_time
+        self._total_duration += elapsed
+        self.after_run(state, elapsed)
+    return result_state
+```
+
+---
+
+### 4. Factory & Registry Design Patterns
+- **File:** [`agents/agent_factory.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/agents/agent_factory.py#L14-L44)
+- **Concept:** Dynamically registers agent classes using a decorator and provides a centralized factory method.
+```python
+# agents/agent_factory.py (Lines 14-44)
+class AgentRegistry:
+    _registry: Dict[str, Type[BaseAgent]] = {}
+
+    @classmethod
+    def register(cls, name: str) -> callable:
+        def decorator(subclass: Type[BaseAgent]) -> Type[BaseAgent]:
+            cls._registry[name.lower()] = subclass
+            return subclass
+        return decorator
+
+    @classmethod
+    def create(cls, name: str, *args, **kwargs) -> BaseAgent:
+        agent_cls = cls.get_agent_class(name)
+        return agent_cls(*args, **kwargs)
+```
+
+---
+
+### 5. Magic / Dunder Methods
+- **File:** [`core/models.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/models.py#L173-L216)
+- **Concept:** Implements Python's data model protocols in `DatasetContainer`:
+```python
+# core/models.py (Lines 173-216)
+class DatasetContainer:
+    def __len__(self) -> int:
+        return len(self._df)
+
+    def __getitem__(self, key: Union[str, int]) -> Any:
+        return self._df[key] if isinstance(key, str) else self._df.iloc[key]
+
+    def __contains__(self, column_name: str) -> bool:
+        return column_name in self._df.columns
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._df.columns)
+
+    def __repr__(self) -> str:
+        return f"DatasetContainer(name={self._name!r}, rows={len(self._df)}, columns={len(self._df.columns)})"
+
+    def __eq__(self, other: Any) -> bool:
+        return self._name == other._name and self._df.equals(other._df)
+```
+
+---
+
+### 6. Encapsulation & Managed Attributes (`@property` & `@setter`)
+- **File:** [`core/models.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/models.py#L145-L160)
+- **Concept:** Validates input parameters on attribute mutation and hides private state.
+```python
+# core/models.py (Lines 145-160)
+@property
+def name(self) -> str:
+    return self._name
+
+@name.setter
+def name(self, new_name: str) -> None:
+    if not isinstance(new_name, str) or not new_name.strip():
+        raise ValueError("New dataset name must be a non-empty string.")
+    self._name = new_name.strip()
+```
+
+---
+
+### 7. Custom Decorators & Closures
+- **File:** [`core/decorators.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/decorators.py)
+- **Concept:** Four custom metaprogramming decorators with argument parameterization:
+```python
+# core/decorators.py (Lines 23-65) - Exponential Backoff Retry
+def retry(max_retries=3, delay=0.5, backoff=2.0, allowed_exceptions=(Exception,)):
+    def decorator(func: Callable) -> Callable:
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            current_delay = delay
+            for attempt in range(1, max_retries + 1):
+                try:
+                    return func(*args, **kwargs)
+                except allowed_exceptions as exc:
+                    if attempt == max_retries:
+                        raise
+                    time.sleep(current_delay)
+                    current_delay *= backoff
+        return wrapper
+    return decorator
+
+# core/decorators.py (Lines 97-140) - Thread-Safe LRU Cache
+def memoize(max_size=128, ttl_seconds=None):
+    def decorator(func):
+        cache = OrderedDict()
+        lock = Lock()
+        ...
+        return wrapper
+    return decorator
+```
+
+---
+
+### 8. Context Managers (`with` Statement)
+- **File:** [`core/context_managers.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/context_managers.py)
+- **Concept:** Class-based `__enter__`/`__exit__` and generator-based `@contextmanager`:
+```python
+# Class-based Context Manager (Lines 37-74)
+class BenchmarkTimer:
+    def __enter__(self) -> BenchmarkResult:
+        self.result.start_time = time.perf_counter()
+        return self.result
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+        self.result.end_time = time.perf_counter()
+        self.result.elapsed_seconds = self.result.end_time - self.result.start_time
+        if exc_type is not None:
+            return self.suppress_exceptions  # True swallows exception
+        return False
+
+# Generator-based Context Manager (Lines 76-92)
+@contextmanager
+def temporary_directory_scope(prefix="analytics_tmp_"):
+    temp_dir = tempfile.mkdtemp(prefix=prefix)
+    try:
+        yield temp_dir
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+```
+
+---
+
+### 9. Generators & Chunked Streaming (`yield`)
+- **File:** [`services/dataset_loader.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/services/dataset_loader.py#L114-L135)
+- **Concept:** Streams gigabyte-scale CSVs in memory-bounded batches using `yield`:
+```python
+# services/dataset_loader.py (Lines 114-135)
+def stream_csv_chunks(self, filepath: Union[str, Path], chunk_size: int = 1000) -> Generator[pd.DataFrame, None, None]:
+    with pd.read_csv(filepath, chunksize=chunk_size) as reader:
+        for chunk in reader:
+            yield chunk
+```
+
+---
+
+### 10. Custom Exception Hierarchy & Chaining
+- **Files:** [`core/exceptions.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/exceptions.py#L15-L95), [`services/dataset_loader.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/services/dataset_loader.py#L132)
+- **Concept:** Domain exception hierarchy with `error_code`, `timestamp`, `details`, and `raise ... from`:
+```python
+# core/exceptions.py (Lines 15-44)
+class CSVAnalyticsError(Exception):
+    def __init__(self, message: str, error_code="GENERIC_ERROR", details=None):
+        super().__init__(message)
+        self.error_code = error_code
+        self.details = details or {}
+        self.timestamp = time.time()
+
+# services/dataset_loader.py (Lines 132-135) - Exception Chaining
+try:
+    ...
+except pd.errors.EmptyDataError as err:
+    raise EmptyDatasetError(path.stem) from err
+```
+
+---
+
+### 11. Modern Data Structures (`@dataclass`, `namedtuple`, `Enum`)
+- **Files:** [`core/models.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/models.py), [`core/enums.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/core/enums.py)
+- **Concept:** Immutable dataclasses, namedtuples, and string-backed enums:
+```python
+# core/models.py (Lines 27-45)
+TokenStat = namedtuple("TokenStat", ["token", "frequency", "is_stop_word"])
+
+@dataclass(frozen=True, slots=True)
+class ColumnProfile:
+    name: str
+    data_type: DataType
+    missing_count: int
+    unique_count: int
+    min_value: Optional[Union[float, int, str]] = None
+    max_value: Optional[Union[float, int, str]] = None
+    mean_value: Optional[float] = None
+
+# core/enums.py (Lines 13-35)
+class DataType(str, Enum):
+    INTEGER = "int"
+    FLOAT = "float"
+    STRING = "string"
+    DATETIME = "date"
+    BOOLEAN = "boolean"
+```
+
+---
+
+### 12. Concurrency & Multithreading
+- **File:** [`services/dataset_loader.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/services/dataset_loader.py#L180-L200)
+- **Concept:** Multithreaded CSV ingestion using `ThreadPoolExecutor` and `as_completed`:
+```python
+# services/dataset_loader.py (Lines 180-200)
+with ThreadPoolExecutor(max_workers=min(self._max_workers, len(csv_files) or 1)) as executor:
+    future_to_file = {
+        executor.submit(self.load_single_csv, self._data_directory / f): f
+        for f in csv_files
+    }
+    for future in as_completed(future_to_file):
+        dataset_name, df = future.result()
+        results[dataset_name] = df
+```
+
+---
+
+### 13. Functional Programming (`map`, `filter`, `reduce`, `partial`, comprehensions)
+- **File:** [`utils/functional_tools.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/utils/functional_tools.py#L35-L145)
+- **Concept:** Higher-order functions, currying, and dictionary/set comprehensions:
+```python
+# utils/functional_tools.py
+# 1. Higher-order filter & lambda (Lines 44-53)
+numeric_items = filter(lambda col: col.get("datatype") in ("int", "float"), columns_metadata)
+
+# 2. functools.reduce for pipeline composition (Lines 35-42)
+def apply_pipeline(data, *transforms):
+    return reduce(lambda acc, fn: fn(acc), transforms, data)
+
+# 3. Dictionary Comprehension (Lines 68-76)
+schema_dict = {col["name"]: col.get("datatype", "unknown") for col in columns_metadata if "name" in col}
+
+# 4. Set Comprehension (Lines 80-88)
+unique_types = {col.get("datatype", "unknown") for col in columns_metadata if isinstance(col, dict)}
+```
+
+---
+
+### 14. Modern File I/O & Cryptographic Hashing
+- **File:** [`services/dataset_loader.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/services/dataset_loader.py#L80-L105)
+- **Concept:** Object-oriented pathing with `pathlib.Path` and binary chunk hashing with `hashlib.sha256`:
+```python
+# services/dataset_loader.py (Lines 80-96)
+@staticmethod
+def calculate_file_hash(filepath: Union[str, Path], chunk_size: int = 65536) -> str:
+    path = Path(filepath)
+    hasher = hashlib.sha256()
+    with path.open("rb") as f:
+        while chunk := f.read(chunk_size):
+            hasher.update(chunk)
+    return hasher.hexdigest()
+```
+
+---
+
+### 15. Automated Unit Testing Suite
+- **Directory:** [`tests/`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/)
+- **Concept:** 41 comprehensive automated unit tests verifying each concept:
+  - [`tests/test_oop_agents.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_oop_agents.py): Tests ABC enforcement, polymorphism, `__call__`, factory creation.
+  - [`tests/test_decorators.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_decorators.py): Tests retry backoff, timing profiler, memoize hits/misses, argument validation.
+  - [`tests/test_context_managers.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_context_managers.py): Tests `BenchmarkTimer` and `temporary_directory_scope`.
+  - [`tests/test_custom_exceptions.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_custom_exceptions.py): Tests domain exception tree and `raise ... from` chaining.
+  - [`tests/test_data_structures.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_data_structures.py): Tests dataclass immutability, dunder methods, `Counter`, `defaultdict`, `deque`.
+  - [`tests/test_generators_and_iterators.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_generators_and_iterators.py): Tests `yield` chunking and lazy evaluation.
+  - [`tests/test_concurrency.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_concurrency.py): Tests `ThreadPoolExecutor` and race-condition safety.
+  - [`tests/test_functional_tools.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_functional_tools.py): Tests `map`, `filter`, `reduce`, `partial`, comprehensions.
+  - [`tests/test_services.py`](file:///e:/CSV%20ANALYTICS%20AGENTS/tests/test_services.py): Tests `DatasetLoader` and `ContextGenerator`.
 
 ---
 
