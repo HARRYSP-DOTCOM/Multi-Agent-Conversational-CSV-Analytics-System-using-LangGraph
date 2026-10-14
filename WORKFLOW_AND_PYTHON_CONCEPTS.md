@@ -75,54 +75,110 @@ The system is designed as an enterprise-grade multi-agent autonomous platform th
 
 ---
 
-## 2. End-to-End Multi-Agent Workflow
+## 2. End-to-End System Workflow (Explained Simply)
+
+To understand how the system works, think of it in **two stages**:
+1. **Stage A:** What happens when you **upload CSV files** (Preparation)
+2. **Stage B:** What happens when you **ask a question** (Multi-Agent Answering)
+
+---
+
+### 🟢 Stage A: What Happens When You Upload CSVs (Preparation)
+
+When you upload one or more CSV files (e.g. `sales.csv`, `employees.csv`), the system prepares the data so agents can query it immediately:
+
+```
+[ Uploaded CSV Files ]
+          │
+          ▼
+1. UploadService  ──► Cleans old uploads, saves new files safely to disk.
+          │
+          ▼
+2. DatasetLoader  ──► Calculates a SHA-256 fingerprint (hash) to identify changes.
+          │
+          ▼
+3. ContextGenerator ► Concurrently inspects all columns:
+                      - Detects data types (int, float, date, text)
+                      - Computes min, max, average, and unique values
+                      - Saves a lightweight JSON metadata profile into `contexts/`.
+          │
+          ▼
+4. EmbeddingService ► Takes text values (e.g., employee names, products, regions)
+                      and converts them into vectors using SentenceTransformers,
+                      storing them in a local FAISS index (`vector_store/`).
+```
+
+> **Why do this?** The AI does **not** need to read millions of raw CSV rows every time. It reads the lightweight metadata profiles (`contexts/`) and uses the vector index (`vector_store/`) for instant lookups!
+
+---
+
+### 🔵 Stage B: What Happens When You Ask a Question (Agent Flow)
+
+Here is the exact step-by-step flow managed by the **LangGraph** engine whenever a user submits a question:
 
 ```mermaid
 flowchart TD
-    Start([User Query / File Upload]) --> HistoryNode[1. History Agent]
+    UserQuery([User asks a question]) --> Step1[Step 1: History Agent<br><i>'Have I answered this already?'</i>]
     
-    HistoryNode -->|Cached Answer Found| ResponseNode[5. Response Agent]
-    HistoryNode -->|Cache Miss| PlannerNode[2. Planner Agent]
+    Step1 -->|Yes, found in cache| Step7[Step 7: Response Agent<br><i>Return saved answer immediately</i>]
+    Step1 -->|No match| Step2[Step 2: Planner Agent<br><i>'Where does the answer live?'</i>]
     
-    PlannerNode -->|Route = 'web'| WebSearchNode[Web Search Agent: Exa API]
-    PlannerNode -->|Route = 'csv' or 'hybrid'| QueryNode[3. Query Agent]
+    Step2 -->|Route: 'web'| Step6[Step 6: Web Search Agent<br><i>Search internet via Exa</i>]
+    Step2 -->|Route: 'csv' or 'hybrid'| Step3[Step 3: Query Agent<br><i>Write Python Pandas code</i>]
     
-    QueryNode --> RetrievalNode[Retrieval Agent: FAISS Fuzzy Lookup]
-    RetrievalNode --> AnalysisNode[4. Analysis Agent: E2B Sandbox]
+    Step3 --> Step4[Step 4: Retrieval Agent<br><i>Fuzzy match column/table names</i>]
+    Step4 --> Step5[Step 5: Analysis Agent<br><i>Run code safely in E2B sandbox</i>]
     
-    AnalysisNode -->|Runtime Error & Retries < 3| QueryNode
-    AnalysisNode -->|Success & Route = 'hybrid'| WebSearchNode
-    AnalysisNode -->|Success & Route = 'csv'| ResponseNode
+    Step5 -->|Execution Error?| RetryCheck{Retries < 3?}
+    RetryCheck -->|Yes| Step3
+    RetryCheck -->|No| Step7
     
-    WebSearchNode --> ResponseNode
-    ResponseNode --> EndNode([Final Answer: Table / Chart / Summary])
+    Step5 -->|Success & Route = 'hybrid'| Step6
+    Step5 -->|Success & Route = 'csv'| Step7
+    Step6 --> Step7
+    
+    Step7 --> FinalOutput([Display final answer, chart, or table to user])
 ```
 
-### Phase 1: Ingestion & Semantic Profiling
-1. **File Reception:** Files uploaded through Streamlit or loaded from `uploads/` are ingested by `UploadService`.
-2. **Deduplication:** `DatasetLoader.calculate_file_hash` calculates the SHA-256 checksum to avoid redundant computations.
-3. **Parallel Profiling:** `ContextGenerator` uses `concurrent.futures.ThreadPoolExecutor` to profile data types, missing value ratios, and distributions across multiple columns simultaneously.
-4. **Vector Embedding:** `EmbeddingPreparation` extracts unique string tokens, embeds them via `SentenceTransformer('all-MiniLM-L6-v2')`, and indexes them in a local FAISS vector index.
+---
 
-### Phase 2: Conversational Memory & Routing
-1. **Short-Term Memory:** `HistoryAgent` inspects chat history to check if the user is asking a follow-up or clarifying question.
-2. **Long-Term Memory:** Checks MongoDB (if active) for semantically identical questions previously answered. If found, returns immediately (`route = "cached"`).
-3. **Intent & Route Planning:** `PlannerAgent` tokenizes the query, analyzes column terms against the loaded schemas, and decides the optimal execution path:
-   - `Route.CSV`: Answerable exclusively from uploaded CSV files.
-   - `Route.WEB`: Requires external real-time data or definitions.
-   - `Route.HYBRID`: Requires calculating numbers from CSV and enriching with live web data.
+### 🔍 Detailed Step-by-Step Agent Breakdown
 
-### Phase 3: Query Generation & Vector Resolution
-1. **Code Generation:** `QueryAgent` feeds dataset schema context and the question into Ollama (`qwen2.5:1.5b`), synthesizing executable Pandas Python code.
-2. **Entity Resolution:** `RetrievalAgent` queries the FAISS index to map vague natural language entities (e.g., misspelled names or tickers) to their exact dataset values.
+| Step | Agent Name | Plain English Responsibility | What It Does Under the Hood |
+| :---: | :--- | :--- | :--- |
+| **1** | **History Agent** | *"Check memory first"* | Checks recent chat context and MongoDB cache. If the question was already answered, it returns the cached answer instantly, saving time and compute. |
+| **2** | **Planner Agent** | *"Decide the strategy"* | Analyzes the question and column names to determine the route:<br>• **CSV Route:** The question is only about uploaded files.<br>• **Web Route:** The question asks for live web facts or general knowledge.<br>• **Hybrid Route:** The question needs calculations from CSV **plus** live internet info. |
+| **3** | **Query Agent** | *"Write the code"* | Reads the dataset schema from `contexts/` and prompts the local Ollama LLM (`qwen2.5:1.5b`) to generate precise Pandas Python code to answer the question. |
+| **4** | **Retrieval Agent** | *"Fuzzy entity matching"* | If the user misspelled an entity (e.g., typed *"Aple"* instead of *"Apple"*), this agent queries the FAISS vector store to find the closest match. |
+| **5** | **Analysis Agent** | *"Execute safely in sandbox"* | Runs the generated Python code inside an isolated **E2B sandbox**. Your computer stays 100% safe because untrusted code never runs directly on your machine. |
+| **🔄** | **Self-Healing Loop** | *"Fix bugs automatically"* | If the code throws an error (e.g. `KeyError`), LangGraph sends the exact error message back to the Query Agent up to 3 times so the LLM can self-correct and fix the code! |
+| **6** | **Web Search Agent** | *"Search the live internet"* | If the route is `web` or `hybrid`, calls the Exa Search API to retrieve live web results, articles, and definitions. |
+| **7** | **Response Agent** | *"Summarize & present"* | Gathers outputs from the sandbox and/or web search, generates a clear natural-language explanation, and displays tables or charts to the user. |
 
-### Phase 4: Sandboxed Code Execution & Self-Correction
-1. **Isolated Execution:** `AnalysisAgent` sends generated Python code to an **E2B isolated sandbox** rather than running untrusted code on the host system.
-2. **Self-Correction Retry Loop:** If execution throws a runtime exception (e.g. `KeyError` or `TypeError`), LangGraph redirects state back to `QueryAgent` with the error traceback (`retry_count < 3`), prompting the LLM to heal its own code.
+---
 
-### Phase 5: Response Synthesis & Presentation
-1. **Formatting:** `ResponseAgent` formats results into natural summaries, Markdown tables, or interactive figures (Matplotlib / Plotly).
-2. **State Finalization:** The completed `AgentState` is passed to the Streamlit UI or terminal runner.
+### 💡 Concrete Real-World Example Walkthrough
+
+Let's follow a real question through the entire system:
+
+> **User Question:** *"Who is the highest paid employee in employees.csv, and what are recent news about their department?"*
+
+1. **Step 1 (History Agent):** Checks memory. No identical question was found. Passes state to Planner.
+2. **Step 2 (Planner Agent):** Sees `employees.csv` (CSV data) and asks for recent news (Web data). Classifies route as **`hybrid`**.
+   - Creates CSV Sub-question: *"Find employee with highest salary in employees.csv"*
+   - Creates Web Sub-question: *"Recent news about [department]"*
+3. **Step 3 (Query Agent):** Generates Pandas code:
+   ```python
+   top_emp = df.sort_values(by="salary", ascending=False).iloc[0]
+   result = {"name": top_emp["name"], "salary": top_emp["salary"], "department": top_emp["department"]}
+   print(result)
+   ```
+4. **Step 4 (Retrieval Agent):** Confirms column names (`salary`, `department`, `name`) match the schema.
+5. **Step 5 (Analysis Agent):** Executes code in the E2B sandbox. Returns: `{'name': 'Alice Smith', 'salary': 125000, 'department': 'Artificial Intelligence'}`.
+6. **Step 6 (Web Search Agent):** Queries Exa for *"Recent news about Artificial Intelligence"*, retrieving 3 relevant articles.
+7. **Step 7 (Response Agent):** Merges both results into a clean, professional answer:
+   > *"The highest paid employee is **Alice Smith** with a salary of **$125,000** in the **Artificial Intelligence** department.*  
+   > *Here are the latest news updates regarding Artificial Intelligence: [Article 1], [Article 2]..."*
 
 ---
 
